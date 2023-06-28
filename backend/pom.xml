@@ -17,6 +17,7 @@
 		<java.version>20</java.version>
 		<sonar.organization>neuefische</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.projectname>neuefische_cgn-java-23-2-teamproject-partyplanner_backend</sonar.projectname>
 	</properties>
 	<dependencies>
 		<dependency>
