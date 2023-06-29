@@ -18,5 +18,12 @@ public class PartyService {
     }
 
 
+    public List<Party> addParty(Party newParty){
+
+     this.partyRepo.add(newParty);
+     return this.partyRepo.getParties();
+    }
+
+
 
 }
