@@ -6,12 +6,15 @@ main {
 }
 
 ul {
+    display: flex;
+    flex-direction: column;
     background-color: rgb(44, 161, 173);
     width: 90%;
     padding: 2rem;
     list-style: none;
     border-radius: 18px;
-    gap: 2rem;
+    gap: 1rem;
+    margin: 2rem auto auto;
 }
 
 li {
@@ -21,4 +24,11 @@ li {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+}
+
+div {
+    display: flex;
+   justify-content: space-between;
+    margin: 1rem;
 }

@@ -4,6 +4,7 @@ import Header from "./components/Header.tsx";
 import {useEffect, useState} from "react";
 import {Party} from "./models.ts";
 import axios from "axios";
+import {Container} from "@mui/material";
 
 export default function App() {
     const [parties, setParties] = useState<Party[]>([]);
@@ -16,10 +17,10 @@ export default function App() {
     }, [])
 
   return (
-    <main>
+    <Container maxWidth="xl">
       <Header/>
       <Partylist parties={parties}/>
-    </main>
+    </Container>
   )
 }
 
