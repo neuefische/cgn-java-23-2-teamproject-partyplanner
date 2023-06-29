@@ -8,7 +8,7 @@ type Props= {
 export default function Partylist(props: Props) {
     return (
         <ul>
-            {props.parties.map(party => <PartyItem party={party}/>)}
+            {props.parties.map(party => <PartyItem party={party} key={party.id}/>)}
         </ul>
     );
 }

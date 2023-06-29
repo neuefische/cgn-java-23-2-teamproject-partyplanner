@@ -1,5 +1,5 @@
 export type Party= {
-    id: number,
+    id: string,
     date: Date,
     location: string,
     guests: Guest[],
@@ -8,7 +8,7 @@ export type Party= {
 
 
 export type Guest= {
-    id: number,
+    id: string,
     name: string,
     rsvp: boolean,
     diet: Diet,
