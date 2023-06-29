@@ -19,4 +19,8 @@ public class PartyRepo {
     public List<Party> getParties() {
         return parties;
     }
+
+    public void add(Party newParty) {
+        this.parties.add(newParty);
+    }
 }

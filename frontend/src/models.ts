@@ -19,4 +19,5 @@ export enum Diet {
     VEGETARIAN,
     OMNIVORE,
     ANIMAL,
+
 }

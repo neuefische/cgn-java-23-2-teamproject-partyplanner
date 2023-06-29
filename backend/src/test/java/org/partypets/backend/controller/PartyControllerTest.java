@@ -1,6 +1,10 @@
 package org.partypets.backend.controller;
 
 import org.junit.jupiter.api.Test;
+import org.partypets.backend.model.Diet;
+import org.partypets.backend.model.Guest;
+import org.partypets.backend.model.Party;
+import org.partypets.backend.repo.PartyRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,19 +33,19 @@ class PartyControllerTest { // Integration Test: wie ein Fake postmann
 
     void expectPartyList_whenGettingAllParties() throws Exception {
         //Given
-        Party newParty = new Party("ABC", "FakeDate", "Home", "Dog-Bday", List.of(new Guest("123", "Gökhan", true, "VEGETARIAN")));
+        Party newParty = new Party("FakeDate", "Home", "Dog-Bday", List.of(new Guest("Gökhan", true, Diet.VEGETARIAN)));
         partyRepo.add(newParty);
         String expected = """
                     [
                         {
-                            "id": "ABC",
+                            "id": "%s",
                             "date": "FakeDate",
                             "location": "Home",
                             "theme": "Dog-Bday",
-                            "guests": [{"id":  "123", "name":  "Gökhan", "rsvp":  true, "diet":  "VEGETARIAN"}]
+                            "guests": [{"id":  "%s", "name":  "Gökhan", "rsvp":  true, "diet":  "VEGETARIAN"}]
                         }
                     ]
-                """;
+                """.formatted(newParty.getId(), newParty.getGuests().get(0).getId());
 
 
         //When
