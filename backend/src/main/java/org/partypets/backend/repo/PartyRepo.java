@@ -1,7 +1,4 @@
 package org.partypets.backend.repo;
-
-import org.partypets.backend.model.Diet;
-import org.partypets.backend.model.Guest;
 import org.partypets.backend.model.Party;
 import org.springframework.stereotype.Repository;
 
@@ -12,14 +9,10 @@ import java.util.List;
 
 public class PartyRepo {
 
-    private List<Party> parties;
+    private final List<Party> parties;
 
     public PartyRepo() {
         this.parties = new ArrayList<>();
-        Party newParty = new Party("FakeDate", "Home", "Dog-Bday", List.of(new Guest("Gökhan", true, Diet.VEGETARIAN)));
-        Party newParty2 = new Party("FakeDate", "Home", "Dog-Bday", List.of(new Guest("Gökhan", true, Diet.VEGETARIAN)));
-        this.parties.add(newParty);
-        this.parties.add(newParty2);
 
     }
 
