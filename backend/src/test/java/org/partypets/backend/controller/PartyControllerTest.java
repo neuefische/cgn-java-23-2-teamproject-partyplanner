@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -24,8 +25,9 @@ class PartyControllerTest { // Integration Test: wie ein Fake postmann
     private PartyRepo partyRepo;
 
     @Test
+    @DirtiesContext
 
-    void expectPartyList_whenGettingAllParties(){
+    void expectPartyList_whenGettingAllParties() throws Exception {
         //Given
         Party newParty = new Party("ABC", "FakeDate", "Home", "Dog-Bday", List.of(new Guest("123", "Gökhan", true, "VEGETARIAN")));
         partyRepo.add(newParty);
