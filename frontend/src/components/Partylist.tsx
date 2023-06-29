@@ -1,5 +1,6 @@
 import {Party} from "../models.ts";
 import PartyItem from "./PartyItem.tsx";
+import './Partylist.css';
 
 
 type Props= {

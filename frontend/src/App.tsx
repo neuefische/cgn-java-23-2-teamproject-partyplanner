@@ -16,10 +16,10 @@ export default function App() {
     }, [])
 
   return (
-    <>
-        <Header/>
+    <main>
+      <Header/>
       <Partylist parties={parties}/>
-    </>
+    </main>
   )
 }
 

@@ -1,4 +1,5 @@
 import {Party} from "../models.ts";
+import './PartyItem.css'
 
 type Props= {
     party: Party
