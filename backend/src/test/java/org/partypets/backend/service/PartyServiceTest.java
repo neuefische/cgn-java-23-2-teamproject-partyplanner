@@ -33,7 +33,7 @@ class PartyServiceTest {
 
         //then
         assertEquals(expected, actual);
-        verify(partyRepo) .getParties();
+        verify(partyRepo) .getParties(); //Test
     }
 
     @Test
