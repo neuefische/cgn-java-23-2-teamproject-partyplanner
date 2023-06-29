@@ -17,9 +17,9 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 @SpringBootTest
 @AutoConfigureMockMvc
-
 class PartyControllerTest { // Integration Test: wie ein Fake postmann
 
     @Autowired
@@ -30,7 +30,6 @@ class PartyControllerTest { // Integration Test: wie ein Fake postmann
 
     @Test
     @DirtiesContext
-
     void expectPartyList_whenGettingAllParties() throws Exception {
         //Given
         Party newParty = new Party("FakeDate", "Home", "Dog-Bday", List.of(new Guest("Gökhan", true, Diet.VEGETARIAN)));
@@ -51,11 +50,9 @@ class PartyControllerTest { // Integration Test: wie ein Fake postmann
         //When
         mockMvc.perform(MockMvcRequestBuilders.get("/api/parties"))
 
-        //Then
+                //Then
                 .andExpect(MockMvcResultMatchers.content().json(expected));
     }
-
-
 
 
 }

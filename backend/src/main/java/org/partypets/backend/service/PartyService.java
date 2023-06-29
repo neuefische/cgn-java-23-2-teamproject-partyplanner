@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.partypets.backend.model.Party;
 import org.partypets.backend.repo.PartyRepo;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -18,12 +19,11 @@ public class PartyService {
     }
 
 
-    public List<Party> addParty(Party newParty){
+    public List<Party> addParty(Party newParty) {
 
-     this.partyRepo.add(newParty);
-     return this.partyRepo.getParties();
+        this.partyRepo.add(newParty);
+        return this.partyRepo.getParties();
     }
-
 
 
 }

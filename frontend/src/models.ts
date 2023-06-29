@@ -1,6 +1,6 @@
 export type Party= {
     id: string,
-    date: Date,
+    date: string,
     location: string,
     guests: Guest[],
     theme: string,

@@ -15,14 +15,14 @@ public class Party {
     private String theme;
     private List<Guest> guests;
 
-    public Party(String date, String location, String theme){
+    public Party(String date, String location, String theme) {
         this.id = UUID.randomUUID().toString();
         this.date = date;
         this.location = location;
         this.theme = theme;
     }
 
-    public Party(String date, String location, String theme, List<Guest> guests){
+    public Party(String date, String location, String theme, List<Guest> guests) {
         this(date, location, theme);
         this.guests = guests;
     }

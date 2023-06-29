@@ -1,6 +1,5 @@
 package org.partypets.backend.repo;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.partypets.backend.model.Diet;
@@ -10,13 +9,13 @@ import org.partypets.backend.model.Party;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PartyRepoTest {
     private PartyRepo partyRepo;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         this.partyRepo = new PartyRepo();
     }
 
