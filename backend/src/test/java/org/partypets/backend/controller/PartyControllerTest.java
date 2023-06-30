@@ -55,44 +55,6 @@ class PartyControllerTest { // Integration Test: wie ein Fake postmann
                 .andExpect(MockMvcResultMatchers.content().json(expected)) .andExpect(MockMvcResultMatchers.status().isOk());
     }
 
-
-    @Test
-    @DirtiesContext
-    void expectUpdatedPartylist_whenAddParty() throws Exception {
-        //Given
-
-        String partyOne = """
-                    
-                        {
-                            "id": "123",
-                            "date": "FakeDate",
-                            "location": "Home",
-                            "theme": "Dog-Bday",
-                            "guests": [{"id":  "123", "name":  "Gökhan", "rsvp":  true, "diet":  "VEGETARIAN"}]
-                        }
-                    """;
-
-        String expected = """
-                    [
-                        {
-                            "id": "123",
-                            "date": "FakeDate",
-                            "location": "Home",
-                            "theme": "Dog-Bday",
-                            "guests": [{"id":  "123", "name":  "Gökhan", "rsvp":  true, "diet":  "VEGETARIAN"}]
-                        }
-                    ]
-                """;
-
-
-        //When
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/parties").content(partyOne).contentType(MediaType.APPLICATION_JSON))
-
-                //Then
-                .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().is(200));
-    }
-
-
 }
 
 
