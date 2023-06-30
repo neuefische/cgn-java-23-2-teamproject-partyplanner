@@ -4,9 +4,7 @@ package org.partypets.backend.controller;
 import lombok.RequiredArgsConstructor;
 import org.partypets.backend.model.Party;
 import org.partypets.backend.service.PartyService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +18,13 @@ public class PartyController {
 
     @GetMapping
     public List<Party> listParties() {
+        return this.partyService.list();
+    }
+
+
+    @PostMapping
+    public List<Party> addParty(@RequestBody Party party){
+        this.partyService.add(party);
         return this.partyService.list();
     }
 
