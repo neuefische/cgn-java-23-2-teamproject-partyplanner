@@ -8,6 +8,7 @@ import org.partypets.backend.repo.PartyRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -51,8 +52,47 @@ class PartyControllerTest { // Integration Test: wie ein Fake postmann
         mockMvc.perform(MockMvcRequestBuilders.get("/api/parties"))
 
                 //Then
-                .andExpect(MockMvcResultMatchers.content().json(expected));
+                .andExpect(MockMvcResultMatchers.content().json(expected)) .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+
+    @Test
+    @DirtiesContext
+    void expectUpdatedPartylist_whenAddParty() throws Exception {
+        //Given
+
+        String partyOne = """
+                    
+                        {
+                            "id": "123",
+                            "date": "FakeDate",
+                            "location": "Home",
+                            "theme": "Dog-Bday",
+                            "guests": [{"id":  "123", "name":  "Gökhan", "rsvp":  true, "diet":  "VEGETARIAN"}]
+                        }
+                    """;
+
+        String expected = """
+                    [
+                        {
+                            "id": "123",
+                            "date": "FakeDate",
+                            "location": "Home",
+                            "theme": "Dog-Bday",
+                            "guests": [{"id":  "123", "name":  "Gökhan", "rsvp":  true, "diet":  "VEGETARIAN"}]
+                        }
+                    ]
+                """;
+
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/parties").content(partyOne).contentType(MediaType.APPLICATION_JSON))
+
+                //Then
+                .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().is(200));
     }
 
 
 }
+
+
