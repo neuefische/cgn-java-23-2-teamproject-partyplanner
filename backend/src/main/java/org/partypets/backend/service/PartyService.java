@@ -7,7 +7,6 @@ import org.partypets.backend.repo.PartyRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -23,9 +22,9 @@ public class PartyService {
         return this.partyRepo.getParties();
     }
 
-    public void add(Party party) {
+    public Party add(Party party) {
         String id = uuIdService.getRandomId();
         party.setId(id);
-        this.partyRepo.add(party);
+        return this.partyRepo.add(party);
     }
 }

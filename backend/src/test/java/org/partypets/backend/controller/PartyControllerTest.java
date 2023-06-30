@@ -18,7 +18,7 @@ import java.util.List;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class PartyControllerTest { // Integration Test: wie ein Fake postmann
+class PartyControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -51,21 +51,21 @@ class PartyControllerTest { // Integration Test: wie ein Fake postmann
 
     @Test
     @DirtiesContext
-    void testTest() throws Exception {
+    void expectNewPartyInList_whenPostingParty() throws Exception {
         String newParty = """
-                        {
-                            'location': 'Home',
-                            'theme': 'Dog-Bday'
-                         }
+                {
+                    "location": "Home",
+                    "theme": "Dog-Bday"
+                }
                 """;
 
         String expected = """
-                    [
-                        {
-                            'location': 'Home',
-                            'theme': 'Dog-Bday'
-                         }
-                    ]
+                [
+                {
+                "location": "Home",
+                 "theme": "Dog-Bday"
+                }
+                ]
                 """;
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/parties").content(newParty).contentType(MediaType.APPLICATION_JSON))

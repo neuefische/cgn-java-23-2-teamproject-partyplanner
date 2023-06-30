@@ -1,6 +1,5 @@
 package org.partypets.backend.repo;
 
-import jakarta.servlet.http.Part;
 import lombok.Data;
 import org.partypets.backend.model.Party;
 import org.springframework.stereotype.Repository;
@@ -22,8 +21,8 @@ public class PartyRepo {
         return parties;
     }
 
-    public void  add(Party party) {
+    public Party add(Party party) {
         this.parties.add(party);
+        return this.parties.get(parties.size() - 1);
     }
-
 }
