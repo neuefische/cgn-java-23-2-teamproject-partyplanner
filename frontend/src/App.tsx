@@ -6,9 +6,12 @@ import {Party} from "./models.ts";
 import axios from "axios";
 import {Container} from "@mui/material";
 import AddForm from "./components/AddForm.tsx";
-import {Link, Route, Routes} from "react-router-dom";
+import {Route, Routes, useNavigate} from "react-router-dom";
+import Button from '@mui/material/Button';
+
 
 export default function App() {
+    const navigate = useNavigate();
     const [parties, setParties] = useState<Party[]>([]);
 
     useEffect(() => {
@@ -26,19 +29,23 @@ export default function App() {
     }
 
     return (
-        <>
-            <button><Link to={"/add"}>Add Party</Link></button>
-            <button><Link to={"/"}>Home</Link></button>
+        <main>
+
             <Routes>
                 <Route path={"/add"} element={<AddForm onAddParty={handleAddParty}/>}/>
                 <Route path={"/"} element={
                     (<Container>
                         <Header/>
                         <Partylist parties={parties}/>
+                        <Button variant="contained" disableElevation onClick={() => navigate("/add")}>Add Party</Button>
                     </Container>)
                 }/>
+
+
             </Routes>
-        </>
+
+
+        </main>
     )
 }
 
