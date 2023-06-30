@@ -6,6 +6,7 @@ import {Party} from "./models.ts";
 import axios from "axios";
 import {Container} from "@mui/material";
 import AddForm from "./components/AddForm.tsx";
+import {Link, Route, Routes} from "react-router-dom";
 
 export default function App() {
     const [parties, setParties] = useState<Party[]>([]);
@@ -17,13 +18,28 @@ export default function App() {
             .then(data => setParties(data))
     }, [])
 
-  return (
-    <Container maxWidth="xl">
-      <Header/>
-        <Partylist parties={parties}/>
-        <AddForm/>
-    </Container>
-  )
+    function handleAddParty(data: { location: string, theme: string, date: string }) {
+        axios.post('api/parties', data)
+            .then(response => response.data)
+            .catch(console.error)
+            .then(data => setParties(data))
+    }
+
+    return (
+        <>
+            <button><Link to={"/add"}>Add Party</Link></button>
+            <button><Link to={"/"}>Home</Link></button>
+            <Routes>
+                <Route path={"/add"} element={<AddForm onAddParty={handleAddParty}/>}/>
+                <Route path={"/"} element={
+                    (<Container>
+                        <Header/>
+                        <Partylist parties={parties}/>
+                    </Container>)
+                }/>
+            </Routes>
+        </>
+    )
 }
 
 

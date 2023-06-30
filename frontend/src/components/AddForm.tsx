@@ -1,7 +1,10 @@
 import {FormEvent, useState} from "react";
 
+type Props = {
+    onAddParty: (data: { date: string; location: string; theme: string }) => void;
+}
 
-export default function AddForm() {
+export default function AddForm(props: Props) {
 
     const [theme, setTheme] = useState("");
     const [date, setDate] = useState("");
@@ -9,9 +12,15 @@ export default function AddForm() {
 
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        console.log("Theme: ", theme)
-        console.log("Date: ", typeof date)
-        console.log("Location: ", location)
+        const data = {
+            location: location,
+            theme: theme,
+            date: date
+        }
+        props.onAddParty(data)
+        setDate("")
+        setTheme("")
+        setLocation("")
     }
 
     return (
