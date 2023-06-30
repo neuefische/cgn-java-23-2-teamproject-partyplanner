@@ -6,6 +6,7 @@ import org.partypets.backend.repo.PartyRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -13,6 +14,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Date;
 import java.util.List;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -47,6 +49,30 @@ class PartyControllerTest { // Integration Test: wie ein Fake postmann
                 .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
     }
 
+    @Test
+    @DirtiesContext
+    void testTest() throws Exception {
+        String newParty = """
+                        {
+                            'location': 'Home',
+                            'theme': 'Dog-Bday'
+                         }
+                """;
+
+        String expected = """
+                    [
+                        {
+                            'location': 'Home',
+                            'theme': 'Dog-Bday'
+                         }
+                    ]
+                """;
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/parties").content(newParty).contentType(MediaType.APPLICATION_JSON))
+
+                //Then
+                .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
+    }
 }
 
 
