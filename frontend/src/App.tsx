@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 import {Party} from "./models.ts";
 import axios from "axios";
 import {Container} from "@mui/material";
+import AddForm from "./components/AddForm.tsx";
 
 export default function App() {
     const [parties, setParties] = useState<Party[]>([]);
@@ -19,7 +20,8 @@ export default function App() {
   return (
     <Container maxWidth="xl">
       <Header/>
-      <Partylist parties={parties}/>
+        <Partylist parties={parties}/>
+        <AddForm/>
     </Container>
   )
 }
