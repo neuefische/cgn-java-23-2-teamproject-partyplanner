@@ -37,7 +37,11 @@ export default function App() {
                     (<Container>
                         <Header/>
                         <Partylist parties={parties}/>
-                        <Button variant="contained" disableElevation onClick={() => navigate("/add")}>Add Party</Button>
+                        <Button className="button-right" variant="contained" disableElevation
+                                onClick={() => navigate("/add")}>
+                            + Add Party
+                        </Button>
+
                     </Container>)
                 }/>
 

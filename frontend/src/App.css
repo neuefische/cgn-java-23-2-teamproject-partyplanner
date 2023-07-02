@@ -31,8 +31,20 @@ li {
 
 div {
     display: flex;
-   justify-content: space-between;
+    justify-content: space-between;
     margin: 1rem;
 }
 
 
+fieldset {
+    padding: 30px;
+    font-family: sans-serif;
+    border-color: cornflowerblue;
+    border-radius: 18px;
+
+}
+
+.button-right {
+    float: right;
+    padding-right: 50px;
+}

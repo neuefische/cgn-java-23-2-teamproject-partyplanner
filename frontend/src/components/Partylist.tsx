@@ -12,19 +12,19 @@ type Props = {
 }
 export default function Partylist(props: Props) {
     return (
-        <Paper sx={{width: '100%', overflow: 'hidden'}}>
+        <Paper sx={{width: '97%', overflow: 'hidden'}}>
             <TableContainer sx={{maxHeight: 440}}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
                             <TableCell style={{fontWeight: "bold"}}>
-                                Theme
+                                Theme 🎈
                             </TableCell>
                             <TableCell style={{fontWeight: "bold"}}>
-                                Date
+                                Date 🗓️
                             </TableCell>
                             <TableCell style={{fontWeight: "bold"}}>
-                                Location
+                                Location 📍
                             </TableCell>
                         </TableRow>
                     </TableHead>
