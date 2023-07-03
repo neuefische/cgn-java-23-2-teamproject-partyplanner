@@ -9,7 +9,7 @@ type Props = {
 
 export default function AddForm(props: Props) {
 
-    const [theme, setTheme] = useState("");
+    const [theme, setTheme] = useState<string>("");
     const [date, setDate] = useState("");
     const [location, setLocation] = useState("");
 
