@@ -11,7 +11,7 @@ export default function AddForm(props: Props) {
 
     const [theme, setTheme] = useState<string>("");
     const [date, setDate] = useState<string>("");
-    const [location, setLocation] = useState("");
+    const [location, setLocation] = useState<string>("");
 
     const navigate = useNavigate()
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
