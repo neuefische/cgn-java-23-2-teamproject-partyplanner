@@ -21,4 +21,8 @@ public class PartyRepo {
         return parties;
     }
 
+    public Party add(Party party) {
+        this.parties.add(party);
+        return this.parties.get(parties.size() - 1);
+    }
 }

@@ -2,6 +2,7 @@ package org.partypets.backend.service;
 
 import org.junit.jupiter.api.Test;
 import org.partypets.backend.model.Party;
+import org.partypets.backend.model.UuIdService;
 import org.partypets.backend.repo.PartyRepo;
 
 import java.util.ArrayList;
@@ -15,7 +16,8 @@ import static org.mockito.Mockito.*;
 class PartyServiceTest {
 
     PartyRepo partyRepo = mock(PartyRepo.class);
-    PartyService partyService = new PartyService(partyRepo);
+    UuIdService uuIdService = mock(UuIdService.class);
+    PartyService partyService = new PartyService(partyRepo, uuIdService);
 
     @Test
     void expectListOfAllParties_whenGettingTheList() {
@@ -32,4 +34,23 @@ class PartyServiceTest {
         assertEquals(expected, actual);
         verify(partyRepo).getParties();
     }
+
+    @Test
+    void expectId_whenAddedParty() {
+        //given
+        Party newParty = new Party(null, new Date(), "Home", "Dog-Bday");
+        Party expected = new Party("abc", new Date(), "Home", "Dog-Bday");
+
+        //when
+        when(uuIdService.getRandomId()).thenReturn("abc");
+        when(partyRepo.add(newParty)).thenReturn(expected);
+        Party actual = partyService.add(newParty);
+
+        //then
+        assertEquals(expected, actual);
+        verify(uuIdService).getRandomId();
+        verify(partyRepo).add(newParty);
+    }
+
+
 }
