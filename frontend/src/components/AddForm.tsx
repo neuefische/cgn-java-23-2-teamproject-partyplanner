@@ -10,7 +10,7 @@ type Props = {
 export default function AddForm(props: Props) {
 
     const [theme, setTheme] = useState<string>("");
-    const [date, setDate] = useState("");
+    const [date, setDate] = useState<string>("");
     const [location, setLocation] = useState("");
 
     const navigate = useNavigate()
