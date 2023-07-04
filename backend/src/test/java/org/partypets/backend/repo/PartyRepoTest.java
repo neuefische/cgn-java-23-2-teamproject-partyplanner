@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class PartyRepoTest {
     PartyRepo partyRepo;
@@ -39,5 +40,15 @@ class PartyRepoTest {
         Party actual = this.partyRepo.getById("abc");
         //THEN
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void expectNull_whenIdIsNotFound() {
+        //GIVEN
+        this.partyRepo.setParties(new ArrayList<>());
+        //WHEN
+        Party actual = this.partyRepo.getById("abc");
+        //THEN
+        assertNull(actual);
     }
 }
