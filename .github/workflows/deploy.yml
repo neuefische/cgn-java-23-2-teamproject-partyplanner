@@ -72,7 +72,7 @@ jobs:
           push: true
           #Set dockerhub username/projectName
           tags: pia0912/pawpalaceparties
-          context: ./backend
+          context: .
 
   deploy:
     runs-on: ubuntu-latest
