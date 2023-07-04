@@ -14,7 +14,7 @@ public class PartyRepo {
     private List<Party> parties;
 
     public PartyRepo() {
-        this.parties = new ArrayList<>();
+        parties = new ArrayList<>();
     }
 
     public List<Party> getParties() {
@@ -31,7 +31,6 @@ public class PartyRepo {
             if (party.getId().equals(id)) {
                 return party;
             }
-
         }
         return null;
     }

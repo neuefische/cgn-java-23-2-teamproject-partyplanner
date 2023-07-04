@@ -6,11 +6,16 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import {useNavigate} from "react-router-dom";
 
 type Props = {
     parties: Party[]
 }
 export default function Partylist(props: Props) {
+    const navigate = useNavigate();
+
+
+
     return (
         <Paper sx={{width: '97%', overflow: 'hidden'}}>
             <TableContainer sx={{maxHeight: 440}}>
@@ -31,7 +36,7 @@ export default function Partylist(props: Props) {
                     <TableBody>
                         {props.parties.map(party => {
                             return (
-                                <TableRow hover role="checkbox" tabIndex={-1} key={party.id}>
+                                <TableRow hover role="checkbox" tabIndex={-1} key={party.id} onClick={() => navigate(`/parties/${party.id}`)}>
                                     <TableCell> {party.theme}</TableCell>
                                     <TableCell>{new Date(party.date).toLocaleDateString("de-DE")} </TableCell>
                                     <TableCell>{party.location} </TableCell>
@@ -41,7 +46,6 @@ export default function Partylist(props: Props) {
                     </TableBody>
                 </Table>
             </TableContainer>
-
         </Paper>
     );
 }
