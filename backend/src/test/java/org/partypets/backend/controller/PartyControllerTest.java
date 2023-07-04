@@ -73,6 +73,33 @@ class PartyControllerTest {
                 //Then
                 .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
     }
+
+
+    @Test
+    @DirtiesContext
+    void expectParty_whenGettingByID() throws Exception {
+        //Given
+        Date currentDate = new Date();
+        Party newParty = new Party("abc", currentDate, "Home", "Dog-Bday");
+        this.partyRepo.setParties(List.of(newParty));
+        String expected = """
+                   
+                        {
+                            "id": "abc",
+                            "location": "Home",
+                            "theme": "Dog-Bday",
+                            "date": "%s"
+                         }
+                    
+                """.formatted(currentDate);
+
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/parties/abc"))
+
+                //Then
+                .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
+    }
 }
 
 

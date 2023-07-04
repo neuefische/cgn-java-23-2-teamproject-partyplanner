@@ -27,4 +27,8 @@ public class PartyService {
         party.setId(id);
         return this.partyRepo.add(party);
     }
+
+    public Party getDetails(String id) {
+        return this.partyRepo.getById(id);
+    }
 }

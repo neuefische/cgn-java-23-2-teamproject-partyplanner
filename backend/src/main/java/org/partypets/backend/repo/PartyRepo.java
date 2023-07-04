@@ -25,4 +25,14 @@ public class PartyRepo {
         this.parties.add(party);
         return this.parties.get(parties.size() - 1);
     }
+
+    public Party getById(String id) {
+        for (Party party : parties) {
+            if (party.getId().equals(id)) {
+                return party;
+            }
+
+        }
+        return null;
+    }
 }
