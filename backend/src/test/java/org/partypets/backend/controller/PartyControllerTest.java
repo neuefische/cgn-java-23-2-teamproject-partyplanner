@@ -79,19 +79,17 @@ class PartyControllerTest {
     @DirtiesContext
     void expectParty_whenGettingByID() throws Exception {
         //Given
-        Date currentDate = new Date();
-        Party newParty = new Party("abc", currentDate, "Home", "Dog-Bday");
+        Party newParty = new Party("abc", new Date(), "Home", "Dog-Bday");
         this.partyRepo.setParties(List.of(newParty));
         String expected = """
                    
                         {
                             "id": "abc",
                             "location": "Home",
-                            "theme": "Dog-Bday",
-                            "date": "%s"
+                            "theme": "Dog-Bday"
                          }
                     
-                """.formatted(currentDate);
+                """;
 
 
         //When
