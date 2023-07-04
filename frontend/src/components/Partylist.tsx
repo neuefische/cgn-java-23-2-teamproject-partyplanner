@@ -36,7 +36,7 @@ export default function Partylist(props: Props) {
                     <TableBody>
                         {props.parties.map(party => {
                             return (
-                                <TableRow hover role="checkbox" tabIndex={-1} key={party.id} onClick={() => navigate(`/parties/${party.id}`)}>
+                                <TableRow hover role="checkbox" tabIndex={-1} key={party.id} onClick={() => navigate(`/${party.id}`)}>
                                     <TableCell> {party.theme}</TableCell>
                                     <TableCell>{new Date(party.date).toLocaleDateString("de-DE")} </TableCell>
                                     <TableCell>{party.location} </TableCell>

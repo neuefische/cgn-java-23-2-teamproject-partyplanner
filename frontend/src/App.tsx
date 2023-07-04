@@ -8,6 +8,7 @@ import {Container} from "@mui/material";
 import AddForm from "./components/AddForm.tsx";
 import {Route, Routes, useNavigate} from "react-router-dom";
 import Button from '@mui/material/Button';
+import PartyDetail from "./components/PartyDetail.tsx";
 
 
 export default function App() {
@@ -30,9 +31,9 @@ export default function App() {
 
     return (
         <main>
-
             <Routes>
                 <Route path={"/add"} element={<AddForm onAddParty={handleAddParty}/>}/>
+                <Route path={"/:id"} element={<PartyDetail/>}/>
                 <Route path={"/"} element={
                     (<Container>
                         <Header/>

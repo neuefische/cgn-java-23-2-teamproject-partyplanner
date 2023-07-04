@@ -1,34 +1,51 @@
-import {Party} from "../models.ts";
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button, CardActionArea, CardActions } from '@mui/material';
+import { Button} from '@mui/material';
+import {Party} from "../models.ts";
+import {useEffect, useState} from "react";
+import axios from "axios";
+import {useParams} from "react-router-dom";
+export default function PartyDetail() {
 
-type Props = {
-    party: Party
-}
+    const [party, setParty] = useState<Party>();
 
-export default function PartyDetail(props: Props) {
+    const params = useParams();
 
-    return <Card sx={{ maxWidth: 345 }}>
-        <CardActionArea>
+    useEffect(() => {
+        axios.get(`api/parties/${params.id}`)
+            .then(response => response.data)
+            .catch(console.error)
+            .then(data => setParty(data))
+    }, [])
+
+
+    if(typeof party === "undefined"){
+        return <>No Party</>
+    }
+
+
+    return <Card sx={{ maxWidth: 345 }} style={{display:"flex", flexDirection: "column"}}>
             <CardMedia
                 component="img"
                 height="140"
-                image="/static/images/cards/contemplative-reptile.jpg"
+                image="https://i.etsystatic.com/5157460/r/il/aff006/2344085974/il_1588xN.2344085974_czdu.jpg"
                 alt="green iguana"
             />
-            <CardContent>
-                <Typography gutterBottom variant="h5" component="div">{props.party.theme}</Typography>
-                <Typography variant="body2" color="text.secondary">{props.party.date}</Typography>
-                <Typography variant="body2" color="text.secondary">{props.party.location}</Typography>
+            <CardContent style={{display:"flex", gap: "2rem"}}>
+                <Typography variant="overline" component="div">
+                    {party.theme}
+                </Typography>
+                <Typography variant="overline" component="div">
+                    {new Date(party.date).toLocaleDateString("de-DE")}
+                </Typography>
+                <Typography variant="overline" component="div">
+                    {party.location}
+                </Typography>
             </CardContent>
-        </CardActionArea>
-        <CardActions>
-            <Button size="small" color="primary">
-                Edit
-            </Button>
-        </CardActions>
+        <Button size="small" color="primary">
+            Edit
+        </Button>
     </Card>
 }
