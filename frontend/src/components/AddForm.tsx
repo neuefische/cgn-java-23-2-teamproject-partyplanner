@@ -29,6 +29,7 @@ export default function AddForm(props: Props) {
     }
 
     return (<>
+
             <form onSubmit={handleSubmit}>
                 <fieldset>
                     <legend style={{marginBottom: '20px', fontWeight: 'bold', fontSize: '28px'}}>Add new Party</legend>
@@ -60,14 +61,15 @@ export default function AddForm(props: Props) {
                         required
                         style={{marginLeft: '20px', marginRight: '20px'}}/>
                 </fieldset>
-                <Button sx={{mt: 1, mr: 1}} type="submit" variant="outlined" className="button-right">
+                <Button sx={{mt: 1, mr: 1}} variant="outlined" disableElevation onClick={() => navigate("/")}> Back to
+                    List</Button>
+
+                <Button sx={{mt: 1, mr: 1}} type="submit" variant="contained" className="button-right">
                     Submit
                 </Button>
 
 
             </form>
-
-            <Button variant="contained" disableElevation onClick={() => navigate("/")}>Back to List</Button>
         </>
     )
 }
