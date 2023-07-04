@@ -71,7 +71,7 @@ jobs:
         with:
           push: true
           #Set dockerhub username/projectName
-          tags: pia0912/pawpalaceparties:latest
+          tags: pia0912/pawpalaceparties
           context: ./backend
 
   deploy:
@@ -91,15 +91,15 @@ jobs:
           script: |
             docker stop pawpalaceparties
             docker rm pawpalaceparties
-            docker run --pull=always --name pawpalaceparties --network capstones --ip 10.0.1.2 --restart always --detach pia0912/pawpalaceparties:latest
+            docker run --pull=always --name pawpalaceparties --network capstones --ip 10.0.1.2 --restart always --detach pia0912/pawpalaceparties
             sleep 15s
-            docker logs example
+            docker logs pawpalaceparties
 
       - name: Check the deployed service URL
         uses: jtalk/url-health-check-action@v3
         with:
           #Set App Name (replace "example" with "alpha"-"tango")
-          url: http://example.capstone-project.de
+          url: http://bravo.capstone-project.de
           max-attempts: 3
           retry-delay: 5s
           retry-all: true
