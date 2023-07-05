@@ -95,7 +95,7 @@ class PartyControllerTest {
         //When
         mockMvc.perform(MockMvcRequestBuilders.get("/api/parties/abc"))
 
-                //Then
+     //Then
                 .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
     }
 }
