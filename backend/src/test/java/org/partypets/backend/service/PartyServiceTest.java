@@ -8,6 +8,7 @@ import org.partypets.backend.repo.PartyRepo;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -27,12 +28,12 @@ class PartyServiceTest {
         List<Party> expected = new ArrayList<>(List.of(newParty));
 
         //when
-        when(partyRepo.getParties()).thenReturn(expected);
+        when(partyRepo.findAll()).thenReturn(expected);
         List<Party> actual = partyService.list();
 
         //then
         assertEquals(expected, actual);
-        verify(partyRepo).getParties();
+        verify(partyRepo).findAll();
     }
 
     @Test
@@ -43,13 +44,13 @@ class PartyServiceTest {
 
         //when
         when(uuIdService.getRandomId()).thenReturn("abc");
-        when(partyRepo.add(newParty)).thenReturn(expected);
+        when(partyRepo.insert(newParty)).thenReturn(expected);
         Party actual = partyService.add(newParty);
 
         //then
         assertEquals(expected, actual);
         verify(uuIdService).getRandomId();
-        verify(partyRepo).add(newParty);
+        verify(partyRepo).insert(newParty);
     }
 
 
@@ -59,11 +60,11 @@ class PartyServiceTest {
         Party expected = new Party("abc", new Date(), "Home", "Dog-Bday");
 
         //when
-        when(partyRepo.getById("abc")).thenReturn(expected);
+        when(partyRepo.findById("abc")).thenReturn(Optional.of(expected));
         Party actual = partyService.getDetails("abc");
 
         //then
         assertEquals(expected, actual);
-        verify(partyRepo).getById("abc");
+        verify(partyRepo).findById("abc");
     }
 }

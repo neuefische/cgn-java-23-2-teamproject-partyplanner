@@ -49,8 +49,11 @@ export default function App() {
         <main>
             <Routes>
                 <Route path={"/add"} element={<AddForm onAddParty={handleAddParty}/>}/>
-                <Route path={"/:id"} element={<EditForm onEditParty={handleEditParty}/>}/>
-                <Route path={"/:id"} element={<PartyDetail/>}/>
+                <Route path={"/:id"}>
+                    <Route index element={<PartyDetail/>}/>
+                    <Route path={"edit"} element={<EditForm onEditParty={handleEditParty}/>}/>
+                </Route>
+
                 <Route path={"/"} element={
                     (<Container>
                         <Header/>

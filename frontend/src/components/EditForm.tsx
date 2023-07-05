@@ -1,34 +1,42 @@
 import Button from "@mui/material/Button";
 import {FormEvent, useEffect, useState} from "react";
-import {Party} from "../models.ts";
 import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
 
 type Props = {
-    onEditParty: (id: string, data: { [p: string]: File | string }) => void;
+    onEditParty: (id: string, data: { date: string; location: string; theme: string }) => void;
 }
 
 export default function EditForm(props: Props) {
 
-    const [party, setParty] = useState<Party>()
+    const [id, setId] = useState<string>("")
+    const [theme, setTheme] = useState<string>("")
+    const [date, setDate] = useState<string>("")
+    const [location, setLocation] = useState<string>("")
 
     const params = useParams();
     const navigate = useNavigate()
 
     useEffect(() => {
-        axios.get(`api/parties/${params.id}`)
+        axios.get(`/api/parties/${params.id}`)
             .then(response => response.data)
             .catch(console.error)
-            .then(data => setParty(data))
+            .then(data => {
+                setId(data.id)
+                setTheme(data.theme)
+                setDate(data.date)
+                setLocation(data.location)
+            })
     }, [params.id])
 
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const data = Object.fromEntries(formData);
-        console.log("data: ", data)
-
-        props.onEditParty(party.id, data);
+        const data = {
+            location: location,
+            theme: theme,
+            date: date
+        }
+        props.onEditParty(id, data);
     }
 
 
@@ -39,7 +47,8 @@ export default function EditForm(props: Props) {
                     <legend style={{marginBottom: '20px', fontWeight: 'bold', fontSize: '28px'}}>Edit Party</legend>
                     <label htmlFor="theme">Theme: </label>
                     <input
-                        value={party?.theme}
+                        onChange={event=> setTheme(event.target.value)}
+                        value={theme}
                         name="theme"
                         id="theme"
                         type="text"
@@ -47,7 +56,8 @@ export default function EditForm(props: Props) {
                         style={{marginLeft: '20px', marginRight: '20px'}}/>
                     <label htmlFor="date">Date: </label>
                     <input
-                        value={party?.date}
+                        onChange={event=> setDate(event.target.value)}
+                        value={date}
                         name="date"
                         id="date"
                         type="date"
@@ -55,7 +65,8 @@ export default function EditForm(props: Props) {
                         style={{marginLeft: '20px', marginRight: '20px'}}/>
                     <label htmlFor="location">Location: </label>
                     <input
-                        value={party?.location}
+                        onChange={event=> setLocation(event.target.value)}
+                        value={location}
                         name="location"
                         id="location"
                         type="text"
@@ -63,8 +74,7 @@ export default function EditForm(props: Props) {
                         style={{marginLeft: '20px', marginRight: '20px'}}/>
                 </fieldset>
                 <Button sx={{mt: 1, mr: 1}} variant="outlined" disableElevation
-                        onClick={() => navigate(`/${party?.id}`)}> Back to
-                    List</Button>
+                        onClick={() => navigate(`/${id}`)}>Cancel </Button>
 
                 <Button sx={{mt: 1, mr: 1}} type="submit" variant="contained" className="button-right">
                     Submit

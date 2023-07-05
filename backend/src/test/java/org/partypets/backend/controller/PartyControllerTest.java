@@ -3,6 +3,7 @@ package org.partypets.backend.controller;
 import org.junit.jupiter.api.Test;
 import org.partypets.backend.model.Party;
 import org.partypets.backend.repo.PartyRepo;
+import org.partypets.backend.service.PartyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,14 +25,14 @@ class PartyControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private PartyRepo partyRepo;
+    private PartyService partyService;
 
     @Test
     @DirtiesContext
     void expectPartyList_whenGettingAllParties() throws Exception {
         //Given
         Party newParty = new Party(null, new Date(), "Home", "Dog-Bday");
-        this.partyRepo.setParties(List.of(newParty));
+        this.partyService.add(newParty);
         String expected = """
                     [
                         {
@@ -80,20 +81,21 @@ class PartyControllerTest {
     void expectParty_whenGettingByID() throws Exception {
         //Given
         Party newParty = new Party("abc", new Date(), "Home", "Dog-Bday");
-        this.partyRepo.setParties(List.of(newParty));
+        this.partyService.add(newParty);
+        String id = partyService.list().get(0).getId();
         String expected = """
                    
                         {
-                            "id": "abc",
+                            "id": "%s",
                             "location": "Home",
                             "theme": "Dog-Bday"
                          }
                     
-                """;
+                """.formatted(id);
 
 
         //When
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/parties/abc"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/parties/"+ id))
 
      //Then
                 .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());

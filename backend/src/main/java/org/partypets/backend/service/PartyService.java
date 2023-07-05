@@ -19,16 +19,16 @@ public class PartyService {
 
 
     public List<Party> list() {
-        return this.partyRepo.getParties();
+        return this.partyRepo.findAll();
     }
 
     public Party add(Party party) {
         String id = uuIdService.getRandomId();
         party.setId(id);
-        return this.partyRepo.add(party);
+        return this.partyRepo.insert(party);
     }
 
     public Party getDetails(String id) {
-        return this.partyRepo.getById(id);
+        return this.partyRepo.findById(id).orElseThrow();
     }
 }

@@ -15,7 +15,7 @@ export default function PartyDetail() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`api/parties/${params.id}`)
+        axios.get(`/api/parties/${params.id}`)
             .then(response => response.data)
             .catch(console.error)
             .then(data => setParty(data))
@@ -45,7 +45,7 @@ export default function PartyDetail() {
                     {party.location}
                 </Typography>
             </CardContent>
-        <Button size="small" color="primary" onClick={() => navigate(`/edit/${party.id}`)}>
+        <Button size="small" color="primary" onClick={() => navigate(`/${party.id}/edit`)}>
             Edit
         </Button>
     </Card>
