@@ -29,6 +29,19 @@ export default function App() {
             .then(data => setParties(data))
     }
 
+    function handleEditParty(id: string, data: { location: string, theme: string, date: string }) {
+        axios.put(`api/parties/${id}`, data)
+            .then(response => response.data)
+            .catch(console.error)
+            .then(data => setParties(
+                parties.map(party => {
+                    if (party.id === id) {
+                        return {...id, theme: t date,}
+                    }
+                })
+            ))
+    }
+
     return (
         <main>
             <Routes>
