@@ -21,11 +21,20 @@ public class PartyController {
         return this.partyService.list();
     }
 
+    @GetMapping("/{id}")
+    public Party getDetails(@PathVariable String id) {
+        return this.partyService.getDetails(id);
+    }
+
 
     @PostMapping
-    public List<Party> addParty(@RequestBody Party party){
+    public List<Party> addParty(@RequestBody Party party) {
         this.partyService.add(party);
         return this.partyService.list();
     }
+
+
+
+
 
 }

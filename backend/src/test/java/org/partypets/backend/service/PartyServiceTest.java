@@ -53,4 +53,17 @@ class PartyServiceTest {
     }
 
 
+    @Test
+    void expectParty_whenGettingPartyDetails() {
+        //given
+        Party expected = new Party("abc", new Date(), "Home", "Dog-Bday");
+
+        //when
+        when(partyRepo.getById("abc")).thenReturn(expected);
+        Party actual = partyService.getDetails("abc");
+
+        //then
+        assertEquals(expected, actual);
+        verify(partyRepo).getById("abc");
+    }
 }
