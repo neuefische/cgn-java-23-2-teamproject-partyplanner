@@ -67,4 +67,20 @@ class PartyServiceTest {
         assertEquals(expected, actual);
         verify(partyRepo).findById("abc");
     }
+
+    @Test
+    void expectUpdatedParty_whenEditingPartyDetails() {
+        //given
+        Party newParty = new Party("abc", new Date(), "Home", "Dog-Bday");
+
+        //when
+        when(partyRepo.save(newParty)).thenReturn(newParty);
+        Party actual = partyService.edit(newParty);
+
+        //then
+        assertEquals(newParty, actual);
+        verify(partyRepo).save(newParty);
+    }
+
+
 }

@@ -31,4 +31,9 @@ public class PartyService {
     public Party getDetails(String id) {
         return this.partyRepo.findById(id).orElseThrow();
     }
+
+
+    public Party edit(Party party) {
+        return this.partyRepo.save(party);
+    }
 }

@@ -2,7 +2,6 @@ package org.partypets.backend.controller;
 
 import org.junit.jupiter.api.Test;
 import org.partypets.backend.model.Party;
-import org.partypets.backend.repo.PartyRepo;
 import org.partypets.backend.service.PartyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,7 +13,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Date;
-import java.util.List;
 
 
 @SpringBootTest
@@ -95,9 +93,43 @@ class PartyControllerTest {
 
 
         //When
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/parties/"+ id))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/parties/" + id))
 
-     //Then
+                //Then
+                .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    @DirtiesContext
+    void expectUpdatedParty_whenPuttingParty() throws Exception {
+        //Given
+        Party newParty = new Party(null, new Date(), "Home", "Dog-Bday");
+        this.partyService.add(newParty);
+        String id = partyService.list().get(0).getId();
+        String actual = """
+                   
+                        {
+                            "id": "%s",
+                            "location": "PawPalace",
+                            "theme": "Party"
+                         }
+                    
+                """.formatted(id);
+        String expected = """
+                   
+                        {
+                            "id": "%s",
+                            "location": "PawPalace",
+                            "theme": "Party"
+                         }
+                    
+                """.formatted(id);
+
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/parties/" + id).content(actual).contentType(MediaType.APPLICATION_JSON))
+
+                //Then
                 .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

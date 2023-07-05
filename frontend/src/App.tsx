@@ -31,7 +31,7 @@ export default function App() {
     }
 
     function handleEditParty(id: string, data: { [p: string]: File | string }) {
-        axios.put(`api/parties/${id}`, data)
+        axios.put(`/api/parties/${id}`, data)
             .then(response => response.data)
             .catch(console.error)
             .then(data => setParties(

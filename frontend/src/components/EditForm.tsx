@@ -32,11 +32,13 @@ export default function EditForm(props: Props) {
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const data = {
+            id: id,
             location: location,
             theme: theme,
             date: date
         }
         props.onEditParty(id, data);
+        navigate(`/${id}`);
     }
 
 

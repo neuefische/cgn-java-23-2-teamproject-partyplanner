@@ -33,9 +33,10 @@ public class PartyController {
         return this.partyService.list();
     }
 
-
-
-
+    @PutMapping("/{id}")
+    public Party update(@RequestBody Party party) {
+        return partyService.edit(party);
+    }
 
 
 }
