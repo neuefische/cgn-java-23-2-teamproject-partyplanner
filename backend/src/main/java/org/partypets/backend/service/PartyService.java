@@ -1,6 +1,7 @@
 package org.partypets.backend.service;
 
 import lombok.RequiredArgsConstructor;
+import org.partypets.backend.model.DTOParty;
 import org.partypets.backend.model.Party;
 import org.partypets.backend.model.UuIdService;
 import org.partypets.backend.repo.PartyRepo;
@@ -22,10 +23,10 @@ public class PartyService {
         return this.partyRepo.findAll();
     }
 
-    public Party add(Party party) {
+    public Party add(DTOParty dtoParty) {
         String id = uuIdService.getRandomId();
-        party.setId(id);
-        return this.partyRepo.insert(party);
+        Party newParty = new Party(id, dtoParty.getDate(), dtoParty.getLocation(), dtoParty.getTheme());
+        return this.partyRepo.insert(newParty);
     }
 
     public Party getDetails(String id) {
@@ -33,7 +34,8 @@ public class PartyService {
     }
 
 
-    public Party edit(Party party) {
-        return this.partyRepo.save(party);
+    public Party edit(String id, DTOParty dtoParty) {
+        Party editedParty = new Party(id, dtoParty.getDate(), dtoParty.getLocation(), dtoParty.getTheme());
+        return this.partyRepo.save(editedParty);
     }
 }

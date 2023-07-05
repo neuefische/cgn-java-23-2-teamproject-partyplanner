@@ -1,7 +1,7 @@
 package org.partypets.backend.controller;
 
 import org.junit.jupiter.api.Test;
-import org.partypets.backend.model.Party;
+import org.partypets.backend.model.DTOParty;
 import org.partypets.backend.service.PartyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -29,7 +29,7 @@ class PartyControllerTest {
     @DirtiesContext
     void expectPartyList_whenGettingAllParties() throws Exception {
         //Given
-        Party newParty = new Party(null, new Date(), "Home", "Dog-Bday");
+        DTOParty newParty = new DTOParty(new Date(), "Home", "Dog-Bday");
         this.partyService.add(newParty);
         String expected = """
                     [
@@ -78,7 +78,7 @@ class PartyControllerTest {
     @DirtiesContext
     void expectParty_whenGettingByID() throws Exception {
         //Given
-        Party newParty = new Party("abc", new Date(), "Home", "Dog-Bday");
+        DTOParty newParty = new DTOParty(new Date(), "Home", "Dog-Bday");
         this.partyService.add(newParty);
         String id = partyService.list().get(0).getId();
         String expected = """
@@ -103,7 +103,7 @@ class PartyControllerTest {
     @DirtiesContext
     void expectUpdatedParty_whenPuttingParty() throws Exception {
         //Given
-        Party newParty = new Party(null, new Date(), "Home", "Dog-Bday");
+        DTOParty newParty = new DTOParty(new Date(), "Home", "Dog-Bday");
         this.partyService.add(newParty);
         String id = partyService.list().get(0).getId();
         String actual = """

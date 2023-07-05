@@ -46,11 +46,16 @@ export default function PartyDetail() {
                     {party.location}
                 </Typography>
             </CardContent>
-        <Button size="small" color="primary" variant="contained" onClick={() => navigate(`/${party.id}/edit`)}>
-            Edit
-        </Button>
+        <Button
+            size="small"
+            color="primary"
+            variant="contained"
+            onClick={() => navigate(`/${party.id}/edit`)}>Edit</Button>
 
-        <Button sx={{mt: 1, mr: 1}} variant="outlined" disableElevation
-                onClick={() => navigate(`/`)}>Back to List </Button>
+        <Button
+            sx={{mt: 1, mr: 1}}
+            variant="outlined"
+            disableElevation
+            onClick={() => navigate(`/`)}>Back to List</Button>
     </Card>
 }

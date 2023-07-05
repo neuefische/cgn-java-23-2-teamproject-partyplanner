@@ -1,6 +1,7 @@
 import {FormEvent, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import Button from "@mui/material/Button";
+import ControlledInput from "./ControlledInput.tsx";
 
 
 type Props = {
@@ -14,6 +15,7 @@ export default function AddForm(props: Props) {
     const [location, setLocation] = useState<string>("");
 
     const navigate = useNavigate()
+
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const data = {
@@ -33,33 +35,27 @@ export default function AddForm(props: Props) {
             <form onSubmit={handleSubmit}>
                 <fieldset>
                     <legend style={{marginBottom: '20px', fontWeight: 'bold', fontSize: '28px'}}>Add new Party</legend>
-                    <label htmlFor="theme">Theme: </label>
-                    <input
-                        onChange={event => setTheme(event.target.value)}
+                    <ControlledInput
+                        label="Theme"
+                        type="text"
                         value={theme}
-                        name="theme"
                         id="theme"
-                        type="text"
-                        required
-                        style={{marginLeft: '20px', marginRight: '20px'}}/>
-                    <label htmlFor="date">Date: </label>
-                    <input
-                        onChange={event => setDate(event.target.value)}
-                        value={date}
-                        name="date"
-                        id="date"
+                        onChange={setTheme}
+                    />
+                    <ControlledInput
+                        label="Date"
                         type="date"
-                        required
-                        style={{marginLeft: '20px', marginRight: '20px'}}/>
-                    <label htmlFor="location">Location: </label>
-                    <input
-                        onChange={event => setLocation(event.target.value)}
-                        value={location}
-                        name="location"
-                        id="location"
+                        value={date}
+                        id="date"
+                        onChange={setDate}
+                    />
+                    <ControlledInput
+                        label="Location"
                         type="text"
-                        required
-                        style={{marginLeft: '20px', marginRight: '20px'}}/>
+                        value={location}
+                        id="locatioin"
+                        onChange={setLocation}
+                    />
                 </fieldset>
                 <Button sx={{mt: 1, mr: 1}} variant="outlined" disableElevation onClick={() => navigate("/")}> Back to
                     List</Button>

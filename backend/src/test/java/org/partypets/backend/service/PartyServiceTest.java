@@ -1,6 +1,7 @@
 package org.partypets.backend.service;
 
 import org.junit.jupiter.api.Test;
+import org.partypets.backend.model.DTOParty;
 import org.partypets.backend.model.Party;
 import org.partypets.backend.model.UuIdService;
 import org.partypets.backend.repo.PartyRepo;
@@ -39,18 +40,18 @@ class PartyServiceTest {
     @Test
     void expectId_whenAddedParty() {
         //given
-        Party newParty = new Party(null, new Date(), "Home", "Dog-Bday");
+        DTOParty newParty = new DTOParty(new Date(), "Home", "Dog-Bday");
         Party expected = new Party("abc", new Date(), "Home", "Dog-Bday");
 
         //when
         when(uuIdService.getRandomId()).thenReturn("abc");
-        when(partyRepo.insert(newParty)).thenReturn(expected);
+        when(partyRepo.insert(expected)).thenReturn(expected);
         Party actual = partyService.add(newParty);
 
         //then
         assertEquals(expected, actual);
         verify(uuIdService).getRandomId();
-        verify(partyRepo).insert(newParty);
+        verify(partyRepo).insert(expected);
     }
 
 
@@ -71,15 +72,15 @@ class PartyServiceTest {
     @Test
     void expectUpdatedParty_whenEditingPartyDetails() {
         //given
-        Party newParty = new Party("abc", new Date(), "Home", "Dog-Bday");
-
+        DTOParty dtoParty = new DTOParty(new Date(), "Home", "Dog-Bday");
+        Party expected = new Party("abc", new Date(), "Home", "Dog-Bday");
         //when
-        when(partyRepo.save(newParty)).thenReturn(newParty);
-        Party actual = partyService.edit(newParty);
+        when(partyRepo.save(expected)).thenReturn(expected);
+        Party actual = partyService.edit("abc", dtoParty);
 
         //then
-        assertEquals(newParty, actual);
-        verify(partyRepo).save(newParty);
+        assertEquals(expected, actual);
+        verify(partyRepo).save(expected);
     }
 
 
