@@ -9,6 +9,7 @@ import AddForm from "./components/AddForm.tsx";
 import {Route, Routes, useNavigate} from "react-router-dom";
 import Button from '@mui/material/Button';
 import PartyDetail from "./components/PartyDetail.tsx";
+import EditForm from "./components/EditForm.tsx";
 
 
 export default function App() {
@@ -29,15 +30,17 @@ export default function App() {
             .then(data => setParties(data))
     }
 
-    function handleEditParty(id: string, data: { location: string, theme: string, date: string }) {
+    function handleEditParty(id: string, data: { [p: string]: File | string }) {
         axios.put(`api/parties/${id}`, data)
             .then(response => response.data)
             .catch(console.error)
             .then(data => setParties(
                 parties.map(party => {
                     if (party.id === id) {
-                        return {...id, theme: t date,}
+                        console.log(data); // DELETE LATER
+                        return data;
                     }
+                    return party;
                 })
             ))
     }
@@ -46,6 +49,7 @@ export default function App() {
         <main>
             <Routes>
                 <Route path={"/add"} element={<AddForm onAddParty={handleAddParty}/>}/>
+                <Route path={"/:id"} element={<EditForm onEditParty={handleEditParty}/>}/>
                 <Route path={"/:id"} element={<PartyDetail/>}/>
                 <Route path={"/"} element={
                     (<Container>

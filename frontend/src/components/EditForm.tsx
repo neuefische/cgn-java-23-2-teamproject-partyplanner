@@ -1,10 +1,14 @@
 import Button from "@mui/material/Button";
-import {useEffect, useState} from "react";
+import {FormEvent, useEffect, useState} from "react";
 import {Party} from "../models.ts";
 import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
 
-export default function EditForm() {
+type Props = {
+    onEditParty: (id: string, data: { [p: string]: File | string }) => void;
+}
+
+export default function EditForm(props: Props) {
 
     const [party, setParty] = useState<Party>()
 
@@ -16,10 +20,15 @@ export default function EditForm() {
             .then(response => response.data)
             .catch(console.error)
             .then(data => setParty(data))
-    }, [])
+    }, [params.id])
 
-    function handleSubmit() {
+    function handleSubmit(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const data = Object.fromEntries(formData);
+        console.log("data: ", data)
 
+        props.onEditParty(party.id, data);
     }
 
 
@@ -27,7 +36,7 @@ export default function EditForm() {
 
             <form onSubmit={handleSubmit}>
                 <fieldset>
-                    <legend style={{marginBottom: '20px', fontWeight: 'bold', fontSize: '28px'}}>Add new Party</legend>
+                    <legend style={{marginBottom: '20px', fontWeight: 'bold', fontSize: '28px'}}>Edit Party</legend>
                     <label htmlFor="theme">Theme: </label>
                     <input
                         value={party?.theme}

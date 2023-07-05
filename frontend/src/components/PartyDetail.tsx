@@ -6,12 +6,13 @@ import { Button} from '@mui/material';
 import {Party} from "../models.ts";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 export default function PartyDetail() {
 
     const [party, setParty] = useState<Party>();
 
     const params = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(`api/parties/${params.id}`)
@@ -44,7 +45,7 @@ export default function PartyDetail() {
                     {party.location}
                 </Typography>
             </CardContent>
-        <Button size="small" color="primary">
+        <Button size="small" color="primary" onClick={() => navigate(`/edit/${party.id}`)}>
             Edit
         </Button>
     </Card>
