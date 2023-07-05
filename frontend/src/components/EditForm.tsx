@@ -24,7 +24,7 @@ export default function EditForm(props: Props) {
             .then(data => {
                 setId(data.id)
                 setTheme(data.theme)
-                setDate(data.date)
+                setDate((data.date.split('T')[0]))
                 setLocation(data.location)
             })
     }, [params.id])
@@ -81,8 +81,6 @@ export default function EditForm(props: Props) {
                 <Button sx={{mt: 1, mr: 1}} type="submit" variant="contained" className="button-right">
                     Submit
                 </Button>
-
-
             </form>
         </>
     )

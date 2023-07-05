@@ -46,7 +46,7 @@ export default function PartyDetail() {
                     {party.location}
                 </Typography>
             </CardContent>
-        <Button size="small" color="primary" onClick={() => navigate(`/${party.id}/edit`)}>
+        <Button size="small" color="primary" variant="contained" onClick={() => navigate(`/${party.id}/edit`)}>
             Edit
         </Button>
 
