@@ -14,8 +14,6 @@ type Props = {
 export default function Partylist(props: Props) {
     const navigate = useNavigate();
 
-
-
     return (
         <Paper sx={{width: '97%', overflow: 'hidden'}}>
             <TableContainer sx={{maxHeight: 440}}>
@@ -49,4 +47,3 @@ export default function Partylist(props: Props) {
         </Paper>
     );
 }
-

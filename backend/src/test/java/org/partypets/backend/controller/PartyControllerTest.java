@@ -154,6 +154,3 @@ class PartyControllerTest {
                 .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
     }
 }
-
-
-
