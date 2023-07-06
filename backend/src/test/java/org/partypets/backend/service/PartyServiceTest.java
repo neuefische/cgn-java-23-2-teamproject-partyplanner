@@ -23,15 +23,12 @@ class PartyServiceTest {
 
     @Test
     void expectListOfAllParties_whenGettingTheList() {
-
         //given
         Party newParty = new Party(null, new Date(), "Home", "Dog-Bday");
         List<Party> expected = new ArrayList<>(List.of(newParty));
-
         //when
         when(partyRepo.findAll()).thenReturn(expected);
         List<Party> actual = partyService.list();
-
         //then
         assertEquals(expected, actual);
         verify(partyRepo).findAll();
@@ -42,12 +39,10 @@ class PartyServiceTest {
         //given
         DTOParty newParty = new DTOParty(new Date(), "Home", "Dog-Bday");
         Party expected = new Party("abc", new Date(), "Home", "Dog-Bday");
-
         //when
         when(uuIdService.getRandomId()).thenReturn("abc");
         when(partyRepo.insert(expected)).thenReturn(expected);
         Party actual = partyService.add(newParty);
-
         //then
         assertEquals(expected, actual);
         verify(uuIdService).getRandomId();
@@ -59,11 +54,9 @@ class PartyServiceTest {
     void expectParty_whenGettingPartyDetails() {
         //given
         Party expected = new Party("abc", new Date(), "Home", "Dog-Bday");
-
         //when
         when(partyRepo.findById("abc")).thenReturn(Optional.of(expected));
         Party actual = partyService.getDetails("abc");
-
         //then
         assertEquals(expected, actual);
         verify(partyRepo).findById("abc");
@@ -77,11 +70,8 @@ class PartyServiceTest {
         //when
         when(partyRepo.save(expected)).thenReturn(expected);
         Party actual = partyService.edit("abc", dtoParty);
-
         //then
         assertEquals(expected, actual);
         verify(partyRepo).save(expected);
     }
-
-
 }
