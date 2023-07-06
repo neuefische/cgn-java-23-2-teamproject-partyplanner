@@ -2,6 +2,7 @@ package org.partypets.backend.controller;
 
 
 import lombok.RequiredArgsConstructor;
+import org.partypets.backend.model.DTOParty;
 import org.partypets.backend.model.Party;
 import org.partypets.backend.service.PartyService;
 import org.springframework.web.bind.annotation.*;
@@ -28,13 +29,15 @@ public class PartyController {
 
 
     @PostMapping
-    public List<Party> addParty(@RequestBody Party party) {
-        this.partyService.add(party);
+    public List<Party> addParty(@RequestBody DTOParty dtoParty) {
+        this.partyService.add(dtoParty);
         return this.partyService.list();
     }
 
-
-
+    @PutMapping("/{id}")
+    public Party update(@PathVariable String id, @RequestBody DTOParty dtoParty) {
+        return partyService.edit(id, dtoParty);
+    }
 
 
 }

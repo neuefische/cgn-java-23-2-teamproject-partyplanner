@@ -1,40 +1,53 @@
-import {FormEvent, useState} from "react";
-import {useNavigate} from "react-router-dom";
 import Button from "@mui/material/Button";
+import {FormEvent, useEffect, useState} from "react";
+import axios from "axios";
+import {useNavigate, useParams} from "react-router-dom";
 import ControlledInput from "./ControlledInput.tsx";
 
-
 type Props = {
-    onAddParty: (data: { date: string; location: string; theme: string }) => void;
+    onEditParty: (id: string, data: { date: string; location: string; theme: string }) => void;
 }
 
-export default function AddForm(props: Props) {
+export default function EditForm(props: Props) {
 
-    const [theme, setTheme] = useState<string>("");
-    const [date, setDate] = useState<string>("");
-    const [location, setLocation] = useState<string>("");
+    const [id, setId] = useState<string>("")
+    const [theme, setTheme] = useState<string>("")
+    const [date, setDate] = useState<string>("")
+    const [location, setLocation] = useState<string>("")
 
+    const params = useParams();
     const navigate = useNavigate()
+
+    useEffect(() => {
+        axios.get(`/api/parties/${params.id}`)
+            .then(response => response.data)
+            .catch(console.error)
+            .then(data => {
+                setId(data.id)
+                setTheme(data.theme)
+                setDate((data.date.split('T')[0]))
+                setLocation(data.location)
+            })
+    }, [params.id])
 
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const data = {
+            id: id,
             location: location,
             theme: theme,
             date: date
         }
-        props.onAddParty(data)
-        setDate("")
-        setTheme("")
-        setLocation("")
-        navigate("/")
+        props.onEditParty(id, data);
+        navigate(`/${id}`);
     }
+
 
     return (<>
 
             <form onSubmit={handleSubmit}>
                 <fieldset>
-                    <legend style={{marginBottom: '20px', fontWeight: 'bold', fontSize: '28px'}}>Add new Party</legend>
+                    <legend style={{marginBottom: '20px', fontWeight: 'bold', fontSize: '28px'}}>Edit Party</legend>
                     <ControlledInput
                         label="Theme"
                         type="text"
@@ -53,20 +66,18 @@ export default function AddForm(props: Props) {
                         label="Location"
                         type="text"
                         value={location}
-                        id="locatioin"
+                        id="location"
                         onChange={setLocation}
                     />
                 </fieldset>
-                <Button sx={{mt: 1, mr: 1}} variant="outlined" disableElevation onClick={() => navigate("/")}> Back to
-                    List</Button>
+                <Button sx={{mt: 1, mr: 1}} variant="outlined" disableElevation
+                        onClick={() => navigate(`/${id}`)}>Cancel </Button>
 
                 <Button sx={{mt: 1, mr: 1}} type="submit" variant="contained" className="button-right">
                     Submit
                 </Button>
-
-
             </form>
         </>
     )
-}
 
+}

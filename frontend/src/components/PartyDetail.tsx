@@ -2,19 +2,21 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button} from '@mui/material';
+import {Button} from '@mui/material';
 import {Party} from "../models.ts";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+
 export default function PartyDetail() {
 
     const [party, setParty] = useState<Party>();
 
     const params = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`api/parties/${params.id}`)
+        axios.get(`/api/parties/${params.id}`)
             .then(response => response.data)
             .catch(console.error)
             .then(data => setParty(data))
@@ -44,8 +46,16 @@ export default function PartyDetail() {
                     {party.location}
                 </Typography>
             </CardContent>
-        <Button size="small" color="primary">
-            Edit
-        </Button>
+        <Button
+            size="small"
+            color="primary"
+            variant="contained"
+            onClick={() => navigate(`/${party.id}/edit`)}>Edit</Button>
+
+        <Button
+            sx={{mt: 1, mr: 1}}
+            variant="outlined"
+            disableElevation
+            onClick={() => navigate(`/`)}>Back to List</Button>
     </Card>
 }
