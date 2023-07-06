@@ -20,8 +20,13 @@ export default function PartyDetail() {
             .then(response => response.data)
             .catch(console.error)
             .then(data => setParty(data))
-    }, [])
+    }, [params.id])
 
+    function handleDeleteParty() {
+        axios.delete(`/api/parties/${params.id}`)
+            .catch(console.error);
+        navigate("/")
+    }
 
     if(typeof party === "undefined"){
         return <>No Party</>
@@ -47,13 +52,19 @@ export default function PartyDetail() {
                 </Typography>
             </CardContent>
         <Button
+            sx={{m:1}}
             size="small"
             color="primary"
             variant="contained"
             onClick={() => navigate(`/${party.id}/edit`)}>Edit</Button>
-
         <Button
-            sx={{mt: 1, mr: 1}}
+            sx={{m:1}}
+            size="small"
+            color="error"
+            variant="outlined"
+            onClick={handleDeleteParty}>Delete</Button>
+        <Button
+            sx={{m:1}}
             variant="outlined"
             disableElevation
             onClick={() => navigate(`/`)}>Back to List</Button>

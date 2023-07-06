@@ -39,5 +39,8 @@ public class PartyController {
         return partyService.edit(id, dtoParty);
     }
 
-
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable String id) {
+        partyService.delete(id);
+    }
 }

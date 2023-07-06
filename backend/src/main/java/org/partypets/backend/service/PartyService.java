@@ -38,4 +38,8 @@ public class PartyService {
         Party editedParty = new Party(id, dtoParty.getDate(), dtoParty.getLocation(), dtoParty.getTheme());
         return this.partyRepo.save(editedParty);
     }
+
+    public void delete(String id) {
+        this.partyRepo.deleteById(id);
+    }
 }
