@@ -2,30 +2,22 @@ package org.partypets.backend;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.util.FileSystemUtils;
 import org.springframework.web.servlet.config.annotation.ResourceChainRegistration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -70,7 +62,6 @@ class ConfigTest {
         //GIVEN;
         Resource location = new ClassPathResource("/static/");
         String resourcePath = "existing-resource.txt";
-        System.out.println(resourcePath);
         //WHEN
         Resource result = new PathResourceResolver() {
             public Resource callGetResource(String resourcePath, Resource location) throws IOException {
@@ -79,8 +70,6 @@ class ConfigTest {
         }.callGetResource(resourcePath, location);
         //THEN
         assertEquals(result, location.createRelative(resourcePath));
-        //CLEANUP
-        FileSystemUtils.deleteRecursively(location.getFile());
     }
 
     @Test
@@ -106,21 +95,5 @@ class ConfigTest {
         MockHttpServletResponse response = mockMvc.perform(requestBuilder).andReturn().getResponse();
         //THEN
         assertEquals(200, response.getStatus());
-    }
-
-    private Resource createTempFolder(String folderPath) throws IOException {
-        File tempFolder = Files.createTempDirectory(folderPath).toFile();
-        return new FileSystemResource(tempFolder);
-    }
-
-    private void createTempFile(File folder, String resourcePath) throws IOException {
-        File tempFile = new File(folder, resourcePath);
-        if (!tempFile.exists()) {
-            tempFile.createNewFile();
-        }
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
-            writer.write("This is a test");
-        }
     }
 }
