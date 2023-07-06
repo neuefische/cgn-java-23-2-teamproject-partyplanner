@@ -25,6 +25,7 @@ class PartyControllerTest {
     @Autowired
     private PartyService partyService;
 
+
     @Test
     @DirtiesContext
     void expectPartyList_whenGettingAllParties() throws Exception {
@@ -128,6 +129,26 @@ class PartyControllerTest {
 
         //When
         mockMvc.perform(MockMvcRequestBuilders.put("/api/parties/" + id).content(actual).contentType(MediaType.APPLICATION_JSON))
+
+                //Then
+                .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    @DirtiesContext
+    void expectNoParty_whenDeletingParty() throws Exception {
+        //Given
+        DTOParty newParty = new DTOParty(new Date(), "Home", "Dog-Bday");
+        this.partyService.add(newParty);
+        String id = partyService.list().get(0).getId();
+        String expected = """
+                  []
+                """;
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/parties/" + id))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/parties"))
 
                 //Then
                 .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());

@@ -8,7 +8,10 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
 
-export default function PartyDetail() {
+type Props = {
+    onDeleteParty: (id: string) => void
+}
+export default function PartyDetail(props: Props) {
 
     const [party, setParty] = useState<Party>();
 
@@ -22,11 +25,7 @@ export default function PartyDetail() {
             .then(data => setParty(data))
     }, [params.id])
 
-    function handleDeleteParty() {
-        axios.delete(`/api/parties/${params.id}`)
-            .catch(console.error);
-        navigate("/")
-    }
+
 
     if(typeof party === "undefined"){
         return <>No Party</>
@@ -52,19 +51,19 @@ export default function PartyDetail() {
                 </Typography>
             </CardContent>
         <Button
-            sx={{m:1}}
+            sx={{m: 1}}
             size="small"
             color="primary"
             variant="contained"
             onClick={() => navigate(`/${party.id}/edit`)}>Edit</Button>
         <Button
-            sx={{m:1}}
+            sx={{m: 1}}
             size="small"
             color="error"
             variant="outlined"
-            onClick={handleDeleteParty}>Delete</Button>
+            onClick={() => props.onDeleteParty(party.id)}>Delete</Button>
         <Button
-            sx={{m:1}}
+            sx={{m: 1}}
             variant="outlined"
             disableElevation
             onClick={() => navigate(`/`)}>Back to List</Button>

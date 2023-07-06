@@ -37,7 +37,6 @@ export default function App() {
             .then(data => setParties(
                 parties.map(party => {
                     if (party.id === id) {
-                        console.log(data); // DELETE LATER
                         return data;
                     }
                     return party;
@@ -45,12 +44,19 @@ export default function App() {
             ))
     }
 
+    function handleDeleteParty(id: string) {
+        axios.delete(`/api/parties/${id}`)
+            .catch(console.error);
+        setParties(parties.filter(party => party.id !== id))
+        navigate("/")
+    }
+
     return (
         <main>
             <Routes>
                 <Route path={"/add"} element={<AddForm onAddParty={handleAddParty}/>}/>
                 <Route path={"/:id"}>
-                    <Route index element={<PartyDetail/>}/>
+                    <Route index element={<PartyDetail onDeleteParty={handleDeleteParty}/>}/>
                     <Route path={"edit"} element={<EditForm onEditParty={handleEditParty}/>}/>
                 </Route>
 

@@ -74,4 +74,14 @@ class PartyServiceTest {
         assertEquals(expected, actual);
         verify(partyRepo).save(expected);
     }
+
+    @Test
+    void expectDeleteMethodToBeCalled_whenDeletingParty() {
+        //given
+        String id = "abc";
+        //when
+        partyService.delete(id);
+        //then
+        verify(partyRepo).deleteById(id);
+    }
 }
