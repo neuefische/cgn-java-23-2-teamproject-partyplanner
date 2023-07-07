@@ -70,4 +70,3 @@ export default function AddForm(props: Props) {
         </>
     )
 }
-
