@@ -1,17 +1,27 @@
 package org.partypets.backend.controller;
 
+import okhttp3.mockwebserver.MockWebServer;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.partypets.backend.model.DTOParty;
 import org.partypets.backend.service.PartyService;
+import org.partypets.backend.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import static org.mockito.Mockito.*;
+
+import java.io.IOException;
 import java.util.Date;
 
 
@@ -25,6 +35,18 @@ class PartyControllerTest {
     @Autowired
     private PartyService partyService;
 
+    static MockWebServer mockWebServer;
+
+    @BeforeAll
+    static void setUp() throws IOException {
+        mockWebServer = new MockWebServer();
+        mockWebServer.start();
+    }
+
+    @DynamicPropertySource
+    static void backendProperties(DynamicPropertyRegistry registry) {
+        registry.add("quiz-api.url", () -> mockWebServer.url("/quiz").toString());
+    }
 
     @Test
     @DirtiesContext
@@ -54,8 +76,8 @@ class PartyControllerTest {
     void expectNewPartyInList_whenPostingParty() throws Exception {
         String newParty = """
                 {
-                    "location": "Home",
-                    "theme": "Dog-Bday"
+                "location": "Home",
+                "theme": "Dog-Bday"
                 }
                 """;
 
@@ -152,5 +174,10 @@ class PartyControllerTest {
 
                 //Then
                 .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @AfterAll
+    static void cleanUp() throws IOException {
+        mockWebServer.close();
     }
 }

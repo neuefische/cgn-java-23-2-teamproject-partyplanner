@@ -5,6 +5,7 @@ import org.partypets.backend.model.DTOParty;
 import org.partypets.backend.model.Party;
 import org.partypets.backend.model.UuIdService;
 import org.partypets.backend.repo.PartyRepo;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +14,6 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
-
 
 class PartyServiceTest {
 

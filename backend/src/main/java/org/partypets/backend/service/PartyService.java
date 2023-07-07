@@ -10,13 +10,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class PartyService {
 
     private final PartyRepo partyRepo;
 
     private final UuIdService uuIdService;
 
+    public PartyService(PartyRepo partyRepo, UuIdService uuIdService) {
+        this.partyRepo = partyRepo;
+        this.uuIdService = uuIdService;
+    }
 
     public List<Party> list() {
         return this.partyRepo.findAll();
