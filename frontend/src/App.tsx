@@ -53,6 +53,7 @@ export default function App() {
 
     return (
         <main>
+            <Header/>
             <Routes>
                 <Route path={"/add"} element={<AddForm onAddParty={handleAddParty}/>}/>
                 <Route path={"/:id"}>
@@ -62,7 +63,7 @@ export default function App() {
 
                 <Route path={"/"} element={
                     (<Container>
-                        <Header/>
+
                         <Partylist parties={parties}/>
                         <Button className="button-right" variant="contained" disableElevation
                                 onClick={() => navigate("/add")}>
