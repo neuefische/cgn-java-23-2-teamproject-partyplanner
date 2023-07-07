@@ -23,10 +23,10 @@ public class PartyService {
         return this.partyRepo.findAll();
     }
 
-    public Party add(DTOParty dtoParty) {
+    public Party add(DTOParty newParty) {
         String id = uuIdService.getRandomId();
-        Party newParty = new Party(id, dtoParty.getDate(), dtoParty.getLocation(), dtoParty.getTheme());
-        return this.partyRepo.insert(newParty);
+        Party party = new Party(id, newParty.getDate(), newParty.getLocation(), newParty.getTheme());
+        return this.partyRepo.insert(party);
     }
 
     public Party getDetails(String id) {
@@ -34,8 +34,8 @@ public class PartyService {
     }
 
 
-    public Party edit(String id, DTOParty dtoParty) {
-        Party editedParty = new Party(id, dtoParty.getDate(), dtoParty.getLocation(), dtoParty.getTheme());
+    public Party edit(String id, DTOParty newParty) {
+        Party editedParty = new Party(id, newParty.getDate(), newParty.getLocation(), newParty.getTheme());
         return this.partyRepo.save(editedParty);
     }
 

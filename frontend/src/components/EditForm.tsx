@@ -3,9 +3,10 @@ import {FormEvent, useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
 import ControlledInput from "./ControlledInput.tsx";
+import {DTOParty} from "../models.ts";
 
 type Props = {
-    onEditParty: (id: string, data: { date: string; location: string; theme: string }) => void;
+    onEditParty: (id: string, data: DTOParty) => void;
 }
 
 export default function EditForm(props: Props) {
@@ -32,8 +33,7 @@ export default function EditForm(props: Props) {
 
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        const data = {
-            id: id,
+        const data: DTOParty = {
             location: location,
             theme: theme,
             date: date

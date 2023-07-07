@@ -2,10 +2,11 @@ import {FormEvent, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import Button from "@mui/material/Button";
 import ControlledInput from "./ControlledInput.tsx";
+import {DTOParty} from "../models.ts";
 
 
 type Props = {
-    onAddParty: (data: { date: string; location: string; theme: string }) => void;
+    onAddParty: (data: DTOParty) => void;
 }
 
 export default function AddForm(props: Props) {
@@ -18,7 +19,7 @@ export default function AddForm(props: Props) {
 
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        const data = {
+        const data: DTOParty = {
             location: location,
             theme: theme,
             date: date

@@ -29,14 +29,14 @@ public class PartyController {
 
 
     @PostMapping
-    public List<Party> addParty(@RequestBody DTOParty dtoParty) {
-        this.partyService.add(dtoParty);
+    public List<Party> addParty(@RequestBody DTOParty newParty) {
+        this.partyService.add(newParty);
         return this.partyService.list();
     }
 
     @PutMapping("/{id}")
-    public Party update(@PathVariable String id, @RequestBody DTOParty dtoParty) {
-        return partyService.edit(id, dtoParty);
+    public Party update(@PathVariable String id, @RequestBody DTOParty newParty) {
+        return partyService.edit(id, newParty);
     }
 
     @DeleteMapping("/{id}")
