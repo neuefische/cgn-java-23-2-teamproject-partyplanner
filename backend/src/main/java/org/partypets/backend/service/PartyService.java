@@ -11,7 +11,6 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-
 public class PartyService {
 
     private final PartyRepo partyRepo;
