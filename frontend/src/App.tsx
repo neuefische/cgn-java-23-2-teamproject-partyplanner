@@ -2,7 +2,7 @@ import './App.css'
 import Partylist from "./components/Partylist.tsx";
 import Header from "./components/Header.tsx";
 import {useEffect, useState} from "react";
-import {Party} from "./models.ts";
+import {DTOParty, Party} from "./models.ts";
 import axios from "axios";
 import {Container} from "@mui/material";
 import AddForm from "./components/AddForm.tsx";
@@ -23,21 +23,20 @@ export default function App() {
             .then(data => setParties(data))
     }, [])
 
-    function handleAddParty(data: { location: string, theme: string, date: string }) {
+    function handleAddParty(data: DTOParty) {
         axios.post('api/parties', data)
             .then(response => response.data)
             .catch(console.error)
             .then(data => setParties(data))
     }
 
-    function handleEditParty(id: string, data: { [p: string]: File | string }) {
+    function handleEditParty(id: string, data: DTOParty) {
         axios.put(`/api/parties/${id}`, data)
             .then(response => response.data)
             .catch(console.error)
             .then(data => setParties(
                 parties.map(party => {
                     if (party.id === id) {
-                        console.log(data); // DELETE LATER
                         return data;
                     }
                     return party;
@@ -45,12 +44,19 @@ export default function App() {
             ))
     }
 
+    function handleDeleteParty(id: string) {
+        axios.delete(`/api/parties/${id}`)
+            .catch(console.error);
+        setParties(parties.filter(party => party.id !== id))
+        navigate("/")
+    }
+
     return (
         <main>
             <Routes>
                 <Route path={"/add"} element={<AddForm onAddParty={handleAddParty}/>}/>
                 <Route path={"/:id"}>
-                    <Route index element={<PartyDetail/>}/>
+                    <Route index element={<PartyDetail onDeleteParty={handleDeleteParty}/>}/>
                     <Route path={"edit"} element={<EditForm onEditParty={handleEditParty}/>}/>
                 </Route>
 
@@ -73,6 +79,3 @@ export default function App() {
         </main>
     )
 }
-
-
-

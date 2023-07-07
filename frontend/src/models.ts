@@ -4,3 +4,9 @@ export type Party= {
     location: string,
     theme: string,
 }
+
+export type DTOParty= {
+    date: string,
+    location: string,
+    theme: string,
+}
