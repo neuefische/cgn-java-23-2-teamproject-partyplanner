@@ -2,7 +2,7 @@ import './App.css'
 import Partylist from "./components/Partylist.tsx";
 import Header from "./components/Header.tsx";
 import {useEffect, useState} from "react";
-import {DTOParty, Party} from "./models.ts";
+import {DTOParty, Party, Quiz} from "./models.ts";
 import axios from "axios";
 import {Container} from "@mui/material";
 import AddForm from "./components/AddForm.tsx";
@@ -10,11 +10,14 @@ import {Route, Routes, useNavigate} from "react-router-dom";
 import Button from '@mui/material/Button';
 import PartyDetail from "./components/PartyDetail.tsx";
 import EditForm from "./components/EditForm.tsx";
+import QuizCard from "./components/QuizCard.tsx";
 
 
 export default function App() {
     const navigate = useNavigate();
     const [parties, setParties] = useState<Party[]>([]);
+    const [quiz, setQuiz] = useState<Quiz>();
+
 
     useEffect(() => {
         axios.get('api/parties')
@@ -22,6 +25,16 @@ export default function App() {
             .catch(console.error)
             .then(data => setParties(data))
     }, [])
+
+    useEffect(() => {
+        axios.get("/api/quiz")
+            .then(response => response.data)
+            .catch(console.error)
+            .then(data => {
+                console.log(data)
+                setQuiz(data)
+            });
+    }, []);
 
     function handleAddParty(data: DTOParty) {
         axios.post('api/parties', data)
@@ -61,14 +74,14 @@ export default function App() {
                 </Route>
 
                 <Route path={"/"} element={
-                    (<Container>
+                    (<Container sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                         <Header/>
                         <Partylist parties={parties}/>
                         <Button className="button-right" variant="contained" disableElevation
                                 onClick={() => navigate("/add")}>
                             + Add Party
                         </Button>
-
+                        {quiz ? <QuizCard quiz={quiz}/> : <>Loading quiz...</>}
                     </Container>)
                 }/>
 
