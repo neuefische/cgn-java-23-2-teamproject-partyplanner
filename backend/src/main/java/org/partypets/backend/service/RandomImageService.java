@@ -1,0 +1,31 @@
+package org.partypets.backend.service;
+
+
+import org.partypets.backend.model.RandomImage;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+
+import java.util.Objects;
+
+
+@Service
+public class RandomImageService {
+    private final String accessKey = System.getenv("API_UNSPLASH_ACCESS_KEY");
+    private final WebClient webClient = WebClient.create("https://api.unsplash.com");
+
+    public RandomImage getRandomCatImage() {
+        ResponseEntity<RandomImage> responseEntity = webClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/photos/random")
+                        .queryParam("query", "cat")
+                        .queryParam("client_id", accessKey)
+                        .build())
+                .retrieve()
+                .toEntity(RandomImage.class)
+                .block();
+
+        return Objects.requireNonNull(responseEntity).getBody();
+    }
+}
+

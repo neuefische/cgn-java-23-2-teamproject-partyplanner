@@ -4,7 +4,9 @@ package org.partypets.backend.controller;
 import lombok.RequiredArgsConstructor;
 import org.partypets.backend.model.DTOParty;
 import org.partypets.backend.model.Party;
+import org.partypets.backend.model.RandomImage;
 import org.partypets.backend.service.PartyService;
+import org.partypets.backend.service.RandomImageService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +18,8 @@ public class PartyController {
 
 
     private final PartyService partyService;
+    private final RandomImageService randomImageService;
+
 
     @GetMapping
     public List<Party> listParties() {
@@ -42,5 +46,10 @@ public class PartyController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable String id) {
         partyService.delete(id);
+    }
+
+    @GetMapping("/randomCatImage")
+    RandomImage getRandomCatImage() {
+        return randomImageService.getRandomCatImage();
     }
 }
