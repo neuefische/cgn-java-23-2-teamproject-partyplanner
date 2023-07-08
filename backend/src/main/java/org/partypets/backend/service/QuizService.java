@@ -5,14 +5,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 @Service
 public class QuizService {
 
-    private Random random = new Random();
+    private SecureRandom random = new SecureRandom();
     private final WebClient webClient;
 
     public QuizService(
