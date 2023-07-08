@@ -12,7 +12,7 @@ import java.util.Objects;
 @Service
 public class QuizService {
 
-    private SecureRandom random = new SecureRandom();
+    private final SecureRandom random = new SecureRandom();
     private final WebClient webClient;
 
     public QuizService(
