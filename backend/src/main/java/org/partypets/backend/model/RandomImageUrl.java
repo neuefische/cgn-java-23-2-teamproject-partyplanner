@@ -1,6 +1,6 @@
 package org.partypets.backend.model;
 
 public record RandomImageUrl(
-        String regular
+        String small
 ) {
 }
