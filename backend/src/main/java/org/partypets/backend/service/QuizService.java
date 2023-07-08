@@ -12,6 +12,7 @@ import java.util.Random;
 @Service
 public class QuizService {
 
+    private Random random = new Random();
     private final WebClient webClient;
 
     public QuizService(
@@ -27,7 +28,7 @@ public class QuizService {
                 .toEntityList(Quiz.class)
                 .block()).getBody();
         assert response != null;
-        int randint = new Random().nextInt(response.size());
+        int randint = random.nextInt(response.size());
         return response.get(randint);
     }
 }
