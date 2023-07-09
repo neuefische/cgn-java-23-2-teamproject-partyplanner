@@ -85,7 +85,7 @@ export default function App() {
                         <Header/>
                         <Stack sx={{ width: '100%' }}>
                             {isDeleteSuccess && (
-                                <Alert severity="error">You deleted your Party successfully!</Alert>
+                                <Alert severity="error">You deleted your Party!</Alert>
                             )}
                             {isEditSuccess && (
                                 <Alert severity="success">You edited your Party successfully!</Alert>
