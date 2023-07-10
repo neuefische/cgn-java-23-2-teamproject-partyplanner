@@ -16,16 +16,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig {
-    @Bean
-    public InMemoryUserDetailsManager userDetailsManager() {
-        return new InMemoryUserDetailsManager(
-                User.builder()
-                        .username("Henry")
-                        .password("Henry123")
-                        .roles("BASIC")
-                        .build()
-        );
-    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
