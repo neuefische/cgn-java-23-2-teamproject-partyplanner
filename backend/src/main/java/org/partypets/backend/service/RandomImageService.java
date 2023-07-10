@@ -2,6 +2,7 @@ package org.partypets.backend.service;
 
 
 import org.partypets.backend.model.RandomImage;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -11,8 +12,16 @@ import java.util.Objects;
 
 @Service
 public class RandomImageService {
-    private final String accessKey = System.getenv("API_UNSPLASH_ACCESS_KEY");
-    private final WebClient webClient = WebClient.create("https://api.unsplash.com");
+
+    private final WebClient webClient;
+
+    private @Value("${api.unsplash.access.key}") String accessKey;
+
+    public RandomImageService(
+            @Value("${randomCatImage-api.url}") String url
+    ) {
+        this.webClient = WebClient.create(url);
+    }
 
     public RandomImage getRandomCatImage() {
         ResponseEntity<RandomImage> responseEntity = webClient.get()

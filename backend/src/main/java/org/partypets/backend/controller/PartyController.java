@@ -1,7 +1,5 @@
 package org.partypets.backend.controller;
 
-
-import lombok.RequiredArgsConstructor;
 import org.partypets.backend.model.DTOParty;
 import org.partypets.backend.model.Party;
 import org.partypets.backend.model.RandomImage;
@@ -13,13 +11,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/parties")
-@RequiredArgsConstructor
+
 public class PartyController {
 
-
     private final PartyService partyService;
-    private final RandomImageService randomImageService;
 
+    public PartyController(PartyService partyService) {
+        this.partyService = partyService;
+    }
 
     @GetMapping
     public List<Party> listParties() {
@@ -48,8 +47,4 @@ public class PartyController {
         partyService.delete(id);
     }
 
-    @GetMapping("/randomCatImage")
-    RandomImage getRandomCatImage() {
-        return randomImageService.getRandomCatImage();
-    }
 }
