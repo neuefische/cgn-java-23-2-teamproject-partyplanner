@@ -57,13 +57,18 @@ export default function AddForm(props: Props) {
                         id="locatioin"
                         onChange={setLocation}
                     />
-                </fieldset>
-                <Button sx={{mt: 1, mr: 1}} variant="outlined" disableElevation onClick={() => navigate("/")}> Back to
-                    List</Button>
 
-                <Button sx={{mt: 1, mr: 1}} type="submit" variant="contained" className="button-right">
-                    Submit
-                </Button>
+                    <div>
+                        <Button sx={{mt: 1, mr: 1}} variant="outlined" disableElevation
+                                onClick={() => navigate("/")}> Back to
+                            List</Button>
+
+                        <Button sx={{mt: 1, mr: 1}} type="submit" variant="contained" className="button-right">
+                            Submit
+                        </Button>
+                    </div>
+                </fieldset>
+
 
 
             </form>
