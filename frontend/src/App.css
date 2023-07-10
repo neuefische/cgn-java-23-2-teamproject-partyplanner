@@ -6,6 +6,10 @@ main {
     width: 100%;
 }
 
+#root {
+    margin: 0px;
+}
+
 ul {
     display: flex;
     flex-direction: column;
