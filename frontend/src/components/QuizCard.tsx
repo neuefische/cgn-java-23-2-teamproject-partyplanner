@@ -1,4 +1,3 @@
-import {useState} from "react";
 import {Quiz} from "../models.ts";
 import {Box, CardActions} from "@mui/material";
 import Card from "@mui/material/Card";
@@ -10,9 +9,8 @@ type Props = {
     quiz: Quiz;
 }
 export default function QuizCard(props: Props) {
-    const [answer, setAnswer] = useState<boolean>(false);
 
-    return <Box sx={{ minWidth: "100%"}}>
+    return <Box sx={{width: '100%', overflow: 'hidden'}}>
         <Card variant="outlined" sx={{width: "100%", display: "flex", flexDirection: "column"}}>
                 <CardContent sx={{display: "flex", flexDirection: "column"}}>
                     <Typography sx={{ fontSize: 10 }} color="text.secondary" gutterBottom>
@@ -22,9 +20,9 @@ export default function QuizCard(props: Props) {
                         {props.quiz.question}
                     </Typography>
                 </CardContent>
-                <CardActions>
-                    <Button size="large" sx={{margin: "auto"}} onClick={() => setAnswer(!answer)}>{answer ? props.quiz.answer : "Show Answer"}</Button>
-                </CardActions>
+            <CardActions sx={{display: "flex", flexWrap: "wrap"}}>
+                {props.quiz.answers.map(answer => <Button>{answer.answerText}</Button>)}
+            </CardActions>
         </Card>
     </Box>
 }

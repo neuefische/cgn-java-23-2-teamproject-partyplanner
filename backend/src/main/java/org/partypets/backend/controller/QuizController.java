@@ -1,10 +1,9 @@
 package org.partypets.backend.controller;
 
 import org.partypets.backend.model.Quiz;
+import org.partypets.backend.model.QuizWithoutSolution;
 import org.partypets.backend.service.QuizService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/quiz")
@@ -17,7 +16,12 @@ public class QuizController {
     }
 
     @GetMapping
-    public Quiz getRandomQuiz() {
+    public QuizWithoutSolution getRandomQuiz() {
         return this.quizService.getRandom();
+    }
+
+    @GetMapping("{id}")
+    public boolean checkAnswer(@PathVariable String id, @RequestBody String answer) {
+        return this.quizService.checkAnswer(id, answer);
     }
 }
