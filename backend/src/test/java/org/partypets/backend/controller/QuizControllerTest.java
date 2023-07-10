@@ -1,4 +1,4 @@
-package org.partypets.backend.service;
+package org.partypets.backend.controller;
 
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
@@ -18,7 +18,7 @@ import java.io.IOException;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class QuizServiceTest {
+class QuizControllerTest {
 
     @Autowired
     MockMvc mockMvc;
@@ -40,19 +40,27 @@ class QuizServiceTest {
     void expectQuiz_whenGettingQuiz() throws Exception {
         //GIVEN
         String response = """
-                [
-                    {
-                        "id": "abc",
-                        "question": "Does the Platypus lay eggs?",
-                        "answer": "Yes"
-                    }
-                ]
-                """;
-        String expected = """
                 {
                         "id": "abc",
-                        "question": "Does the Platypus lay eggs?",
-                        "answer": "Yes"
+                        "question": "The Platypus lays eggs. What animal species does it belong to? ",
+                        "answers": [
+                            {
+                                "answerText": "Reptile",
+                                "rightAnswer": false
+                            },
+                            {
+                                "answerText": "Insect",
+                                "rightAnswer": false
+                            },
+                            {
+                                "answerText": "Mammal",
+                                "rightAnswer": true
+                            },
+                            {
+                                "answerText": "Amphibian",
+                                "rightAnswer": false
+                            }
+                        ]
                     }
                 """;
         mockWebServer.enqueue(new MockResponse()
@@ -62,7 +70,7 @@ class QuizServiceTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/quiz"))
                 //THEN
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(expected));
+                .andExpect(MockMvcResultMatchers.content().json(response));
     }
 
     @AfterAll

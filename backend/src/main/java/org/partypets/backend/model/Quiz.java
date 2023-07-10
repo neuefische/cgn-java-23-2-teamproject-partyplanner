@@ -1,4 +1,6 @@
 package org.partypets.backend.model;
 
-public record Quiz(String id, String question, String answer) {
+import java.util.List;
+
+public record Quiz(String id, String question, List<QuizAnswer> answers) {
 }

@@ -14,5 +14,8 @@ export type DTOParty= {
 export type Quiz = {
     id: string,
     question: string,
-    answer: string
+    answers: {
+        answerText: string,
+        rightAnswer: boolean
+    }[]
 }
