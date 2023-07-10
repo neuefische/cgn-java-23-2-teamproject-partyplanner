@@ -19,7 +19,7 @@ export default function Partylist(props: Props) {
     <Paper sx={{
         width: '100%',
         overflow: 'hidden',
-        backgroundColor: '#B0C4DE',
+        backgroundColor: '#bdd6d9',
         border: '0px',
         margin: '0px 0px 10px 0px',
         boxShadow: 'none'
@@ -29,13 +29,13 @@ export default function Partylist(props: Props) {
             <Table stickyHeader aria-label="sticky table">
                 <TableHead sx={{width: '100%'}}>
                     <TableRow>
-                        <TableCell style={{fontWeight: "bold", backgroundColor: '#789ac7', color: 'white'}}>
+                        <TableCell style={{fontWeight: "bold", backgroundColor: '#32abb8', color: 'white'}}>
                             Theme 🎈
                         </TableCell>
-                        <TableCell style={{fontWeight: "bold", backgroundColor: '#789ac7', color: 'white'}}>
+                        <TableCell style={{fontWeight: "bold", backgroundColor: '#32abb8', color: 'white'}}>
                             Date 🗓️
                         </TableCell>
-                        <TableCell style={{fontWeight: "bold", backgroundColor: '#789ac7', color: 'white'}}>
+                        <TableCell style={{fontWeight: "bold", backgroundColor: '#32abb8', color: 'white'}}>
                             Location 📍
                         </TableCell>
                     </TableRow>

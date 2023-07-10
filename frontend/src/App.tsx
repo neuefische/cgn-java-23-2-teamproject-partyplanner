@@ -73,6 +73,18 @@ export default function App() {
 
     return (
         <main>
+            <Header/>
+            <Stack sx={{width: '100%', m: 0, p: 0,}}>
+                {isDeleteSuccess && (
+                    <Alert severity="error">You just deleted your Party!</Alert>
+                )}
+                {isEditSuccess && (
+                    <Alert severity="success">You edited your Party successfully!</Alert>
+                )}
+                {isAddSuccess && (
+                    <Alert severity="success">You added your Party successfully!</Alert>
+                )}
+            </Stack>
             <Routes>
                 <Route path={"/add"} element={<AddForm onAddParty={handleAddParty}/>}/>
                 <Route path={"/:id"}>
@@ -82,18 +94,6 @@ export default function App() {
 
                 <Route path={"/"} element={
                     (<Container>
-                        <Header/>
-                        <Stack sx={{ width: '100%' }}>
-                            {isDeleteSuccess && (
-                                <Alert severity="error">You just deleted your Party!</Alert>
-                            )}
-                            {isEditSuccess && (
-                                <Alert severity="success">You edited your Party successfully!</Alert>
-                            )}
-                            {isAddSuccess && (
-                                <Alert severity="success">You added your Party successfully!</Alert>
-                            )}
-                        </Stack>
                         <Partylist parties={parties}/>
                         <Button className="button-right" variant="contained" disableElevation
                                 onClick={() => navigate("/add")}>
