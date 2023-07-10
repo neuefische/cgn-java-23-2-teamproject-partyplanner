@@ -28,7 +28,7 @@ export default function PartyDetail(props: Props) {
     }, [params.id]);
 
     useEffect(() => {
-        axios.get(`/api/parties/randomCatImage`)
+        axios.get(`/api/randomCatImage`)
             .then(response => response.data.urls.small)
             .then(data => setRandomImage(data))
             .catch(console.error);
