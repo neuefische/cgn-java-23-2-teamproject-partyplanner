@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
+
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -158,6 +159,7 @@ class Integrationtest {
                 //Then
                 .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
     }
+<<<<<<< HEAD:backend/src/test/java/org/partypets/backend/controller/Integrationtest.java
     @Test
     @DirtiesContext
     void expectAnonymousUser_whenNotLoggedIn() throws Exception {
@@ -197,4 +199,7 @@ class Integrationtest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me2"))
                 .andExpect(MockMvcResultMatchers.status().is(401));
     }
+=======
+
+>>>>>>> main:backend/src/test/java/org/partypets/backend/controller/PartyControllerTest.java
 }
