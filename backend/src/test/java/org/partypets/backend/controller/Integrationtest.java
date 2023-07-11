@@ -171,6 +171,17 @@ class Integrationtest {
     @Test
     @DirtiesContext
     @WithMockUser(username = "Henry")
+    void expectUser_whenLoggedIn() throws Exception {
+        String expected = "Henry";
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(expected));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "Henry")
     void expectAUser_whenLoggedIn() throws Exception {
         String expected = "Henry";
 
