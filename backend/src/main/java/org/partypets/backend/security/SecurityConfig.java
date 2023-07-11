@@ -27,8 +27,9 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(httpRequests ->
                         httpRequests
-                                .requestMatchers("api/user/me1").permitAll()
-                                .requestMatchers("api/user/**").authenticated()
+                                .requestMatchers(HttpMethod.GET, "/*").permitAll()
+                                .requestMatchers("/api/user/me1").permitAll()
+                                .requestMatchers("/api/user/**").authenticated()
                                 .requestMatchers("/api/parties").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/parties/**").permitAll()
                                 .requestMatchers("/api/parties/**").authenticated()
