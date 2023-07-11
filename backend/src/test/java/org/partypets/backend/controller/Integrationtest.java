@@ -159,7 +159,6 @@ class Integrationtest {
                 //Then
                 .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
     }
-<<<<<<< HEAD:backend/src/test/java/org/partypets/backend/controller/Integrationtest.java
     @Test
     @DirtiesContext
     void expectAnonymousUser_whenNotLoggedIn() throws Exception {
@@ -199,7 +198,4 @@ class Integrationtest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me2"))
                 .andExpect(MockMvcResultMatchers.status().is(401));
     }
-=======
-
->>>>>>> main:backend/src/test/java/org/partypets/backend/controller/PartyControllerTest.java
 }
