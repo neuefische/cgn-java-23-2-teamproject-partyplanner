@@ -4,11 +4,14 @@ import Card from "@mui/material/Card";
 import Button from "@mui/material/Button";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+import {useState} from "react";
 
 type Props = {
     quiz: Quiz;
+    onSolveQuiz: (id: string) => void;
 }
 export default function QuizCard(props: Props) {
+    const [solved, setSolved] = useState<boolean>(false);
 
     return <Box sx={{width: '100%', overflow: 'hidden'}}>
         <Card variant="outlined" sx={{width: "100%", display: "flex", flexDirection: "column"}}>
@@ -21,7 +24,12 @@ export default function QuizCard(props: Props) {
                     </Typography>
                 </CardContent>
             <CardActions sx={{display: "flex", flexWrap: "wrap"}}>
-                {props.quiz.answers.map(answer => <Button>{answer.answerText}</Button>)}
+                {props.quiz.answers.map(answer =>
+                    <Button color={solved && answer.rightAnswer ? "success" : "error"}
+                        onClick={() => {
+                        props.onSolveQuiz(props.quiz.id);
+                        setSolved(true);
+                    }}>{answer.answerText}</Button>)}
             </CardActions>
         </Card>
     </Box>

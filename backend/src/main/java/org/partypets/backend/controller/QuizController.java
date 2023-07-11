@@ -21,7 +21,7 @@ public class QuizController {
     }
 
     @GetMapping("{id}")
-    public boolean checkAnswer(@PathVariable String id, @RequestBody String answer) {
-        return this.quizService.checkAnswer(id, answer);
+    public Quiz checkAnswer(@PathVariable String id) {
+        return this.quizService.getById(id);
     }
 }

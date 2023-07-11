@@ -36,17 +36,13 @@ public class QuizService {
         return response.get(randint);
     }
 
-    public boolean checkAnswer(String id, String answer) {
+    public Quiz getById(String id) {
         List<Quiz> response = Objects.requireNonNull(webClient.get()
                 .uri("/quiz")
                 .retrieve()
                 .toEntityList(Quiz.class)
                 .block()).getBody();
         assert response != null;
-        for (Quiz quiz : response) {
-            if (quiz.id().equals(id)) {
-                quiz.answers().stream().findAny()
-            }
-        }
+        return response.stream().filter(quiz -> quiz.id().equals(id)).findAny().orElse(null);
     }
 }

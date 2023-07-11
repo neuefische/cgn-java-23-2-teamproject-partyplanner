@@ -44,24 +44,7 @@ class QuizControllerTest {
                 {
                         "id": "abc",
                         "question": "The Platypus lays eggs. What animal species does it belong to? ",
-                        "answers": [
-                            {
-                                "answerText": "Reptile",
-                                "rightAnswer": false
-                            },
-                            {
-                                "answerText": "Insect",
-                                "rightAnswer": false
-                            },
-                            {
-                                "answerText": "Mammal",
-                                "rightAnswer": true
-                            },
-                            {
-                                "answerText": "Amphibian",
-                                "rightAnswer": false
-                            }
-                        ]
+                        "answers": ["Reptile","Insect","Mammal","Amphibian"]
                     }
                 """;
         mockWebServer.enqueue(new MockResponse()
@@ -75,7 +58,7 @@ class QuizControllerTest {
     }
 
     @Test
-    void expectTrue_whenGetWithRightAnswer() throws Exception {
+    void expectQuiz_whenGettingById() throws Exception {
         //GIVEN
         String response = """
                 {
@@ -101,19 +84,51 @@ class QuizControllerTest {
                         ]
                     }
                 """;
-        String requestBody = """
+        mockWebServer.enqueue(new MockResponse()
+                .setHeader("Content-Type", "application/json")
+                .setBody(response));
+        //WHEN
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/quiz/abc"))
+                //THEN
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(response));
+    }
+
+    @Test
+    void expectEmptyBody_whenGettingNonExistent() throws Exception {
+        //GIVEN
+        String response = """
                 {
-                        "answerText": "Mammal"
+                        "id": "abc",
+                        "question": "The Platypus lays eggs. What animal species does it belong to? ",
+                        "answers": [
+                            {
+                                "answerText": "Reptile",
+                                "rightAnswer": false
+                            },
+                            {
+                                "answerText": "Insect",
+                                "rightAnswer": false
+                            },
+                            {
+                                "answerText": "Mammal",
+                                "rightAnswer": true
+                            },
+                            {
+                                "answerText": "Amphibian",
+                                "rightAnswer": false
+                            }
+                        ]
                     }
                 """;
         mockWebServer.enqueue(new MockResponse()
                 .setHeader("Content-Type", "application/json")
                 .setBody(response));
         //WHEN
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/quiz/abc").content(requestBody).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/quiz/123"))
                 //THEN
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("true"));
+                .andExpect(MockMvcResultMatchers.content().string(""));
     }
 
     @AfterAll

@@ -15,7 +15,7 @@ export type Quiz = {
     id: string,
     question: string,
     answers: {
-        answerText: string,
+        answerText: string
         rightAnswer: boolean
     }[]
 }

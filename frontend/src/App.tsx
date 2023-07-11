@@ -64,6 +64,13 @@ export default function App() {
         navigate("/")
     }
 
+    function handleSolveQuiz(id: string) {
+        axios.get(`/api/quiz/${id}`)
+            .then(response => response.data)
+            .catch(console.error)
+            .then(data => setQuiz(data));
+    }
+
     return (
         <main>
             <Routes>
@@ -81,7 +88,7 @@ export default function App() {
                                 onClick={() => navigate("/add")}>
                             + Add Party
                         </Button>
-                        {quiz ? <QuizCard quiz={quiz}/> : <>Loading quiz...</>}
+                        {quiz ? <QuizCard quiz={quiz} onSolveQuiz={handleSolveQuiz}/> : <>Loading quiz...</>}
                     </Container>)
                 }/>
 
