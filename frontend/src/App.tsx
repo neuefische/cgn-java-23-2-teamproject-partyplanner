@@ -18,9 +18,9 @@ import ProtectedRoutes from "./components/ProtectedRoutes.tsx";
 export default function App() {
     const [parties, setParties] = useState<Party[]>([]);
     const [quiz, setQuiz] = useState<Quiz>();
-    const [isDeleteSuccess, setIsDeleteSuccess] = useState(false);
-    const [isEditSuccess, setIsEditSuccess] = useState(false);
-    const [isAddSuccess, setIsAddSuccess] = useState(false);
+    const [isDeleteSuccess, setIsDeleteSuccess] = useState<boolean>(false);
+    const [isEditSuccess, setIsEditSuccess] = useState<boolean>(false);
+    const [isAddSuccess, setIsAddSuccess] = useState<boolean>(false);
     const [user, setUser] = useState<string>();
 
     const navigate = useNavigate();
@@ -102,7 +102,7 @@ export default function App() {
         axios.get(`/api/quiz/${id}`)
             .then(response => response.data)
             .catch(console.error)
-            .then(data => setQuiz(data));
+            .then(data => setQuiz(data))
     }
 
     function handleLogin(username: string, password: string) {

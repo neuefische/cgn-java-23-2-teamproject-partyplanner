@@ -13,6 +13,7 @@ type Props = {
 export default function QuizCard(props: Props) {
     const [solved, setSolved] = useState<boolean>(false);
 
+
     return <Box sx={{width: '100%', overflow: 'hidden'}}>
         <Card variant="outlined" sx={{width: "100%", display: "flex", flexDirection: "column"}}>
                 <CardContent sx={{display: "flex", flexDirection: "column"}}>
@@ -24,8 +25,10 @@ export default function QuizCard(props: Props) {
                     </Typography>
                 </CardContent>
             <CardActions sx={{display: "flex", flexWrap: "wrap"}}>
-                {props.quiz.answers.map(answer =>
-                    <Button color={solved && answer.rightAnswer ? "success" : "error"}
+                {props.quiz.answers.map((answer, index) =>
+                    <Button
+                        key={answer.answerText + index}
+                        color={!solved ? "secondary" : solved && answer.rightAnswer ? "success" : "error"}
                         onClick={() => {
                         props.onSolveQuiz(props.quiz.id);
                         setSolved(true);
