@@ -1,15 +1,43 @@
 import './Header.css'
+import Button from "@mui/material/Button";
+import {useNavigate} from "react-router-dom";
 
-export default function Header(){
-    return(
+type Props = {
+    user?: string,
+    onLogout: () => void
+}
+export default function Header(props: Props) {
+    const navigate = useNavigate();
+
+    const isAuthenticated = props.user !== undefined && props.user !== "anonymousUser";
+
+    return (
         <header>
-
-            <h1>
-               Paw Palace Parties
-            </h1>
-
-
+            <nav style={{
+                width: "100%",
+                height: "3rem",
+                background: "black",
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "center"
+            }}>
+                <b style={{
+                    fontSize: "20px", color: "white",
+                    padding: "10px"
+                }}>Paw Palace Parties</b>
+                <p style={{color: "white", marginLeft: "auto"}}>{isAuthenticated ? props.user : "😺"}</p>
+                {!isAuthenticated ?
+                    <Button sx={{m: "1rem", p: "0.5rem"}} className="button-login" variant="contained" color="inherit"
+                            disableElevation
+                            onClick={() => navigate("/login")}>
+                        Login
+                    </Button> :
+                    <Button sx={{m: "1rem", p: "0.5rem"}} className="button-login" variant="contained" color="inherit"
+                            disableElevation
+                            onClick={props.onLogout}>
+                        Logout
+                    </Button>}
+            </nav>
         </header>
-
     )
 }

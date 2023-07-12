@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -14,10 +15,12 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Date;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class PartyControllerTest {
+class IntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -50,6 +53,7 @@ class PartyControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void expectNewPartyInList_whenPostingParty() throws Exception {
         String newParty = """
                 {
@@ -67,7 +71,7 @@ class PartyControllerTest {
                 ]
                 """;
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/parties").content(newParty).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/parties").content(newParty).contentType(MediaType.APPLICATION_JSON).with(csrf()))
 
                 //Then
                 .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
@@ -101,6 +105,7 @@ class PartyControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void expectUpdatedParty_whenPuttingParty() throws Exception {
         //Given
         DTOParty newParty = new DTOParty(new Date(), "Home", "Dog-Bday");
@@ -127,7 +132,7 @@ class PartyControllerTest {
 
 
         //When
-        mockMvc.perform(MockMvcRequestBuilders.put("/api/parties/" + id).content(actual).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/parties/" + id).content(actual).contentType(MediaType.APPLICATION_JSON).with(csrf()))
 
                 //Then
                 .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
@@ -135,6 +140,7 @@ class PartyControllerTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void expectNoParty_whenDeletingParty() throws Exception {
         //Given
         DTOParty newParty = new DTOParty(new Date(), "Home", "Dog-Bday");
@@ -145,11 +151,92 @@ class PartyControllerTest {
                 """;
 
         //When
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/parties/" + id))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/parties/" + id).with(csrf()))
                 .andExpect(MockMvcResultMatchers.status().isOk());
         mockMvc.perform(MockMvcRequestBuilders.get("/api/parties"))
 
                 //Then
                 .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+    @Test
+    @DirtiesContext
+    void expectAnonymousUser_whenNotLoggedIn() throws Exception {
+        String expected = "AnonymousUser";
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(expected));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "Henry")
+    void expectUser_whenLoggedIn() throws Exception {
+        String expected = "Henry";
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(expected));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "Henry")
+    void expectAUser_whenLoggedIn() throws Exception {
+        String expected = "Henry";
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me2"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(expected));
+    }
+
+    @Test
+    @DirtiesContext
+    void expectAnonymousUser_whenNotLoggedInOnMe2() throws Exception {
+        String expected = "anonymousUser";
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me2"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(expected));
+    }
+
+    @Test
+    @DirtiesContext
+    void expectAnonymousUser_whenLoginWithoutUser() throws Exception {
+        String expected = "anonymousUser";
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login")
+                        .with(csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(expected));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "Henry")
+    void expectUser_whenLoginWithUser() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login")
+                        .with(csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("Henry"));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "Henry")
+    void expectAnonymous_whenGettingMeAfterLogout() throws Exception {
+        String expected = "anonymousUser";
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login")
+                        .with(csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/logout")
+                .with(csrf()));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me2"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(expected));
     }
 }

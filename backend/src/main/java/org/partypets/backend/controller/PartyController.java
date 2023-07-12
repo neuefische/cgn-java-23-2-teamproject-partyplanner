@@ -1,6 +1,4 @@
 package org.partypets.backend.controller;
-
-
 import org.partypets.backend.model.DTOParty;
 import org.partypets.backend.model.Party;
 import org.partypets.backend.service.PartyService;
@@ -44,4 +42,5 @@ public class PartyController {
     public void delete(@PathVariable String id) {
         partyService.delete(id);
     }
+
 }

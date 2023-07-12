@@ -15,22 +15,31 @@ export default function Partylist(props: Props) {
     const navigate = useNavigate();
 
     return (
-        <Paper sx={{width: '97%', overflow: 'hidden'}}>
-            <TableContainer sx={{maxHeight: 440}}>
-                <Table stickyHeader aria-label="sticky table">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell style={{fontWeight: "bold"}}>
-                                Theme 🎈
-                            </TableCell>
-                            <TableCell style={{fontWeight: "bold"}}>
-                                Date 🗓️
-                            </TableCell>
-                            <TableCell style={{fontWeight: "bold"}}>
-                                Location 📍
-                            </TableCell>
-                        </TableRow>
-                    </TableHead>
+<><h2 style={{marginTop: '10px'}}> Partylist</h2>
+    <Paper sx={{
+        width: '100%',
+        overflow: 'hidden',
+        backgroundColor: '#bdd6d9',
+        border: '0px',
+        margin: '0px 0px 10px 0px',
+        boxShadow: 'none'
+    }}>
+
+        <TableContainer sx={{margin: '0px'}}>
+            <Table stickyHeader aria-label="sticky table">
+                <TableHead sx={{width: '100%'}}>
+                    <TableRow>
+                        <TableCell style={{fontWeight: "bold", backgroundColor: '#32abb8', color: 'white'}}>
+                            Theme 🎈
+                        </TableCell>
+                        <TableCell style={{fontWeight: "bold", backgroundColor: '#32abb8', color: 'white'}}>
+                            Date 🗓️
+                        </TableCell>
+                        <TableCell style={{fontWeight: "bold", backgroundColor: '#32abb8', color: 'white'}}>
+                            Location 📍
+                        </TableCell>
+                    </TableRow>
+                </TableHead>
                     <TableBody>
                         {props.parties.map(party => {
                             return (
@@ -45,5 +54,6 @@ export default function Partylist(props: Props) {
                 </Table>
             </TableContainer>
         </Paper>
+</>
     );
 }

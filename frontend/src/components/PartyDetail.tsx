@@ -10,36 +10,48 @@ import {useNavigate, useParams} from "react-router-dom";
 
 type Props = {
     onDeleteParty: (id: string) => void
+    user?: string
 }
+
 export default function PartyDetail(props: Props) {
 
     const [party, setParty] = useState<Party>();
-
+    const [randomImage, setRandomImage] = useState<string>();
+    const isAuthenticated = props.user !== undefined && props.user !== "anonymousUser";
     const params = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
         axios.get(`/api/parties/${params.id}`)
             .then(response => response.data)
-            .catch(console.error)
             .then(data => setParty(data))
-    }, [params.id])
+            .catch(console.error);
+    }, [params.id]);
+
+    useEffect(() => {
+        axios.get(`/api/randomCatImage`)
+            .then(response => response.data.urls.small)
+            .then(data => setRandomImage(data))
+            .catch(console.error);
+    }, []);
 
 
-
-    if(typeof party === "undefined"){
+    if (!party) {
         return <>No Party</>
     }
 
 
-    return <Card sx={{ maxWidth: 345 }} style={{display:"flex", flexDirection: "column"}}>
-            <CardMedia
-                component="img"
-                height="140"
-                image="https://i.etsystatic.com/5157460/r/il/aff006/2344085974/il_1588xN.2344085974_czdu.jpg"
-                alt="green iguana"
-            />
-            <CardContent style={{display:"flex", gap: "2rem"}}>
+    return (
+        <Card sx={{ maxWidth: 345 }} style={{ display: "flex", flexDirection: "column" }}>
+            {randomImage && (
+                <CardMedia
+                    component="img"
+                    height="200"
+                    image={randomImage}
+                    alt="random cat image"
+                />
+            )}
+            <CardContent style={{ display: "flex", gap: "2rem" }}>
                 <Typography variant="overline" component="div">
                     {party.theme}
                 </Typography>
@@ -50,22 +62,25 @@ export default function PartyDetail(props: Props) {
                     {party.location}
                 </Typography>
             </CardContent>
-        <Button
-            sx={{m: 1}}
-            size="small"
-            color="primary"
-            variant="contained"
-            onClick={() => navigate(`/${party.id}/edit`)}>Edit</Button>
-        <Button
-            sx={{m: 1}}
-            size="small"
-            color="error"
-            variant="outlined"
-            onClick={() => props.onDeleteParty(party.id)}>Delete</Button>
-        <Button
-            sx={{m: 1}}
-            variant="outlined"
-            disableElevation
-            onClick={() => navigate(`/`)}>Back to List</Button>
-    </Card>
+            {isAuthenticated && <>
+                <Button
+                    sx={{m: 1, bgcolor: "rgb(44, 161, 173)"}}
+                    size="small"
+                    color="primary"
+                    variant="contained"
+                    onClick={() => navigate(`/${party.id}/edit`)}>Edit</Button>
+                <Button
+                    sx={{m: 1}}
+                    size="small"
+                    color="error"
+                    variant="outlined"
+                    onClick={() => props.onDeleteParty(party.id)}>Delete</Button>
+            </>}
+            <Button
+                sx={{ m: 1, color: "rgb(44, 161, 173)", borderColor: "rgb(44, 161, 173)" }}
+                variant="outlined"
+                disableElevation
+                onClick={() => navigate(`/`)}>Back to List</Button>
+        </Card>
+    );
 }

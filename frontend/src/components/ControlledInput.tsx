@@ -17,8 +17,9 @@ export default function ControlledInput(props: Props) {
         type={props.type}
         variant="filled"
         color="secondary"
+        size="small"
         required
-        style={{marginLeft: 20, marginRight: 20, paddingTop: 20}}
+        style={{marginLeft: 5, marginRight: 5, paddingTop: 20, width: "95%"}}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
             props.onChange(event.target.value);
         }}
