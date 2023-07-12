@@ -62,7 +62,7 @@ export default function PartyDetail(props: Props) {
                 </Typography>
             </CardContent>
             <Button
-                sx={{ m: 1 }}
+                sx={{ m: 1, bgcolor: "rgb(44, 161, 173)" }}
                 size="small"
                 color="primary"
                 variant="contained"
@@ -74,7 +74,7 @@ export default function PartyDetail(props: Props) {
                 variant="outlined"
                 onClick={() => props.onDeleteParty(party.id)}>Delete</Button>
             <Button
-                sx={{ m: 1 }}
+                sx={{ m: 1, color: "rgb(44, 161, 173)", borderColor: "rgb(44, 161, 173)" }}
                 variant="outlined"
                 disableElevation
                 onClick={() => navigate(`/`)}>Back to List</Button>

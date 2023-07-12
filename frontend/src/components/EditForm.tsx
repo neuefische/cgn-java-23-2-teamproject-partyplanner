@@ -70,10 +70,10 @@ export default function EditForm(props: Props) {
                         onChange={setLocation}
                     />
                 </fieldset>
-                <Button sx={{mt: 1, mr: 1}} variant="outlined" disableElevation
+                <Button sx={{mt: 1, mr: 1, color: "rgb(44, 161, 173)", borderColor: "rgb(44, 161, 173)"}} variant="outlined" disableElevation
                         onClick={() => navigate(`/${id}`)}>Cancel </Button>
 
-                <Button sx={{mt: 1, mr: 1}} type="submit" variant="contained" className="button-right">
+                <Button sx={{mt: 1, mr: 1, bgcolor: "rgb(44, 161, 173)"}} type="submit" variant="contained" className="button-right">
                     Submit
                 </Button>
             </form>
