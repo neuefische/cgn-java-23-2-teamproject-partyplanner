@@ -1,6 +1,5 @@
 package org.partypets.backend.service;
 
-import lombok.RequiredArgsConstructor;
 import org.partypets.backend.model.DTOParty;
 import org.partypets.backend.model.Party;
 import org.partypets.backend.model.UuIdService;

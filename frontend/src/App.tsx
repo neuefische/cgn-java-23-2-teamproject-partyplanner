@@ -10,9 +10,9 @@ import {Route, Routes, useNavigate} from "react-router-dom";
 import Button from '@mui/material/Button';
 import PartyDetail from "./components/PartyDetail.tsx";
 import EditForm from "./components/EditForm.tsx";
-import QuizCard from "./components/QuizCard.tsx";
 import LoginForm from "./components/LoginForm.tsx";
 import ProtectedRoutes from "./components/ProtectedRoutes.tsx";
+import QuizCard from "./components/QuizCard.tsx";
 
 
 export default function App() {
