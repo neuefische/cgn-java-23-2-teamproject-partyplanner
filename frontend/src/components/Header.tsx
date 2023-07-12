@@ -15,25 +15,24 @@ export default function Header(props: Props) {
         <header>
             <nav style={{
                 width: "100%",
-                height: "33px",
+                height: "3rem",
                 background: "black",
                 display: "flex",
-                justifyContent: "space-between",
+                justifyContent: "space-around",
                 alignItems: "center"
             }}>
                 <b style={{
                     fontSize: "20px", color: "white",
-                    padding: "10px",
-                    background: "url https://2.bp.blogspot.com/-LHGHDFttakA/WDZeTrF-0CI/AAAAAAADxss/WwV9PKUJ3g0cut9k2uaBG1k2KHstD1dpwCLcB/s1600/AF004206_02.gif"
+                    padding: "10px"
                 }}>Paw Palace Parties</b>
-                <p style={{color: "white", margin: "50px"}}>{props.user}</p>
+                <p style={{color: "white", marginLeft: "auto"}}>{isAuthenticated ? props.user : "anon"}</p>
                 {!isAuthenticated ?
-                    <Button sx={{m: "20px", p: "10px"}} className="button-login" variant="contained" color="inherit"
+                    <Button sx={{m: "1rem", p: "0.5rem"}} className="button-login" variant="contained" color="inherit"
                             disableElevation
                             onClick={() => navigate("/login")}>
                         Login
                     </Button> :
-                    <Button sx={{m: "20px", p: "10px"}} className="button-login" variant="contained" color="inherit"
+                    <Button sx={{m: "1rem", p: "0.5rem"}} className="button-login" variant="contained" color="inherit"
                             disableElevation
                             onClick={props.onLogout}>
                         Logout

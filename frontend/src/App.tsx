@@ -15,13 +15,13 @@ import ProtectedRoutes from "./components/ProtectedRoutes.tsx";
 
 
 export default function App() {
-    const navigate = useNavigate();
     const [parties, setParties] = useState<Party[]>([]);
-
     const [isDeleteSuccess, setIsDeleteSuccess] = useState(false);
     const [isEditSuccess, setIsEditSuccess] = useState(false);
     const [isAddSuccess, setIsAddSuccess] = useState(false);
     const [user, setUser] = useState<string>();
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchParties();
@@ -95,8 +95,8 @@ export default function App() {
 
     function handleLogout() {
         axios.post("/api/user/logout")
-            .then(() => window.location.reload())
             .catch(console.error)
+        setUser(undefined)
     }
 
     return (
