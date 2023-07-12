@@ -95,7 +95,8 @@ export default function App() {
 
     function handleLogout() {
         axios.post("/api/user/logout")
-        navigate("/")
+            .then(() => window.location.reload())
+            .catch(console.error)
     }
 
     return (
