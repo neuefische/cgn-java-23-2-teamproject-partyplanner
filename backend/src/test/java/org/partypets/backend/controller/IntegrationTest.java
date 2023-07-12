@@ -200,4 +200,44 @@ class IntegrationTest {
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(expected));
     }
+
+    @Test
+    @DirtiesContext
+    void expectAnonymousUser_whenLoginWithoutUser() throws Exception {
+        String expected = "anonymousUser";
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login")
+                        .with(csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(expected));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "Henry")
+    void expectUser_whenLoginWithUser() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login")
+                        .with(csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string("Henry"));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "Henry")
+    void expectAnonymous_whenGettingMeAfterLogout() throws Exception {
+        String expected = "anonymousUser";
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login")
+                        .with(csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/logout")
+                .with(csrf()));
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me2"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(expected));
+    }
 }

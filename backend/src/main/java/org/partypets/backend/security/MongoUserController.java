@@ -34,16 +34,18 @@ public class MongoUserController {
 
     @PostMapping("/login")
     public String login() {
-        return SecurityContextHolder.getContext().getAuthentication().getName();
+        return SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
     }
 
 
 
     @PostMapping("/logout")
-    public String performLogout(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
+    public void logout(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
         SecurityContextLogoutHandler logoutHandler = new SecurityContextLogoutHandler();
         logoutHandler.logout(request, response, authentication);
-        return "redirect:../";
     }
 
 }
