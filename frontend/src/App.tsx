@@ -11,6 +11,7 @@ import Button from '@mui/material/Button';
 import PartyDetail from "./components/PartyDetail.tsx";
 import EditForm from "./components/EditForm.tsx";
 import LoginForm from "./components/LoginForm.tsx";
+import ProtectedRoutes from "./components/ProtectedRoutes.tsx";
 
 
 export default function App() {
@@ -108,16 +109,21 @@ export default function App() {
             </Stack>
             <Routes>
                 <Route path={"/login"} element={<LoginForm onLogin={handleLogin}/>}/>
-                <Route path={"/add"} element={<AddForm onAddParty={handleAddParty}/>}/>
+                <Route path={"/add"} element={<ProtectedRoutes user={user}/>}>
+                    <Route path={""} element={<AddForm onAddParty={handleAddParty}/>}/>
+                </Route>
+                <Route path={"/:id/edit"} element={<ProtectedRoutes user={user}/>}>
+                    <Route path={""} element={<EditForm onEditParty={handleEditParty}/>}/>
+                </Route>
                 <Route path={"/:id"}>
-                    <Route index element={<PartyDetail onDeleteParty={handleDeleteParty}/>}/>
-                    <Route path={"edit"} element={<EditForm onEditParty={handleEditParty}/>}/>
+                    <Route index element={<PartyDetail user={user} onDeleteParty={handleDeleteParty}/>}/>
                 </Route>
 
                 <Route path={"/"} element={
                     (<Container>
                         <Partylist parties={parties}/>
-                        <Button sx={{bgcolor: "rgb(44, 161, 173)"}} className="button-right" variant="contained" disableElevation
+                        <Button sx={{bgcolor: "rgb(44, 161, 173)"}} className="button-right" variant="contained"
+                                disableElevation
                                 onClick={() => navigate("/add")}>
                             + Add Party
                         </Button>

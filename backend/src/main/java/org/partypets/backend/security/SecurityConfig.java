@@ -32,13 +32,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(httpRequests ->
                         httpRequests
                                 .requestMatchers(HttpMethod.GET, "/*").permitAll()
-                                .requestMatchers("/api/user/me1").permitAll()
-                                .requestMatchers("/api/user/**").authenticated()
-                                .requestMatchers("/api/parties").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/parties").permitAll()
+                                .requestMatchers("/api/parties").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/api/randomCatImage").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/parties/**").permitAll()
                                 .requestMatchers("/api/parties/**").authenticated()
-                                .anyRequest().authenticated())
+                                .requestMatchers("/api/user/me").permitAll()
+                                .anyRequest().permitAll())
                 .build();
     }
 

@@ -2,21 +2,22 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { Button } from '@mui/material';
-import { Party } from "../models.ts";
-import { useEffect, useState } from "react";
+import {Button} from '@mui/material';
+import {Party} from "../models.ts";
+import {useEffect, useState} from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 type Props = {
     onDeleteParty: (id: string) => void
+    user?: string
 }
 
 export default function PartyDetail(props: Props) {
 
     const [party, setParty] = useState<Party>();
     const [randomImage, setRandomImage] = useState<string>();
-
+    const isAuthenticated = props.user !== undefined && props.user !== "anonymousUser";
     const params = useParams();
     const navigate = useNavigate();
 
@@ -61,18 +62,20 @@ export default function PartyDetail(props: Props) {
                     {party.location}
                 </Typography>
             </CardContent>
-            <Button
-                sx={{ m: 1, bgcolor: "rgb(44, 161, 173)" }}
-                size="small"
-                color="primary"
-                variant="contained"
-                onClick={() => navigate(`/${party.id}/edit`)}>Edit</Button>
-            <Button
-                sx={{ m: 1 }}
-                size="small"
-                color="error"
-                variant="outlined"
-                onClick={() => props.onDeleteParty(party.id)}>Delete</Button>
+            {isAuthenticated && <>
+                <Button
+                    sx={{m: 1, bgcolor: "rgb(44, 161, 173)"}}
+                    size="small"
+                    color="primary"
+                    variant="contained"
+                    onClick={() => navigate(`/${party.id}/edit`)}>Edit</Button>
+                <Button
+                    sx={{m: 1}}
+                    size="small"
+                    color="error"
+                    variant="outlined"
+                    onClick={() => props.onDeleteParty(party.id)}>Delete</Button>
+            </>}
             <Button
                 sx={{ m: 1, color: "rgb(44, 161, 173)", borderColor: "rgb(44, 161, 173)" }}
                 variant="outlined"

@@ -54,6 +54,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void expectNewPartyInList_whenPostingParty() throws Exception {
         String newParty = """
                 {
