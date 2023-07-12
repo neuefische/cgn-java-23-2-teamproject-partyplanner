@@ -25,7 +25,7 @@ export default function Header(props: Props) {
                     fontSize: "20px", color: "white",
                     padding: "10px"
                 }}>Paw Palace Parties</b>
-                <p style={{color: "white", marginLeft: "auto"}}>{isAuthenticated ? props.user : "anon"}</p>
+                <p style={{color: "white", marginLeft: "auto"}}>{isAuthenticated ? props.user : "😺"}</p>
                 {!isAuthenticated ?
                     <Button sx={{m: "1rem", p: "0.5rem"}} className="button-login" variant="contained" color="inherit"
                             disableElevation
