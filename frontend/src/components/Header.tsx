@@ -3,7 +3,8 @@ import Button from "@mui/material/Button";
 import {useNavigate} from "react-router-dom";
 
 type Props = {
-    user?: string
+    user?: string,
+    onLogout: () => void
 }
 export default function Header(props: Props) {
     const navigate = useNavigate();
@@ -25,12 +26,18 @@ export default function Header(props: Props) {
                     padding: "10px",
                     background: "url https://2.bp.blogspot.com/-LHGHDFttakA/WDZeTrF-0CI/AAAAAAADxss/WwV9PKUJ3g0cut9k2uaBG1k2KHstD1dpwCLcB/s1600/AF004206_02.gif"
                 }}>Paw Palace Parties</b>
+                <p style={{color: "white", margin: "50px"}}>{props.user}</p>
                 {!isAuthenticated ?
                     <Button sx={{m: "20px", p: "10px"}} className="button-login" variant="contained" color="inherit"
                             disableElevation
                             onClick={() => navigate("/login")}>
                         Login
-                    </Button> : <p style={{color: "white", margin: "50px"}}>{props.user}</p>}
+                    </Button> :
+                    <Button sx={{m: "20px", p: "10px"}} className="button-login" variant="contained" color="inherit"
+                            disableElevation
+                            onClick={props.onLogout}>
+                        Logout
+                    </Button>}
             </nav>
         </header>
     )

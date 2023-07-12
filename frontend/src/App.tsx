@@ -26,7 +26,7 @@ export default function App() {
     useEffect(() => {
         fetchParties();
         me();
-    }, [])
+    }, [user])
 
     function me() {
         axios.get('api/user/me2')
@@ -93,9 +93,14 @@ export default function App() {
             .then(data => setUser(data))
     }
 
+    function handleLogout() {
+        axios.post("/api/user/logout")
+        navigate("/")
+    }
+
     return (
         <main>
-            <Header user={user}/>
+            <Header user={user} onLogout={handleLogout}/>
             <Stack sx={{width: '100%', m: 0, p: 0,}}>
                 {isDeleteSuccess && (
                     <Alert severity="error">You just deleted your Party!</Alert>
