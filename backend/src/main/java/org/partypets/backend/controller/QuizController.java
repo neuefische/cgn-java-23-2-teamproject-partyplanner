@@ -1,7 +1,6 @@
 package org.partypets.backend.controller;
 
 import org.partypets.backend.model.Quiz;
-import org.partypets.backend.model.QuizWithoutSolution;
 import org.partypets.backend.service.QuizService;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +15,12 @@ public class QuizController {
     }
 
     @GetMapping
-    public QuizWithoutSolution getRandomQuiz() {
-        return this.quizService.getRandom();
+    public Quiz getRandomQuiz() {
+        return this.quizService.getRandomUnsolved();
     }
 
     @GetMapping("{id}")
     public Quiz checkAnswer(@PathVariable String id) {
-        return this.quizService.getById(id);
+        return this.quizService.getByIdSolved(id);
     }
 }

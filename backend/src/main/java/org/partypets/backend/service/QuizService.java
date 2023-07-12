@@ -2,16 +2,13 @@ package org.partypets.backend.service;
 
 import org.partypets.backend.model.Quiz;
 import org.partypets.backend.model.QuizAnswer;
-import org.partypets.backend.model.QuizWithoutSolution;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.util.Optionals;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class QuizService {
@@ -25,18 +22,19 @@ public class QuizService {
         this.webClient = WebClient.create(webclientUrl);
     }
 
-    public QuizWithoutSolution getRandom() {
-        List<QuizWithoutSolution> response = Objects.requireNonNull(webClient.get()
+    public Quiz getRandomUnsolved() {
+        List<Quiz> response = Objects.requireNonNull(webClient.get()
                 .uri("/quiz")
                 .retrieve()
-                .toEntityList(QuizWithoutSolution.class)
+                .toEntityList(Quiz.class)
                 .block()).getBody();
         assert response != null;
         int randint = random.nextInt(response.size());
-        return response.get(randint);
+        Quiz quiz = response.get(randint);
+        return quiz.unsolved();
     }
 
-    public Quiz getById(String id) {
+    public Quiz getByIdSolved(String id) {
         List<Quiz> response = Objects.requireNonNull(webClient.get()
                 .uri("/quiz")
                 .retrieve()

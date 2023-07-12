@@ -44,7 +44,24 @@ class QuizControllerTest {
                 {
                         "id": "abc",
                         "question": "The Platypus lays eggs. What animal species does it belong to? ",
-                        "answers": ["Reptile","Insect","Mammal","Amphibian"]
+                        "answers": [
+                            {
+                                "answerText": "Reptile",
+                                "rightAnswer": false
+                            },
+                            {
+                                "answerText": "Insect",
+                                "rightAnswer": false
+                            },
+                            {
+                                "answerText": "Mammal",
+                                "rightAnswer": false
+                            },
+                            {
+                                "answerText": "Amphibian",
+                                "rightAnswer": false
+                            }
+                        ]
                     }
                 """;
         mockWebServer.enqueue(new MockResponse()
