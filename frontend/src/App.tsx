@@ -20,14 +20,26 @@ export default function App() {
     const [isDeleteSuccess, setIsDeleteSuccess] = useState(false);
     const [isEditSuccess, setIsEditSuccess] = useState(false);
     const [isAddSuccess, setIsAddSuccess] = useState(false);
-    const [user, setUser] = useState<string>("");
+    const [user, setUser] = useState<string>();
 
     useEffect(() => {
+        fetchParties();
+        me();
+    }, [])
+
+    function me() {
+        axios.get('api/user/me2')
+            .then(response => response.data)
+            .catch(console.error)
+            .then(data => setUser(data))
+    }
+
+    function fetchParties() {
         axios.get('api/parties')
             .then(response => response.data)
             .catch(console.error)
             .then(data => setParties(data))
-    }, [])
+    }
 
     function handleAddParty(data: DTOParty) {
         axios.post('api/parties', data)
