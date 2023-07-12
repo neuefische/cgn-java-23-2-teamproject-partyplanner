@@ -14,7 +14,13 @@ export default function QuizCard(props: Props) {
     const [solved, setSolved] = useState<boolean>(false);
 
     function getButtonColor(guess: boolean): "secondary" | "success" | "error" {
-        return !solved ? "secondary" : solved && guess ? "success" : "error"
+        if (!solved) {
+            return "secondary";
+        } else if (solved && guess) {
+            return "success";
+        } else {
+            return "error";
+        }
     }
 
     return <Box sx={{width: '100%', overflow: 'hidden'}}>
