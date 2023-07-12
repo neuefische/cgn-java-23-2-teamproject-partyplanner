@@ -193,9 +193,11 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
-    void expect401_whenNotLoggedIn() throws Exception {
+    void expectAnonymousUser_whenNotLoggedInOnMe2() throws Exception {
+        String expected = "anonymousUser";
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me2"))
-                .andExpect(MockMvcResultMatchers.status().is(401));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().string(expected));
     }
 }
