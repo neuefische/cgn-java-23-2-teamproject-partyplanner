@@ -13,26 +13,29 @@ type Props = {
 export default function QuizCard(props: Props) {
     const [solved, setSolved] = useState<boolean>(false);
 
+    function getButtonColor(guess: boolean): "secondary" | "success" | "error" {
+        return !solved ? "secondary" : solved && guess ? "success" : "error"
+    }
 
     return <Box sx={{width: '100%', overflow: 'hidden'}}>
         <Card variant="outlined" sx={{width: "100%", display: "flex", flexDirection: "column"}}>
-                <CardContent sx={{display: "flex", flexDirection: "column"}}>
-                    <Typography sx={{ fontSize: 10 }} color="text.secondary" gutterBottom>
-                        Quiz Generator
-                    </Typography>
-                    <Typography variant="h5" sx={{ fontSize: 20, m: 0 }}>
-                        {props.quiz.question}
-                    </Typography>
+            <CardContent sx={{display: "flex", flexDirection: "column"}}>
+                <Typography sx={{fontSize: 10}} color="text.secondary" gutterBottom>
+                    Quiz Generator
+                </Typography>
+                <Typography variant="h5" sx={{fontSize: 20, m: 0}}>
+                    {props.quiz.question}
+                </Typography>
                 </CardContent>
             <CardActions sx={{display: "flex", flexWrap: "wrap"}}>
-                {props.quiz.answers.map((answer, index) =>
+                {props.quiz.answers.map(answer =>
                     <Button
-                        key={answer.answerText + index}
-                        color={!solved ? "secondary" : solved && answer.rightAnswer ? "success" : "error"}
+                        key={answer.answerText}
+                        color={getButtonColor(answer.rightAnswer)}
                         onClick={() => {
-                        props.onSolveQuiz(props.quiz.id);
-                        setSolved(true);
-                    }}>{answer.answerText}</Button>)}
+                            props.onSolveQuiz(props.quiz.id);
+                            setSolved(true);
+                        }}>{answer.answerText}</Button>)}
             </CardActions>
         </Card>
     </Box>
