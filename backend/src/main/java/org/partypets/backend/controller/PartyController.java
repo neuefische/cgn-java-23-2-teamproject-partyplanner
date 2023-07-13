@@ -1,5 +1,4 @@
 package org.partypets.backend.controller;
-
 import org.partypets.backend.model.DTOParty;
 import org.partypets.backend.model.Party;
 import org.partypets.backend.service.PartyService;
@@ -9,7 +8,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/parties")
-
 public class PartyController {
 
     private final PartyService partyService;

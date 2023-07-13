@@ -1,6 +1,5 @@
 package org.partypets.backend.service;
 
-import lombok.RequiredArgsConstructor;
 import org.partypets.backend.model.DTOParty;
 import org.partypets.backend.model.Party;
 import org.partypets.backend.model.UuIdService;
@@ -10,14 +9,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-
 public class PartyService {
 
     private final PartyRepo partyRepo;
 
     private final UuIdService uuIdService;
 
+    public PartyService(PartyRepo partyRepo, UuIdService uuIdService) {
+        this.partyRepo = partyRepo;
+        this.uuIdService = uuIdService;
+    }
 
     public List<Party> list() {
         return this.partyRepo.findAll();

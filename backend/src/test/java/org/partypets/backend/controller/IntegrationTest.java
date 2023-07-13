@@ -28,7 +28,6 @@ class IntegrationTest {
     @Autowired
     private PartyService partyService;
 
-
     @Test
     @DirtiesContext
     void expectPartyList_whenGettingAllParties() throws Exception {
@@ -58,8 +57,8 @@ class IntegrationTest {
     void expectNewPartyInList_whenPostingParty() throws Exception {
         String newParty = """
                 {
-                    "location": "Home",
-                    "theme": "Dog-Bday"
+                "location": "Home",
+                "theme": "Dog-Bday"
                 }
                 """;
 

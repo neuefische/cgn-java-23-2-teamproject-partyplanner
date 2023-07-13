@@ -2,7 +2,7 @@ import './App.css'
 import Partylist from "./components/Partylist.tsx";
 import Header from "./components/Header.tsx";
 import {useEffect, useState} from "react";
-import {DTOParty, Party} from "./models.ts";
+import {DTOParty, Party, Quiz} from "./models.ts";
 import axios from "axios";
 import {Alert, Container, Stack} from "@mui/material";
 import AddForm from "./components/AddForm.tsx";
@@ -12,13 +12,15 @@ import PartyDetail from "./components/PartyDetail.tsx";
 import EditForm from "./components/EditForm.tsx";
 import LoginForm from "./components/LoginForm.tsx";
 import ProtectedRoutes from "./components/ProtectedRoutes.tsx";
+import QuizCard from "./components/QuizCard.tsx";
 
 
 export default function App() {
     const [parties, setParties] = useState<Party[]>([]);
-    const [isDeleteSuccess, setIsDeleteSuccess] = useState(false);
-    const [isEditSuccess, setIsEditSuccess] = useState(false);
-    const [isAddSuccess, setIsAddSuccess] = useState(false);
+    const [quiz, setQuiz] = useState<Quiz>();
+    const [isDeleteSuccess, setIsDeleteSuccess] = useState<boolean>(false);
+    const [isEditSuccess, setIsEditSuccess] = useState<boolean>(false);
+    const [isAddSuccess, setIsAddSuccess] = useState<boolean>(false);
     const [user, setUser] = useState<string>();
 
     const navigate = useNavigate();
@@ -41,6 +43,16 @@ export default function App() {
             .catch(console.error)
             .then(data => setParties(data))
     }
+
+    useEffect(() => {
+        axios.get("/api/quiz")
+            .then(response => response.data)
+            .catch(console.error)
+            .then(data => {
+                console.log(data)
+                setQuiz(data)
+            });
+    }, []);
 
     function handleAddParty(data: DTOParty) {
         axios.post('api/parties', data)
@@ -86,6 +98,13 @@ export default function App() {
         navigate("/")
     }
 
+    function handleSolveQuiz(id: string) {
+        axios.get(`/api/quiz/${id}`)
+            .then(response => response.data)
+            .catch(console.error)
+            .then(data => setQuiz(data))
+    }
+
     function handleLogin(username: string, password: string) {
         axios.post("/api/user/login", null, {auth: {username, password}})
             .then(response => response.data)
@@ -126,13 +145,14 @@ export default function App() {
                 </Route>
 
                 <Route path={"/"} element={
-                    (<Container>
+                    (<Container sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
                         <Partylist parties={parties}/>
                         <Button sx={{bgcolor: "rgb(44, 161, 173)"}} className="button-right" variant="contained"
                                 disableElevation
                                 onClick={() => navigate("/add")}>
                             + Add Party
                         </Button>
+                        {quiz ? <QuizCard quiz={quiz} onSolveQuiz={handleSolveQuiz}/> : <>Loading quiz...</>}
                     </Container>)
                 }/>
             </Routes>

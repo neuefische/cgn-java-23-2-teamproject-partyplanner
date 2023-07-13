@@ -10,3 +10,12 @@ export type DTOParty= {
     location: string,
     theme: string,
 }
+
+export type Quiz = {
+    id: string,
+    question: string,
+    answers: {
+        answerText: string
+        rightAnswer: boolean
+    }[]
+}
