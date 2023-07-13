@@ -15,9 +15,11 @@ export default function EditForm(props: Props) {
     const [theme, setTheme] = useState<string>("")
     const [date, setDate] = useState<string>("")
     const [location, setLocation] = useState<string>("")
-
     const params = useParams();
     const navigate = useNavigate()
+    const [errorTheme, setErrorTheme] = useState<string>("")
+    const [errorDate, setErrorDate] = useState<string>("")
+    const [errorLocation, setErrorLocation] = useState<string>("")
 
     useEffect(() => {
         axios.get(`/api/parties/${params.id}`)
@@ -42,6 +44,42 @@ export default function EditForm(props: Props) {
         navigate(`/${id}`);
     }
 
+    function changeTheme(event: React.ChangeEvent<HTMLInputElement>) {
+        setTheme(event.target.value)
+
+        if (event.target.value.length < 3) {
+            setErrorTheme("Input is too short!")
+        } else if (event.target.value.length > 25) {
+            setErrorTheme("Input is too long!")
+        } else {
+            setErrorTheme("")
+        }
+    }
+
+    function changeLocation(event: React.ChangeEvent<HTMLInputElement>) {
+        setLocation(event.target.value)
+
+        if (event.target.value.length < 3) {
+            setErrorLocation("Input is too short!")
+        } else if (event.target.value.length > 25) {
+            setErrorLocation("Input is too long!")
+        } else {
+            setErrorLocation("")
+        }
+    }
+
+    function changeDate(event: React.ChangeEvent<HTMLInputElement>) {
+        const currentDate = new Date() // "2023-07-13T13:43:54.124+02:00"
+        currentDate.setHours(0, 0, 0) // "2023-07-13"
+        const givenDate = new Date(event.target.value) // "2023-07-13"
+        setDate(event.target.value)
+        if (givenDate.getTime() < currentDate.getTime()) {
+            setErrorDate("Date must be in the present or future!")
+        } else {
+            setErrorDate("")
+        }
+    }
+
 
     return (<>
 
@@ -53,21 +91,26 @@ export default function EditForm(props: Props) {
                         type="text"
                         value={theme}
                         id="theme"
-                        onChange={setTheme}
+                        onChange={changeTheme}
+                        helperText={errorTheme}
                     />
                     <TextField
                         label="Date"
                         type="date"
                         value={date}
                         id="date"
-                        onChange={setDate}
+                        onChange={changeDate}
+                        helperText={errorDate}
+
                     />
                     <TextField
                         label="Location"
                         type="text"
                         value={location}
                         id="location"
-                        onChange={setLocation}
+                        onChange={changeLocation}
+                        helperText={errorLocation}
+
                     />
                 </fieldset>
                 <Button sx={{mt: 1, mr: 1, color: "rgb(44, 161, 173)", borderColor: "rgb(44, 161, 173)"}} variant="outlined" disableElevation
