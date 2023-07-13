@@ -15,6 +15,7 @@ import ProtectedRoutes from "./components/ProtectedRoutes.tsx";
 import QuizCard from "./components/QuizCard.tsx";
 
 
+
 export default function App() {
     const [parties, setParties] = useState<Party[]>([]);
     const [quiz, setQuiz] = useState<Quiz>();

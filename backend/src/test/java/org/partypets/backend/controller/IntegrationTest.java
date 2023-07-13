@@ -160,26 +160,6 @@ class IntegrationTest {
                 //Then
                 .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
     }
-    @Test
-    @DirtiesContext
-    void expectAnonymousUser_whenNotLoggedIn() throws Exception {
-        String expected = "AnonymousUser";
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me1"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(expected));
-    }
-
-    @Test
-    @DirtiesContext
-    @WithMockUser(username = "Henry")
-    void expectUser_whenLoggedIn() throws Exception {
-        String expected = "Henry";
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me1"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string(expected));
-    }
 
     @Test
     @DirtiesContext
@@ -187,7 +167,7 @@ class IntegrationTest {
     void expectAUser_whenLoggedIn() throws Exception {
         String expected = "Henry";
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me2"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(expected));
     }
@@ -197,7 +177,7 @@ class IntegrationTest {
     void expectAnonymousUser_whenNotLoggedInOnMe2() throws Exception {
         String expected = "anonymousUser";
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me2"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(expected));
     }
@@ -237,7 +217,7 @@ class IntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/api/user/logout")
                 .with(csrf()));
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me2"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(expected));
     }

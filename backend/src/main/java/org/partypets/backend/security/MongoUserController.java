@@ -16,16 +16,9 @@ import java.security.Principal;
 @RequestMapping("/api/user")
 public class MongoUserController {
 
-    @GetMapping("/me1")
-    public String getMe1(Principal principal) {
-        if (principal != null) {
-            return principal.getName();
-        }
-        return "AnonymousUser";
-    }
 
-    @GetMapping("/me2")
-    public String getMe2() {
+    @GetMapping("/me")
+    public String getMe() {
         return SecurityContextHolder
                 .getContext()
                 .getAuthentication()
