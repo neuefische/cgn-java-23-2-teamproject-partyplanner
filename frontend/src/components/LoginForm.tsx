@@ -1,7 +1,7 @@
-import ControlledInput from "./ControlledInput.tsx";
 import Button from "@mui/material/Button";
 import {FormEvent, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {TextField} from "@mui/material";
 
 
 
@@ -26,19 +26,19 @@ return (<>
         <form onSubmit={handleSubmit}>
             <fieldset>
                 <legend style={{marginBottom: '20px', fontWeight: 'bold', fontSize: '28px'}}>Login</legend>
-                <ControlledInput
+                <TextField
                     label="Username"
                     type="text"
                     value={username}
                     id="username"
-                    onChange={setUsername}
+                    onChange={(event) => setUsername(event.target.value)}
                 />
-                <ControlledInput
+                <TextField
                     label="Password"
                     type="password"
                     value={password}
                     id="password"
-                    onChange={setPassword}
+                    onChange={(event) => setPassword(event.target.value)}
                 />
 
                 <div>

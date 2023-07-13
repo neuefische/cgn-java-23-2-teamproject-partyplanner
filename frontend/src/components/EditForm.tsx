@@ -2,8 +2,8 @@ import Button from "@mui/material/Button";
 import {FormEvent, useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
-import ControlledInput from "./ControlledInput.tsx";
 import {DTOParty} from "../models.ts";
+import {TextField} from "@mui/material";
 
 type Props = {
     onEditParty: (id: string, data: DTOParty) => void;
@@ -48,21 +48,21 @@ export default function EditForm(props: Props) {
             <form onSubmit={handleSubmit}>
                 <fieldset>
                     <legend style={{marginBottom: '20px', fontWeight: 'bold', fontSize: '28px'}}>Edit Party</legend>
-                    <ControlledInput
+                    <TextField
                         label="Theme"
                         type="text"
                         value={theme}
                         id="theme"
                         onChange={setTheme}
                     />
-                    <ControlledInput
+                    <TextField
                         label="Date"
                         type="date"
                         value={date}
                         id="date"
                         onChange={setDate}
                     />
-                    <ControlledInput
+                    <TextField
                         label="Location"
                         type="text"
                         value={location}
