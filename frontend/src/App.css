@@ -7,7 +7,7 @@ main {
 }
 
 #root {
-    margin: 0px;
+    margin: 0;
 }
 
 ul {
@@ -29,7 +29,6 @@ li {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
 }
 
 div {
@@ -38,17 +37,21 @@ div {
     margin: 1rem;
 }
 
-
 fieldset {
-    padding: 0px;
+    padding: 0;
     font-family: sans-serif;
     border-color: #bdd6d9;
     border-radius: 18px;
     margin: 1rem;
-
 }
 
 .button-right {
     float: right;
     padding-right: 50px;
+    background-color: rgb(44, 161, 173);
+}
+
+.button-login {
+    height: 1.5rem;
+    float: right;
 }
