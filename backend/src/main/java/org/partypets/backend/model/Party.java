@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Document
 @Data
@@ -15,7 +15,7 @@ import java.util.Date;
 public class Party {
     @Id
     private String id;
-    private Date date;
+    private LocalDate date;
     private String location;
     private String theme;
 }

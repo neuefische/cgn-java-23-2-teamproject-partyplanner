@@ -59,11 +59,10 @@ export default function AddForm(props: Props) {
     }
 
     function changeDate(event: React.ChangeEvent<HTMLInputElement>) {
-        const currentDate = new Date()
-        const currentDay = currentDate.toDateString().split("T")[0]+"T00:00:00.000+00:00"
-        const givenDate = new Date(currentDay)
+        const currentDate = new Date() // "2023-07-13T13:43:54.124+02:00"
+        currentDate.setHours(0, 0, 0) // "2023-07-13"
+        const givenDate = new Date(event.target.value) // "2023-07-13"
         setDate(event.target.value)
-
         if (givenDate.getTime() < currentDate.getTime()) {
             setErrorDate("Date must be in the present or future!")
         } else {

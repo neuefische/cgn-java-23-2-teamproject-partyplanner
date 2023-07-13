@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -32,7 +33,7 @@ class IntegrationTest {
     @DirtiesContext
     void expectPartyList_whenGettingAllParties() throws Exception {
         //Given
-        DTOParty newParty = new DTOParty(new Date(), "Home", "Dog-Bday");
+        DTOParty newParty = new DTOParty(LocalDate.now(), "Home", "Dog-Bday");
         this.partyService.add(newParty);
         String expected = """
                     [
@@ -57,6 +58,7 @@ class IntegrationTest {
     void expectNewPartyInList_whenPostingParty() throws Exception {
         String newParty = """
                 {
+                "date": "2035-01-01",
                 "location": "Home",
                 "theme": "Dog-Bday"
                 }
@@ -82,7 +84,7 @@ class IntegrationTest {
     @DirtiesContext
     void expectParty_whenGettingByID() throws Exception {
         //Given
-        DTOParty newParty = new DTOParty(new Date(), "Home", "Dog-Bday");
+        DTOParty newParty = new DTOParty(LocalDate.now(), "Home", "Dog-Bday");
         this.partyService.add(newParty);
         String id = partyService.list().get(0).getId();
         String expected = """
@@ -108,18 +110,18 @@ class IntegrationTest {
     @WithMockUser
     void expectUpdatedParty_whenPuttingParty() throws Exception {
         //Given
-        DTOParty newParty = new DTOParty(new Date(), "Home", "Dog-Bday");
+        DTOParty newParty = new DTOParty(LocalDate.now(), "Home", "Dog-Bday");
         this.partyService.add(newParty);
         String id = partyService.list().get(0).getId();
         String actual = """
                    
                         {
-                            "id": "%s",
+                            "date": "2035-01-01",
                             "location": "PawPalace",
                             "theme": "Party"
                          }
                     
-                """.formatted(id);
+                """;
         String expected = """
                    
                         {
@@ -143,7 +145,7 @@ class IntegrationTest {
     @WithMockUser
     void expectNoParty_whenDeletingParty() throws Exception {
         //Given
-        DTOParty newParty = new DTOParty(new Date(), "Home", "Dog-Bday");
+        DTOParty newParty = new DTOParty(LocalDate.now(), "Home", "Dog-Bday");
         this.partyService.add(newParty);
         String id = partyService.list().get(0).getId();
         String expected = """

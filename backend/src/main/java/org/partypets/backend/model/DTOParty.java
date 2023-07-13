@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -16,7 +16,7 @@ import java.util.Date;
 public class DTOParty {
     @NotNull
     @FutureOrPresent
-    private Date date;
+    private LocalDate date;
     @NotBlank
     @Size(min = 3, max = 25, message = "Must be between 3 and 25 characters long")
     private String location;
