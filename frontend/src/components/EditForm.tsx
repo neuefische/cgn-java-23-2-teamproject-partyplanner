@@ -15,11 +15,13 @@ export default function EditForm(props: Props) {
     const [theme, setTheme] = useState<string>("")
     const [date, setDate] = useState<string>("")
     const [location, setLocation] = useState<string>("")
-    const params = useParams();
-    const navigate = useNavigate()
     const [errorTheme, setErrorTheme] = useState<string>("")
     const [errorDate, setErrorDate] = useState<string>("")
     const [errorLocation, setErrorLocation] = useState<string>("")
+
+    const params = useParams();
+    const navigate = useNavigate()
+
 
     useEffect(() => {
         axios.get(`/api/parties/${params.id}`)
@@ -110,7 +112,6 @@ export default function EditForm(props: Props) {
                         id="location"
                         onChange={changeLocation}
                         helperText={errorLocation}
-
                     />
                 </fieldset>
                 <Button sx={{mt: 1, mr: 1, color: "rgb(44, 161, 173)", borderColor: "rgb(44, 161, 173)"}}

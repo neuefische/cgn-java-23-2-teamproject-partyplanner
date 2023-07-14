@@ -26,8 +26,6 @@ export default function RegisterForm(props: Props) {
     const [errorUsername, setErrorUsername] = useState<string>("");
     const [errorPassword, setErrorPassword] = useState<string>("");
 
-
-
     const navigate = useNavigate()
 
     function handleSubmit(event: FormEvent) {
