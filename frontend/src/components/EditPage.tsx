@@ -9,7 +9,7 @@ type Props = {
 }
 
 export default function EditPage(props: Props) {
-
+    const [id, setId] = useState<string>("")
     const [party, setParty] = useState<Party>()
 
     const params = useParams();
@@ -18,15 +18,20 @@ export default function EditPage(props: Props) {
         axios.get(`/api/parties/${params.id}`)
             .then(response => response.data)
             .catch(console.error)
-            .then(data => setParty(data))
+            .then(data => {
+                setId(data.id)
+                setParty(data)
+            })
     }, [params.id])
 
-    const partyWithoutID = {theme: party?.theme, date: party?.date, location: party?.location}
+    function handleSubmit(editedParty: DTOParty) {
+        props.onEditParty(id, editedParty)
+    }
 
+    const partyWithoutID: DTOParty = typeof party !== "undefined"
+        ? {theme: party.theme, date: party.date, location: party.location}
+        : {theme: "", date: "", location: ""}
 
-
-    return (
-        <InputForm onSubmitParty={props.onEditParty} party={partyWithoutID} legend="Edit Party" backUrl={`/${params.id}`}/>
-    )
+    return party &&
+        <InputForm onSubmitParty={handleSubmit} party={partyWithoutID} legend="Edit Party" backUrl={`/${id}`}/>
 }
-
