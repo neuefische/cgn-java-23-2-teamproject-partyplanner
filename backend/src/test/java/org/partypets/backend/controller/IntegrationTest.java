@@ -14,7 +14,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
@@ -220,5 +219,23 @@ class IntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().string(expected));
+    }
+
+    @Test
+    @DirtiesContext
+    void expectLogin_whenClickingSubmitAfterRegister() throws Exception {
+        String actual = """
+                               
+                        {
+                            "username": "Henry",
+                            "password": "Password"
+                         }
+                    
+                """;
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/register").content(actual).contentType(MediaType.APPLICATION_JSON).with(csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login").content(actual).contentType(MediaType.APPLICATION_JSON).with(csrf()))
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

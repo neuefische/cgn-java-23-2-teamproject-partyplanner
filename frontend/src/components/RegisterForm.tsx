@@ -15,6 +15,7 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 type Props = {
     onRegister: (username: string, password: string) => void
+    onLogin: (username: string, password: string) => void
 }
 
 export default function RegisterForm(props: Props) {
@@ -32,6 +33,7 @@ export default function RegisterForm(props: Props) {
     function handleSubmit(event: FormEvent) {
         event.preventDefault()
         props.onRegister(username, password)
+        props.onLogin(username, password);
         navigate("/")
     }
 

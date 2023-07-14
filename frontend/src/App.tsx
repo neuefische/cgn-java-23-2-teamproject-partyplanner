@@ -122,6 +122,10 @@ export default function App() {
 
     function handleRegister(username: string, password: string) {
         axios.post("/api/user/register", {username: username, password: password})
+            .then(() => {
+                handleLogin(username, password)
+            })
+            .catch(console.error)
     }
 
     return (
@@ -140,7 +144,7 @@ export default function App() {
             </Stack>
             <Routes>
                 <Route path={"/login"} element={<LoginForm onLogin={handleLogin}/>}/>
-                <Route path={"/register"} element={<RegisterForm onRegister={handleRegister}/>}/>
+                <Route path={"/register"} element={<RegisterForm onRegister={handleRegister} onLogin={handleLogin}/>}/>
                 <Route path={"/add"} element={<ProtectedRoutes user={user}/>}>
                     <Route path={""} element={<AddForm onAddParty={handleAddParty}/>}/>
                 </Route>
