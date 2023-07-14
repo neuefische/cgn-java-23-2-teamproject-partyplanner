@@ -86,7 +86,7 @@ export default function EditForm(props: Props) {
             <form onSubmit={handleSubmit}>
                 <fieldset>
                     <legend style={{marginBottom: '20px', fontWeight: 'bold', fontSize: '28px'}}>Edit Party</legend>
-                    <TextField
+                    <TextField error={errorTheme.length > 0}
                         label="Theme"
                         type="text"
                         value={theme}
@@ -94,7 +94,7 @@ export default function EditForm(props: Props) {
                         onChange={changeTheme}
                         helperText={errorTheme}
                     />
-                    <TextField
+                    <TextField error={errorDate.length > 0}
                         label="Date"
                         type="date"
                         value={date}
@@ -103,7 +103,7 @@ export default function EditForm(props: Props) {
                         helperText={errorDate}
 
                     />
-                    <TextField
+                    <TextField error={errorLocation.length > 0}
                         label="Location"
                         type="text"
                         value={location}
@@ -113,12 +113,13 @@ export default function EditForm(props: Props) {
 
                     />
                 </fieldset>
-                <Button sx={{mt: 1, mr: 1, color: "rgb(44, 161, 173)", borderColor: "rgb(44, 161, 173)"}} variant="outlined" disableElevation
-                        onClick={() => navigate(`/${id}`)}>Cancel </Button>
+                <Button sx={{mt: 1, mr: 1, color: "rgb(44, 161, 173)", borderColor: "rgb(44, 161, 173)"}}
+                        variant="outlined" disableElevation
+                        onClick={() => navigate(`/${id}`)}>Cancel</Button>
 
-                <Button sx={{mt: 1, mr: 1, bgcolor: "rgb(44, 161, 173)"}} type="submit" variant="contained" className="button-right">
-                    Submit
-                </Button>
+                <Button sx={{mt: 1, mr: 1, bgColor: "rgb(44, 161, 173)"}} type="submit" variant="contained"
+                        className="button-right">
+                    Submit</Button>
             </form>
         </>
     )

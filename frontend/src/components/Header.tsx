@@ -27,11 +27,18 @@ export default function Header(props: Props) {
                 }}>Paw Palace Parties</b>
                 <p style={{color: "white", marginLeft: "auto"}}>{isAuthenticated ? props.user : "😺"}</p>
                 {!isAuthenticated ?
-                    <Button sx={{m: "1rem", p: "0.5rem"}} className="button-login" variant="contained" color="inherit"
-                            disableElevation
-                            onClick={() => navigate("/login")}>
+                    <> <Button sx={{m: "1rem", p: "0.5rem"}} className="button-login" variant="contained"
+                               color="inherit"
+                               disableElevation
+                               onClick={() => navigate("/login")}>
                         Login
-                    </Button> :
+                    </Button>
+                        <Button sx={{m: "1rem", p: "0.5rem"}} className="button-login" variant="contained"
+                                color="inherit"
+                                disableElevation
+                                onClick={() => navigate("/register")}>
+                            Sign up
+                        </Button> </> :
                     <Button sx={{m: "1rem", p: "0.5rem"}} className="button-login" variant="contained" color="inherit"
                             disableElevation
                             onClick={props.onLogout}>

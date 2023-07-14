@@ -13,6 +13,7 @@ import EditForm from "./components/EditForm.tsx";
 import LoginForm from "./components/LoginForm.tsx";
 import ProtectedRoutes from "./components/ProtectedRoutes.tsx";
 import QuizCard from "./components/QuizCard.tsx";
+import RegisterForm from "./components/RegisterForm.tsx";
 
 
 
@@ -32,7 +33,7 @@ export default function App() {
     }, [user])
 
     function me() {
-        axios.get('api/user/me2')
+        axios.get('api/user/me')
             .then(response => response.data)
             .catch(console.error)
             .then(data => setUser(data))
@@ -119,6 +120,10 @@ export default function App() {
         setUser(undefined)
     }
 
+    function handleRegister(username: string, password: string) {
+        axios.post("/api/user/register", {username: username, password: password})
+    }
+
     return (
         <main>
             <Header user={user} onLogout={handleLogout}/>
@@ -135,6 +140,7 @@ export default function App() {
             </Stack>
             <Routes>
                 <Route path={"/login"} element={<LoginForm onLogin={handleLogin}/>}/>
+                <Route path={"/register"} element={<RegisterForm onRegister={handleRegister}/>}/>
                 <Route path={"/add"} element={<ProtectedRoutes user={user}/>}>
                     <Route path={""} element={<AddForm onAddParty={handleAddParty}/>}/>
                 </Route>
