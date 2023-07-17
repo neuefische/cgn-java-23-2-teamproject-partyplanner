@@ -30,6 +30,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void expectPartyList_whenGettingAllParties() throws Exception {
         //Given
         DTOParty newParty = new DTOParty(LocalDate.now(), "Home", "Dog-Bday");
