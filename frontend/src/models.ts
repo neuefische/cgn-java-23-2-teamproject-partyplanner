@@ -5,7 +5,7 @@ export type Party= {
     theme: string,
 }
 
-export type DTOParty= {
+export type PartyWithoutId = {
     date: string,
     location: string,
     theme: string,

@@ -1,11 +1,11 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {DTOParty, Party} from "../models.ts";
+import {PartyWithoutId, Party} from "../models.ts";
 import InputForm from "./InputForm.tsx";
 
 type Props = {
-    onEditParty: (id: string, data: DTOParty) => void;
+    onEditParty: (id: string, data: PartyWithoutId) => void;
 }
 
 export default function EditPage(props: Props) {
@@ -24,11 +24,11 @@ export default function EditPage(props: Props) {
             })
     }, [params.id])
 
-    function handleSubmit(editedParty: DTOParty) {
+    function handleSubmit(editedParty: PartyWithoutId) {
         props.onEditParty(id, editedParty)
     }
 
-    const partyWithoutID: DTOParty = typeof party !== "undefined"
+    const partyWithoutID: PartyWithoutId = typeof party !== "undefined"
         ? {theme: party.theme, date: party.date, location: party.location}
         : {theme: "", date: "", location: ""}
 
