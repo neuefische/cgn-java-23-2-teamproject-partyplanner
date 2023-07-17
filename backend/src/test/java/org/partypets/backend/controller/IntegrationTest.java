@@ -173,7 +173,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
-    void expectAnonymousUser_whenNotLoggedInOnMe2() throws Exception {
+    void expectAnonymousUser_whenNotLoggedInOnMe() throws Exception {
         String expected = "anonymousUser";
 
         mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me"))
