@@ -1,7 +1,7 @@
 import {FormEvent, useEffect, useState} from "react";
 import Button from "@mui/material/Button";
 import {DTOParty} from "../models.ts";
-import {TextField} from "@mui/material";
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 
 type Props = {
@@ -9,6 +9,7 @@ type Props = {
     party: DTOParty | undefined
     legend: string
     backUrl: string
+    placeholder: string
 }
 
 export default function InputForm(props: Props) {
@@ -65,6 +66,19 @@ export default function InputForm(props: Props) {
         }
     }
 
+
+
+
+    const[open, setOpen] = useState(false);
+    const handleClickOpen = () => {
+            setOpen(true);
+        }
+
+        const handleClose = () => {
+            setOpen(false);
+        }
+
+
     function handleChangeDate(event: React.ChangeEvent<HTMLInputElement>) {
         const currentDate = new Date()
         currentDate.setHours(0, 0, 0)
@@ -85,6 +99,7 @@ export default function InputForm(props: Props) {
                        type="text"
                        value={theme}
                        id="theme"
+                       placeholder="choose Theme"
                        required
                        onChange={handleChangeTheme}
                        helperText={errorTheme}
@@ -103,6 +118,7 @@ export default function InputForm(props: Props) {
                        type="text"
                        value={location}
                        id="location"
+                       placeholder="choose Location"
                        required
                        onChange={handleChangeLocation}
                        helperText={errorLocation}
@@ -110,7 +126,25 @@ export default function InputForm(props: Props) {
             <div>
                 <Button sx={{mt: 1, mr: 1, color: "rgb(44, 161, 173)", borderColor: "rgb(44, 161, 173)"}}
                         variant="outlined" disableElevation
-                        onClick={() => navigate(props.backUrl)}> Cancel</Button>
+                        onClick={handleClickOpen}> Cancel</Button>
+                <Dialog
+
+                    open={open}
+                    keepMounted
+                    onClose={handleClose}
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle>{"Go back without saving?"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Are you sure you want to go back, without saving?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose}>Disagree</Button>
+                        <Button onClick={() => navigate(props.backUrl)}>Agree</Button>
+                    </DialogActions>
+                </Dialog>
 
                 <Button sx={{mt: 1, mr: 1, bgcolor: "rgb(44, 161, 173)"}} type="submit" variant="contained"
                         className="button-right"

@@ -7,6 +7,8 @@ import {Party} from "../models.ts";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
+
 
 type Props = {
     onDeleteParty: (id: string) => void
@@ -20,6 +22,7 @@ export default function PartyDetail(props: Props) {
     const isAuthenticated = props.user !== undefined && props.user !== "anonymousUser";
     const params = useParams();
     const navigate = useNavigate();
+    const[open, setOpen] = useState(false);
 
     useEffect(() => {
         axios.get(`/api/parties/${params.id}`)
@@ -40,6 +43,13 @@ export default function PartyDetail(props: Props) {
         return <>No Party</>
     }
 
+    const handleClickOpen = () => {
+        setOpen(true);
+    }
+
+    const handleClose = () => {
+        setOpen(false);
+    }
 
     return (
         <Card sx={{ maxWidth: 345 }} style={{ display: "flex", flexDirection: "column" }}>
@@ -74,7 +84,26 @@ export default function PartyDetail(props: Props) {
                     size="small"
                     color="error"
                     variant="outlined"
-                    onClick={() => props.onDeleteParty(party.id)}>Delete</Button>
+                    onClick={handleClickOpen}>Delete</Button>
+
+                <Dialog
+
+                open={open}
+            keepMounted
+            onClose={handleClose}
+            aria-describedby="alert-dialog-description"
+        >
+            <DialogTitle>{"Do you really want to delete the party?"}</DialogTitle>
+            <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    Are you sure you want to delete the party?
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose}>No</Button>
+                <Button onClick={() => props.onDeleteParty(party.id)}>Yes</Button>
+            </DialogActions>
+        </Dialog>
             </>}
             <Button
                 sx={{ m: 1, color: "rgb(44, 161, 173)", borderColor: "rgb(44, 161, 173)" }}

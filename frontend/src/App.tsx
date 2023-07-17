@@ -14,6 +14,7 @@ import QuizCard from "./components/QuizCard.tsx";
 import RegisterForm from "./components/RegisterForm.tsx";
 import EditPage from "./components/EditPage.tsx";
 import AddPage from "./components/AddPage.tsx";
+import PartyCard from "./components/PartyCard.tsx";
 
 
 export default function App() {
@@ -166,12 +167,13 @@ export default function App() {
 
             <Route path={"/"} element={
                 (<Container sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-                    <Partylist parties={parties}/>
-                    <Button sx={{bgcolor: "rgb(44, 161, 173)"}} className="button-right" variant="contained"
+                    <Button sx={{bgcolor: "rgb(44, 161, 173)", ml: 40}} variant="contained"
                             disableElevation
                             onClick={() => navigate("/add")}>
                         + Add Party
                     </Button>
+                    <PartyCard parties ={parties}/>
+                    <Partylist parties={parties}/>
                     {quiz ? <QuizCard quiz={quiz} onSolveQuiz={handleSolveQuiz}/> : <>Loading quiz...</>}
                 </Container>)
             }/>
