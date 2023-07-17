@@ -20,6 +20,7 @@ public class PartyService {
 
     private final MongoUserService userService;
 
+
     public PartyService(PartyRepo partyRepo, UuIdService uuIdService, MongoUserService userService) {
         this.partyRepo = partyRepo;
         this.uuIdService = uuIdService;
