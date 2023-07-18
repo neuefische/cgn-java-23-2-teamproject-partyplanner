@@ -1,5 +1,6 @@
 package org.partypets.backend.controller;
-import org.partypets.backend.model.DTOParty;
+import jakarta.validation.Valid;
+import org.partypets.backend.model.PartyWithoutId;
 import org.partypets.backend.model.Party;
 import org.partypets.backend.service.PartyService;
 import org.springframework.web.bind.annotation.*;
@@ -28,13 +29,13 @@ public class PartyController {
 
 
     @PostMapping
-    public List<Party> addParty(@RequestBody DTOParty newParty) {
+    public List<Party> addParty(@Valid @RequestBody PartyWithoutId newParty) {
         this.partyService.add(newParty);
         return this.partyService.list();
     }
 
     @PutMapping("/{id}")
-    public Party update(@PathVariable String id, @RequestBody DTOParty newParty) {
+    public Party update(@PathVariable String id, @Valid @RequestBody PartyWithoutId newParty) {
         return partyService.edit(id, newParty);
     }
 

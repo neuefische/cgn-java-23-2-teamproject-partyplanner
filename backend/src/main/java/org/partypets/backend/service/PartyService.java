@@ -1,6 +1,6 @@
 package org.partypets.backend.service;
 
-import org.partypets.backend.model.DTOParty;
+import org.partypets.backend.model.PartyWithoutId;
 import org.partypets.backend.model.Party;
 import org.partypets.backend.model.UuIdService;
 import org.partypets.backend.repo.PartyRepo;
@@ -24,7 +24,7 @@ public class PartyService {
         return this.partyRepo.findAll();
     }
 
-    public Party add(DTOParty newParty) {
+    public Party add(PartyWithoutId newParty) {
         String id = uuIdService.getRandomId();
         Party party = new Party(id, newParty.getDate(), newParty.getLocation(), newParty.getTheme());
         return this.partyRepo.insert(party);
@@ -35,7 +35,7 @@ public class PartyService {
     }
 
 
-    public Party edit(String id, DTOParty newParty) {
+    public Party edit(String id, PartyWithoutId newParty) {
         Party editedParty = new Party(id, newParty.getDate(), newParty.getLocation(), newParty.getTheme());
         return this.partyRepo.save(editedParty);
     }

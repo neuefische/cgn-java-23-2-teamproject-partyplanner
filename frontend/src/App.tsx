@@ -2,17 +2,18 @@ import './App.css'
 import Partylist from "./components/Partylist.tsx";
 import Header from "./components/Header.tsx";
 import {useEffect, useState} from "react";
-import {DTOParty, Party, Quiz} from "./models.ts";
+import {PartyWithoutId, Party, Quiz} from "./models.ts";
 import axios from "axios";
 import {Alert, Container, Stack} from "@mui/material";
-import AddForm from "./components/AddForm.tsx";
 import {Route, Routes, useNavigate} from "react-router-dom";
 import Button from '@mui/material/Button';
 import PartyDetail from "./components/PartyDetail.tsx";
-import EditForm from "./components/EditForm.tsx";
 import LoginForm from "./components/LoginForm.tsx";
 import ProtectedRoutes from "./components/ProtectedRoutes.tsx";
 import QuizCard from "./components/QuizCard.tsx";
+import RegisterForm from "./components/RegisterForm.tsx";
+import EditPage from "./components/EditPage.tsx";
+import AddPage from "./components/AddPage.tsx";
 
 
 export default function App() {
@@ -30,8 +31,17 @@ export default function App() {
         me();
     }, [user])
 
+    useEffect(() => {
+        axios.get("/api/quiz")
+            .then(response => response.data)
+            .catch(console.error)
+            .then(data => {
+                setQuiz(data)
+            });
+    }, []);
+
     function me() {
-        axios.get('api/user/me2')
+        axios.get('api/user/me')
             .then(response => response.data)
             .catch(console.error)
             .then(data => setUser(data))
@@ -44,30 +54,24 @@ export default function App() {
             .then(data => setParties(data))
     }
 
-    useEffect(() => {
-        axios.get("/api/quiz")
-            .then(response => response.data)
-            .catch(console.error)
-            .then(data => {
-                console.log(data)
-                setQuiz(data)
-            });
-    }, []);
-
-    function handleAddParty(data: DTOParty) {
+    function handleAddParty(data: PartyWithoutId) {
         axios.post('api/parties', data)
             .then(response => response.data)
             .catch(console.error)
             .then(data => {
                 setParties(data)
-                setIsAddSuccess(true)
-                setTimeout(() => {
-                    setIsAddSuccess(false)
-                }, 4000)
             });
+        navigate("/")
+        setIsAddSuccess(true)
+        const timeoutId = setTimeout(() => {
+            setIsAddSuccess(false)
+        }, 4000)
+        return () => {
+            clearTimeout(timeoutId)
+        }
     }
 
-    function handleEditParty(id: string, data: DTOParty) {
+    function handleEditParty(id: string, data: PartyWithoutId) {
         axios.put(`/api/parties/${id}`, data)
             .then(response => response.data)
             .catch(console.error)
@@ -80,11 +84,15 @@ export default function App() {
                         return party
                     })
                 );
-                setIsEditSuccess(true)
-                setTimeout(() => {
-                    setIsEditSuccess(false)
-                }, 8000)
             })
+        navigate(`/${id}`)
+        setIsEditSuccess(true)
+        const timeoutId = setTimeout(() => {
+            setIsEditSuccess(false)
+        }, 8000)
+        return () => {
+            clearTimeout(timeoutId)
+        }
     }
 
     function handleDeleteParty(id: string) {
@@ -92,10 +100,13 @@ export default function App() {
             .catch(console.error)
         setParties(parties.filter(party => party.id !== id))
         setIsDeleteSuccess(true)
-        setTimeout(() => {
+        const timeoutId = setTimeout(() => {
             setIsDeleteSuccess(false)
         }, 4000)
         navigate("/")
+        return () => {
+            clearTimeout(timeoutId)
+        }
     }
 
     function handleSolveQuiz(id: string) {
@@ -118,44 +129,51 @@ export default function App() {
         setUser(undefined)
     }
 
-    return (
-        <main>
-            <Header user={user} onLogout={handleLogout}/>
-            <Stack sx={{width: '100%', m: 0, p: 0,}}>
-                {isDeleteSuccess && (
-                    <Alert severity="error">You just deleted your Party!</Alert>
-                )}
-                {isEditSuccess && (
-                    <Alert severity="success">You edited your Party successfully!</Alert>
-                )}
-                {isAddSuccess && (
-                    <Alert severity="success">You added your Party successfully!</Alert>
-                )}
-            </Stack>
-            <Routes>
-                <Route path={"/login"} element={<LoginForm onLogin={handleLogin}/>}/>
-                <Route path={"/add"} element={<ProtectedRoutes user={user}/>}>
-                    <Route path={""} element={<AddForm onAddParty={handleAddParty}/>}/>
-                </Route>
-                <Route path={"/:id/edit"} element={<ProtectedRoutes user={user}/>}>
-                    <Route path={""} element={<EditForm onEditParty={handleEditParty}/>}/>
-                </Route>
-                <Route path={"/:id"}>
-                    <Route index element={<PartyDetail user={user} onDeleteParty={handleDeleteParty}/>}/>
-                </Route>
+    function handleRegister(username: string, password: string) {
+        axios.post("/api/user/register", {username: username, password: password})
+            .then(() => {
+                handleLogin(username, password)
+            })
+            .catch(console.error)
+    }
 
-                <Route path={"/"} element={
-                    (<Container sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-                        <Partylist parties={parties}/>
-                        <Button sx={{bgcolor: "rgb(44, 161, 173)"}} className="button-right" variant="contained"
-                                disableElevation
-                                onClick={() => navigate("/add")}>
-                            + Add Party
-                        </Button>
-                        {quiz ? <QuizCard quiz={quiz} onSolveQuiz={handleSolveQuiz}/> : <>Loading quiz...</>}
-                    </Container>)
-                }/>
-            </Routes>
-        </main>
-    )
+    return <main>
+        <Header user={user} onLogout={handleLogout}/>
+        <Stack sx={{width: '100%', m: 0, p: 0,}}>
+            {isDeleteSuccess && (
+                <Alert severity="error">You just deleted your Party!</Alert>
+            )}
+            {isEditSuccess && (
+                <Alert severity="success">You edited your Party successfully!</Alert>
+            )}
+            {isAddSuccess && (
+                <Alert severity="success">You added your Party successfully!</Alert>
+            )}
+        </Stack>
+        <Routes>
+            <Route path={"/login"} element={<LoginForm onLogin={handleLogin}/>}/>
+            <Route path={"/register"} element={<RegisterForm onRegister={handleRegister} onLogin={handleLogin}/>}/>
+            <Route path={"/add"} element={<ProtectedRoutes user={user}/>}>
+                <Route path={""} element={<AddPage onAddParty={handleAddParty}/>}/>
+            </Route>
+            <Route path={"/:id/edit"} element={<ProtectedRoutes user={user}/>}>
+                <Route path={""} element={<EditPage onEditParty={handleEditParty}/>}/>
+            </Route>
+            <Route path={"/:id"}>
+                <Route index element={<PartyDetail user={user} onDeleteParty={handleDeleteParty}/>}/>
+            </Route>
+
+            <Route path={"/"} element={
+                (<Container sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+                    <Partylist parties={parties}/>
+                    <Button sx={{bgcolor: "rgb(44, 161, 173)"}} className="button-right" variant="contained"
+                            disableElevation
+                            onClick={() => navigate("/add")}>
+                        + Add Party
+                    </Button>
+                    {quiz ? <QuizCard quiz={quiz} onSolveQuiz={handleSolveQuiz}/> : <>Loading quiz...</>}
+                </Container>)
+            }/>
+        </Routes>
+    </main>
 }

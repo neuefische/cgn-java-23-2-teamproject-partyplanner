@@ -1,9 +1,12 @@
 package org.partypets.backend.security;
 
+import org.partypets.backend.model.UuIdService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -23,5 +26,13 @@ public class MongoUserDetailService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Username " + username + " not found!"));
 
         return new User(mongoUser.username(), mongoUser.password(), Collections.emptyList());
+    }
+
+    public void registerNewUser(UserWithoutId userWithoutId){
+        UuIdService uuIdService = new UuIdService();
+        PasswordEncoder encoder = Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
+        String encodedPassword = encoder.encode(userWithoutId.password());
+        MongoUser newUser = new MongoUser(uuIdService.getRandomId(), userWithoutId.username(), encodedPassword);
+        this.mongoUserRepository.save(newUser);
     }
 }
