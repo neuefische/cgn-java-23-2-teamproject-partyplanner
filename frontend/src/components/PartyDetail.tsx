@@ -11,7 +11,7 @@ import {useNavigate, useParams} from "react-router-dom";
 type Props = {
     onDeleteParty: (id: string) => void
     user?: string
-    userId: string
+    userId?: string
 }
 
 export default function PartyDetail(props: Props) {
