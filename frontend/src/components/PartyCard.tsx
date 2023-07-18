@@ -42,33 +42,43 @@ export default function PartyCard(props: Props) {
         setExpanded(!expanded);
     };
 
+    const handleShareClick = () => {
+        const url = window.location.href;
+        const shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(url)}`;
+        window.open(shareUrl, '_blank');
+    };
+
+
     return (
         <>
             {props.parties.map((party) => (
-                <Card key={party.id} sx={{ maxWidth: "450px", width: "100%", flexDirection: 'column'}}>
-                    <Box sx={{ justifyContent: 'space-around' }}>
+                <Card key={party.id} sx={{ maxWidth: '450px', width: '100%', flexDirection: 'column'}}>
+                    <Box sx={{ ml: 7, mr: 6, justifyContent: 'space-between' }}>
                         <Avatar aria-label="user">PP</Avatar>
-                        <Typography variant="h6" sx={{ mt: 2}}>
+                        <Typography sx={{ mt: 2, color: 'rgb(44, 161, 173)', fontSize:'35px'}}>
                             {party.theme}
                         </Typography>
                     </Box>
-                    <CardContent sx={{ ml: 1, flexDirection: 'column'}}>
-                        <Box>
-                            <Typography sx={{ mr: 5}}> 🗓</Typography>
-                            <Typography sx={{ mr: 20}}>Date: </Typography>
-                            <Typography sx={{ flexGrow: 1 }}>{new Date(party.date).toLocaleDateString("de-DE")}</Typography>
+                    <CardContent sx={{ ml: 1, display: 'flex', flexDirection: 'column', alignItems: 'flex-start' }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                            <Typography sx={{ fontSize: '24px', mr: 4, ml: 5 }}>🗓</Typography>
+                            <Typography sx={{ mr: 1, minWidth: '80px' }}>Date:</Typography>
+                            <Typography>
+                                {new Date(party.date).toLocaleDateString("de-DE")}
+                            </Typography>
                         </Box>
-                        <Box>
-                            <Typography sx={{ mr: 5}}>📍</Typography>
-                            <Typography sx={{ mr: 17}}>Location:</Typography>
-                            <Typography sx={{ flexGrow: 1 }}>{party.location} </Typography>
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Typography sx={{ fontSize: '24px', mr: 4, ml: 5 }}>📍</Typography>
+                            <Typography sx={{ mr: 1, minWidth: '80px' }}>Location:</Typography>
+                            <Typography>{party.location}</Typography>
                         </Box>
                     </CardContent>
+
                     <CardActions disableSpacing>
                         <IconButton aria-label="add to favorites">
                             <FavoriteIcon />
                         </IconButton>
-                        <IconButton aria-label="share party">
+                        <IconButton aria-label="share party" onClick={handleShareClick}>
                             <ShareIcon />
                         </IconButton>
                         <IconButton aria-label="edit party" onClick={() => navigate(`/${party.id}`)}>

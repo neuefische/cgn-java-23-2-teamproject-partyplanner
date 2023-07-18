@@ -1,5 +1,4 @@
 import './App.css'
-import Partylist from "./components/Partylist.tsx";
 import Header from "./components/Header.tsx";
 import {useEffect, useState} from "react";
 import {DTOParty, Party, Quiz} from "./models.ts";
@@ -167,13 +166,12 @@ export default function App() {
 
             <Route path={"/"} element={
                 (<Container sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
-                    <Button sx={{bgcolor: "rgb(44, 161, 173)", ml: 40}} variant="contained"
+                    <Button sx={{bgcolor: "rgb(44, 161, 173)"}} variant="contained"
                             disableElevation
                             onClick={() => navigate("/add")}>
                         + Add Party
                     </Button>
                     <PartyCard parties ={parties}/>
-                    <Partylist parties={parties}/>
                     {quiz ? <QuizCard quiz={quiz} onSolveQuiz={handleSolveQuiz}/> : <>Loading quiz...</>}
                 </Container>)
             }/>
