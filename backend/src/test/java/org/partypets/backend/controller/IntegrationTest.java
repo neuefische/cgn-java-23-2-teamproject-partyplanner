@@ -3,6 +3,7 @@ package org.partypets.backend.controller;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.partypets.backend.security.MongoUser;
+import org.partypets.backend.security.MongoUserDetailService;
 import org.partypets.backend.security.MongoUserRepository;
 import org.partypets.backend.service.PartyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.Optional;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
@@ -32,6 +35,9 @@ class IntegrationTest {
 
     @Autowired
     private MongoUserRepository userRepository;
+
+
+    private final MongoUserDetailService mongoUserDetailService = new MongoUserDetailService(userRepository);
 
     @Test
     @DirtiesContext
@@ -296,7 +302,36 @@ class IntegrationTest {
                 """;
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/user/register").content(actual).contentType(MediaType.APPLICATION_JSON).with(csrf())).andExpect(MockMvcResultMatchers.status().isOk());
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login").content(actual).contentType(MediaType.APPLICATION_JSON).with(csrf())).andExpect(MockMvcResultMatchers.status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login").with(httpBasic("Henry", "Password")).with(csrf())).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    @DirtiesContext
+    void expectUserId_whenLoggedIn() throws Exception {
+        String actual = """
+                               
+                        {
+                            "username": "Franky",
+                            "password": "Franky1"
+                         }
+                    
+                """;
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/register").content(actual).contentType(MediaType.APPLICATION_JSON).with(csrf())).andExpect(MockMvcResultMatchers.status().isOk());
+
+        Optional<MongoUser> user = userRepository.findByUsername("Franky");
+        assert user.isPresent();
+        String userId = user.get().id();
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login").with(httpBasic("Franky", "Franky1")).with(csrf())).andExpect(MockMvcResultMatchers.status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user").with(httpBasic("Franky", "Franky1"))).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content().string(userId));
+
+    }
+
+    @Test
+    @DirtiesContext
+    void expectNull_whenNotLoggedIn() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content().string(""));
+
     }
 
     @AfterEach
