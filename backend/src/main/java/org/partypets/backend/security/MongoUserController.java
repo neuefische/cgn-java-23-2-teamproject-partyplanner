@@ -16,11 +16,16 @@ public class MongoUserController {
     private final MongoUserDetailService mongoUserDetailService;
 
     @GetMapping
-    public UserWithoutPassword getUserWithoutPassword() {
-        return this.mongoUserDetailService.getUserWithoutPassword(SecurityContextHolder
+    public String getUserId() {
+        String username = SecurityContextHolder
                 .getContext()
                 .getAuthentication()
-                .getName());
+                .getName();
+
+        if (!username.equals("anonymousUser")) {
+            return this.mongoUserDetailService.getUserWithoutPassword(username).id();
+        }
+        return null;
     }
 
     @GetMapping("/me")

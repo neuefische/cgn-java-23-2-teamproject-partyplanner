@@ -38,6 +38,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.GET, "/api/randomCatImage").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/parties/**").permitAll()
                                 .requestMatchers("/api/parties/**").authenticated()
+                                .requestMatchers(HttpMethod.GET,"/api/user").permitAll()
                                 .requestMatchers("/api/user/me").permitAll()
                                 .anyRequest().permitAll())
                 .build();
