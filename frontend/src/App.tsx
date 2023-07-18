@@ -23,6 +23,7 @@ export default function App() {
     const [isEditSuccess, setIsEditSuccess] = useState<boolean>(false);
     const [isAddSuccess, setIsAddSuccess] = useState<boolean>(false);
     const [user, setUser] = useState<string>();
+    const [userId, setUserId] = useState<string>();
 
     const navigate = useNavigate();
 
@@ -46,6 +47,12 @@ export default function App() {
             .then(response => response.data)
             .catch(console.error)
             .then(data => setUser(data))
+
+        axios.get('api/user')
+            .then(response => response.data)
+            .catch(console.error)
+            .then(data => setUserId(data))
+
     }
 
     function fetchParties() {
@@ -140,6 +147,7 @@ export default function App() {
 
     return <main>
         <Header user={user} onLogout={handleLogout}/>
+        <p>{userId}</p>
         <Stack sx={{width: '100%', m: 0, p: 0,}}>
             {isDeleteSuccess && (
                 <Alert severity="error">You just deleted your Party!</Alert>
@@ -161,7 +169,7 @@ export default function App() {
                 <Route path={""} element={<EditPage onEditParty={handleEditParty}/>}/>
             </Route>
             <Route path={"/:id"}>
-                <Route index element={<PartyDetail user={user} onDeleteParty={handleDeleteParty}/>}/>
+                <Route index element={<PartyDetail userId={userId} user={user} onDeleteParty={handleDeleteParty}/>}/>
             </Route>
 
             <Route path={"/"} element={

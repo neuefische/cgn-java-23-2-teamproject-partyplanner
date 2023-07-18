@@ -11,6 +11,7 @@ import {useNavigate, useParams} from "react-router-dom";
 type Props = {
     onDeleteParty: (id: string) => void
     user?: string
+    userId: string
 }
 
 export default function PartyDetail(props: Props) {
@@ -62,7 +63,7 @@ export default function PartyDetail(props: Props) {
                     {party.location}
                 </Typography>
             </CardContent>
-            {isAuthenticated && <>
+            {isAuthenticated && props.userId === party.userId && <>
                 <Button
                     sx={{m: 1, bgcolor: "rgb(44, 161, 173)"}}
                     size="small"
