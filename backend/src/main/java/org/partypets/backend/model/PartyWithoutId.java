@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DTOParty {
+public class PartyWithoutId {
     @NotNull
     @FutureOrPresent
     private LocalDate date;

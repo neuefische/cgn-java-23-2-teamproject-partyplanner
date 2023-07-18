@@ -2,7 +2,7 @@ import './App.css'
 import Partylist from "./components/Partylist.tsx";
 import Header from "./components/Header.tsx";
 import {useEffect, useState} from "react";
-import {DTOParty, Party, Quiz} from "./models.ts";
+import {PartyWithoutId, Party, Quiz} from "./models.ts";
 import axios from "axios";
 import {Alert, Container, Stack} from "@mui/material";
 import {Route, Routes, useNavigate} from "react-router-dom";
@@ -37,7 +37,6 @@ export default function App() {
             .then(response => response.data)
             .catch(console.error)
             .then(data => {
-                console.log(data)
                 setQuiz(data)
             });
     }, []);
@@ -62,7 +61,7 @@ export default function App() {
             .then(data => setParties(data))
     }
 
-    function handleAddParty(data: DTOParty) {
+    function handleAddParty(data: PartyWithoutId) {
         axios.post('api/parties', data)
             .then(response => response.data)
             .catch(console.error)
@@ -79,7 +78,7 @@ export default function App() {
         }
     }
 
-    function handleEditParty(id: string, data: DTOParty) {
+    function handleEditParty(id: string, data: PartyWithoutId) {
         axios.put(`/api/parties/${id}`, data)
             .then(response => response.data)
             .catch(console.error)

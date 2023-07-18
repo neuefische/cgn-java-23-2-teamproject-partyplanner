@@ -1,12 +1,12 @@
 import {FormEvent, useEffect, useState} from "react";
 import Button from "@mui/material/Button";
-import {DTOParty} from "../models.ts";
+import {PartyWithoutId} from "../models.ts";
 import {TextField} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 
 type Props = {
-    onSubmitParty: (data: DTOParty) => void
-    party: DTOParty | undefined
+    onSubmitParty: (data: PartyWithoutId) => void
+    party: PartyWithoutId | undefined
     legend: string
     backUrl: string
 }
@@ -33,7 +33,7 @@ export default function InputForm(props: Props) {
 
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        const data: DTOParty = {
+        const data: PartyWithoutId = {
             location: location,
             theme: theme,
             date: date

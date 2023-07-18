@@ -2,8 +2,8 @@ package org.partypets.backend.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.partypets.backend.model.DTOParty;
 import org.partypets.backend.model.Party;
+import org.partypets.backend.model.PartyWithoutId;
 import org.partypets.backend.model.UuIdService;
 import org.partypets.backend.repo.PartyRepo;
 import org.partypets.backend.security.MongoUser;
@@ -11,11 +11,9 @@ import org.partypets.backend.security.MongoUserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.test.context.support.WithMockUser;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,7 +57,7 @@ class PartyServiceTest {
     @Test
     void expectId_whenAddedParty() {
         //given
-        DTOParty newParty = new DTOParty(LocalDate.now(), "Home", "Dog-Bday");
+        PartyWithoutId newParty = new PartyWithoutId(LocalDate.now(), "Home", "Dog-Bday");
         Party expected = new Party("abc", LocalDate.now(), "Home", "Dog-Bday", "user123");
         MongoUser user = new MongoUser("user123", "Henry", "Henry1");
         //when
@@ -90,14 +88,14 @@ class PartyServiceTest {
     @Test
     void expectUpdatedParty_whenEditingPartyDetails() {
         //given
-        DTOParty dtoParty = new DTOParty(LocalDate.now(), "Home", "Dog-Bday");
+        PartyWithoutId partyWithoutId = new PartyWithoutId(LocalDate.now(), "Home", "Dog-Bday");
         Party expected = new Party("abc", LocalDate.now(), "Home", "Dog-Bday", "user123");
         MongoUser user = new MongoUser("user123", "Henry", "Henry1");
         //when
         when(partyRepo.findById("abc")).thenReturn(Optional.of(expected));
         when(partyRepo.save(expected)).thenReturn(expected);
         when(mongoUserService.getUserByUsername("Henry")).thenReturn(user);
-        Party actual = partyService.edit("abc", dtoParty);
+        Party actual = partyService.edit("abc", partyWithoutId);
         //then
         assertEquals(expected, actual);
         verify(partyRepo).findById("abc");
