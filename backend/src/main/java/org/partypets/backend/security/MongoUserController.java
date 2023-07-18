@@ -15,6 +15,14 @@ public class MongoUserController {
 
     private final MongoUserDetailService mongoUserDetailService;
 
+    @GetMapping
+    public UserWithoutPassword getUserWithoutPassword() {
+        return this.mongoUserDetailService.getUserWithoutPassword(SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName());
+    }
+
     @GetMapping("/me")
     public String getMe() {
         return SecurityContextHolder
@@ -30,8 +38,6 @@ public class MongoUserController {
                 .getAuthentication()
                 .getName();
     }
-
-
 
     @PostMapping("/logout")
     public void logout(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {

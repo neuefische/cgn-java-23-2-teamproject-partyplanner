@@ -5,13 +5,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class MongoUserService {
 
-    private final MongoUserRepository userRepository;
+    private final MongoUserRepository mongoUserRepository;
 
     public MongoUserService(MongoUserRepository userRepository) {
-        this.userRepository = userRepository;
+        this.mongoUserRepository = userRepository;
     }
 
     public MongoUser getUserByUsername(String username) {
-        return this.userRepository.findByUsername(username).orElseThrow();
+        return this.mongoUserRepository.findByUsername(username).orElseThrow();
     }
 }
