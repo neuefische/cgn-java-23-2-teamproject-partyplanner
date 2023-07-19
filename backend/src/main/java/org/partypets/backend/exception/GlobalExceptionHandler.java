@@ -20,4 +20,10 @@ public class GlobalExceptionHandler {
     public String handleNoSuchPartyException(NoSuchPartyException exception) {
         return exception.getMessage();
     }
+
+    @ExceptionHandler({UsernameAlreadyExistsException.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public String handleUsernameAlreadyExistsException(UsernameAlreadyExistsException exception) {
+        return exception.getMessage();
+    }
 }
