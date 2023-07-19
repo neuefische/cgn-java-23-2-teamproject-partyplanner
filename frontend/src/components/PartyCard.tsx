@@ -5,7 +5,6 @@ import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -14,6 +13,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
 import Box from '@mui/material/Box';
+import Typography from "@mui/material/Typography";
+import Sheet from '@mui/joy/Sheet';
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -32,12 +33,14 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 type Props = {
     parties: Party[];
-    user?: string
-    userId?: string
+    user?: string;
+    userId?: string;
 };
 
 export default function PartyCard(props: Props) {
     const [expanded, setExpanded] = useState(false);
+    const [filterLocation, setFilterLocation] = useState('');
+
     const navigate = useNavigate();
     const isAuthenticated = props.user !== undefined && props.user !== "anonymousUser";
 
@@ -51,9 +54,43 @@ export default function PartyCard(props: Props) {
         window.open(shareUrl, '_blank');
     };
 
+    const handleFilterLocationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFilterLocation(event.target.value);
+    };
+
+    const filteredParties = props.parties.filter(party => {
+        const partyLocation = party.location.toLowerCase();
+        const filterLocationLower = filterLocation.toLowerCase();
+        return partyLocation.includes(filterLocationLower);
+    });
+
     return (
         <>
-            {props.parties.map((party) => (
+            <Sheet
+                variant="outlined"
+                sx={{ p: 2, borderRadius: 'sm', width: 345 }}
+            >
+                <Typography
+                    id="filter-location"
+                    sx={{
+                        textTransform: 'uppercase',
+                        fontSize: '10px',
+                        color: 'text.secondary',
+                        mt: 2,
+                    }}
+                >
+                    Find parties at your location
+                </Typography>
+                <Box role="group" aria-labelledby="filter-location">
+                    <input
+                        type="text"
+                        value={filterLocation}
+                        onChange={handleFilterLocationChange}
+                        placeholder="Enter location"
+                    />
+                </Box>
+            </Sheet>
+            {filteredParties.map((party) => (
                 <Card key={party.id} sx={{ maxWidth: 345, flexDirection: 'column' }}>
                     <Box sx={{ ml: 2, mr: 6, justifyContent: 'space-between' }}>
                         <Avatar aria-label="user">PP</Avatar>
@@ -77,14 +114,13 @@ export default function PartyCard(props: Props) {
                     </CardContent>
 
                     <CardActions disableSpacing>
-                        {isAuthenticated && props.userId === party.userId && <>
-                            <IconButton
-                                aria-label="add to favorites"
-                            >
-                                <FavoriteIcon />
-                            </IconButton>
+                        {isAuthenticated && props.userId === party.userId && (
+                            <>
+                                <IconButton aria-label="add to favorites">
+                                    <FavoriteIcon />
+                                </IconButton>
                             </>
-                        }
+                        )}
                         <IconButton aria-label="share party" onClick={handleShareClick}>
                             <ShareIcon />
                         </IconButton>
