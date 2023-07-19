@@ -1,10 +1,16 @@
 package org.partypets.backend.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.partypets.backend.model.PartyWithoutId;
 import org.partypets.backend.model.Party;
+import org.partypets.backend.model.PartyWithoutId;
 import org.partypets.backend.model.UuIdService;
 import org.partypets.backend.repo.PartyRepo;
+import org.partypets.backend.security.MongoUser;
+import org.partypets.backend.security.MongoUserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,12 +24,27 @@ class PartyServiceTest {
 
     PartyRepo partyRepo = mock(PartyRepo.class);
     UuIdService uuIdService = mock(UuIdService.class);
-    PartyService partyService = new PartyService(partyRepo, uuIdService);
+
+    MongoUserService mongoUserService = mock(MongoUserService.class);
+
+    Authentication authentication = mock(Authentication.class);
+
+    SecurityContext securityContext = mock(SecurityContext.class);
+
+    PartyService partyService = new PartyService(partyRepo, uuIdService, mongoUserService);
+    String username = "Henry";
+
+    @BeforeEach
+    void setUp() {
+        when(authentication.getName()).thenReturn(username);
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+    }
 
     @Test
     void expectListOfAllParties_whenGettingTheList() {
         //given
-        Party newParty = new Party("abc", LocalDate.now(), "Home", "Dog-Bday");
+        Party newParty = new Party("abc", LocalDate.now(), "Home", "Dog-Bday", "user123");
         List<Party> expected = new ArrayList<>(List.of(newParty));
         //when
         when(partyRepo.findAll()).thenReturn(expected);
@@ -37,22 +58,25 @@ class PartyServiceTest {
     void expectId_whenAddedParty() {
         //given
         PartyWithoutId newParty = new PartyWithoutId(LocalDate.now(), "Home", "Dog-Bday");
-        Party expected = new Party("abc", LocalDate.now(), "Home", "Dog-Bday");
+        Party expected = new Party("abc", LocalDate.now(), "Home", "Dog-Bday", "user123");
+        MongoUser user = new MongoUser("user123", "Henry", "Henry1");
         //when
         when(uuIdService.getRandomId()).thenReturn("abc");
         when(partyRepo.insert(expected)).thenReturn(expected);
+        when(mongoUserService.getUserByUsername("Henry")).thenReturn(user);
         Party actual = partyService.add(newParty);
         //then
         assertEquals(expected, actual);
         verify(uuIdService).getRandomId();
         verify(partyRepo).insert(expected);
+        verify(mongoUserService).getUserByUsername(username);
     }
 
 
     @Test
     void expectParty_whenGettingPartyDetails() {
         //given
-        Party expected = new Party("abc", LocalDate.now(), "Home", "Dog-Bday");
+        Party expected = new Party("abc", LocalDate.now(), "Home", "Dog-Bday", "user123");
         //when
         when(partyRepo.findById("abc")).thenReturn(Optional.of(expected));
         Party actual = partyService.getDetails("abc");
@@ -65,22 +89,33 @@ class PartyServiceTest {
     void expectUpdatedParty_whenEditingPartyDetails() {
         //given
         PartyWithoutId partyWithoutId = new PartyWithoutId(LocalDate.now(), "Home", "Dog-Bday");
-        Party expected = new Party("abc", LocalDate.now(), "Home", "Dog-Bday");
+        Party expected = new Party("abc", LocalDate.now(), "Home", "Dog-Bday", "user123");
+        MongoUser user = new MongoUser("user123", "Henry", "Henry1");
         //when
+        when(partyRepo.findById("abc")).thenReturn(Optional.of(expected));
         when(partyRepo.save(expected)).thenReturn(expected);
+        when(mongoUserService.getUserByUsername("Henry")).thenReturn(user);
         Party actual = partyService.edit("abc", partyWithoutId);
         //then
         assertEquals(expected, actual);
+        verify(partyRepo).findById("abc");
         verify(partyRepo).save(expected);
+        verify(mongoUserService).getUserByUsername(username);
     }
 
     @Test
     void expectDeleteMethodToBeCalled_whenDeletingParty() {
         //given
         String id = "abc";
+        Party expected = new Party("abc", LocalDate.now(), "Home", "Dog-Bday", "user123");
+        MongoUser user = new MongoUser("user123", "Henry", "Henry1");
         //when
+        when(partyRepo.findById("abc")).thenReturn(Optional.of(expected));
+        when(mongoUserService.getUserByUsername("Henry")).thenReturn(user);
         partyService.delete(id);
         //then
+        verify(partyRepo).findById("abc");
         verify(partyRepo).deleteById(id);
+        verify(mongoUserService).getUserByUsername(username);
     }
 }

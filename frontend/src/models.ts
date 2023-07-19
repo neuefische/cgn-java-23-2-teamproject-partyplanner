@@ -3,6 +3,7 @@ export type Party= {
     date: string,
     location: string,
     theme: string,
+    userId: string,
 }
 
 export type PartyWithoutId = {

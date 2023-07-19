@@ -28,4 +28,17 @@ class MongoUserDetailServiceTest {
         assertEquals(expected.username(), actual.getUsername());
         verify(userRepository).findByUsername(username);
     }
+
+    @Test
+    void expectUserWithoutPassword() {
+        //GIVEN
+        MongoUser expected = new MongoUser("abc", "Henry", "p4ssw0rd");
+        String username = "Henry";
+        //WHEN
+        when(userRepository.findByUsername(username)).thenReturn(Optional.of(expected));
+        UserWithoutPassword actual = userDetailService.getUserWithoutPassword(username);
+        //THEN
+        assertEquals(expected.id(), actual.id());
+        verify(userRepository).findByUsername(username);
+    }
 }

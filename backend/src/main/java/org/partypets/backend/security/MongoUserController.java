@@ -15,6 +15,19 @@ public class MongoUserController {
 
     private final MongoUserDetailService mongoUserDetailService;
 
+    @GetMapping
+    public String getUserId() {
+        String username = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        if (!username.equals("anonymousUser")) {
+            return this.mongoUserDetailService.getUserWithoutPassword(username).id();
+        }
+        return null;
+    }
+
     @GetMapping("/me")
     public String getMe() {
         return SecurityContextHolder
@@ -30,8 +43,6 @@ public class MongoUserController {
                 .getAuthentication()
                 .getName();
     }
-
-
 
     @PostMapping("/logout")
     public void logout(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
