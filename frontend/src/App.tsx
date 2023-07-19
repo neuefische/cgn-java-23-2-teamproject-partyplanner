@@ -1,7 +1,7 @@
 import './App.css'
 import Header from "./components/Header.tsx";
 import {useEffect, useState} from "react";
-import {DTOParty, Party, Quiz} from "./models.ts";
+import {PartyWithoutId, Party, Quiz} from "./models.ts";
 import axios from "axios";
 import {Alert, Container, Stack} from "@mui/material";
 import {Route, Routes, useNavigate} from "react-router-dom";
@@ -23,6 +23,8 @@ export default function App() {
     const [isEditSuccess, setIsEditSuccess] = useState<boolean>(false);
     const [isAddSuccess, setIsAddSuccess] = useState<boolean>(false);
     const [user, setUser] = useState<string>();
+    const [userId, setUserId] = useState<string>();
+    const [openWarningToast, setOpenWarningToast] = useState(false);
 
     const navigate = useNavigate();
 
@@ -46,6 +48,11 @@ export default function App() {
             .then(response => response.data)
             .catch(console.error)
             .then(data => setUser(data))
+
+        axios.get('api/user')
+            .then(response => response.data)
+            .catch(console.error)
+            .then(data => setUserId(data))
     }
 
     function fetchParties() {
@@ -55,10 +62,13 @@ export default function App() {
             .then(data => setParties(data))
     }
 
-    function handleAddParty(data: DTOParty) {
+    function handleAddParty(data: PartyWithoutId) {
         axios.post('api/parties', data)
             .then(response => response.data)
-            .catch(console.error)
+            .catch(error => {
+                console.error(error);
+                setOpenWarningToast(true);
+            })
             .then(data => {
                 setParties(data)
             });
@@ -72,10 +82,13 @@ export default function App() {
         }
     }
 
-    function handleEditParty(id: string, data: DTOParty) {
+    function handleEditParty(id: string, data: PartyWithoutId) {
         axios.put(`/api/parties/${id}`, data)
             .then(response => response.data)
-            .catch(console.error)
+            .catch(error => {
+                console.error(error);
+                setOpenWarningToast(true);
+            })
             .then(data => {
                 setParties(
                     parties.map(party => {
@@ -98,7 +111,10 @@ export default function App() {
 
     function handleDeleteParty(id: string) {
         axios.delete(`/api/parties/${id}`)
-            .catch(console.error)
+            .catch(error => {
+                console.error(error);
+                setOpenWarningToast(true);
+            })
         setParties(parties.filter(party => party.id !== id))
         setIsDeleteSuccess(true)
         const timeoutId = setTimeout(() => {
@@ -140,6 +156,7 @@ export default function App() {
 
     return <main>
         <Header user={user} onLogout={handleLogout}/>
+
         <Stack sx={{width: '100%', m: 0, p: 0,}}>
             {isDeleteSuccess && (
                 <Alert severity="error">You just deleted your Party!</Alert>
@@ -150,6 +167,9 @@ export default function App() {
             {isAddSuccess && (
                 <Alert severity="success">You added your Party successfully!</Alert>
             )}
+            {openWarningToast && (
+                <Alert severity="warning">Are you logged in?</Alert>
+                )}
         </Stack>
         <Routes>
             <Route path={"/login"} element={<LoginForm onLogin={handleLogin}/>}/>
@@ -161,7 +181,7 @@ export default function App() {
                 <Route path={""} element={<EditPage onEditParty={handleEditParty}/>}/>
             </Route>
             <Route path={"/:id"}>
-                <Route index element={<PartyDetail user={user} onDeleteParty={handleDeleteParty}/>}/>
+                <Route index element={<PartyDetail userId={userId} user={user} onDeleteParty={handleDeleteParty}/>}/>
             </Route>
 
             <Route path={"/"} element={

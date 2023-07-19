@@ -1,12 +1,12 @@
 import {FormEvent, useEffect, useState} from "react";
 import Button from "@mui/material/Button";
-import {DTOParty} from "../models.ts";
+import {PartyWithoutId} from "../models.ts";
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 
 type Props = {
-    onSubmitParty: (data: DTOParty) => void
-    party: DTOParty | undefined
+    onSubmitParty: (data: PartyWithoutId) => void
+    party: PartyWithoutId | undefined
     legend: string
     backUrl: string
     placeholder: string
@@ -34,7 +34,7 @@ export default function InputForm(props: Props) {
 
     function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        const data: DTOParty = {
+        const data: PartyWithoutId = {
             location: location,
             theme: theme,
             date: date
@@ -94,7 +94,8 @@ export default function InputForm(props: Props) {
     return <form onSubmit={handleSubmit}>
         <fieldset>
             <legend style={{marginBottom: '20px', fontWeight: 'bold', fontSize: '28px'}}>{props.legend}</legend>
-            <TextField error={errorTheme.length > 0}
+            <TextField sx={{ml: 2, width: '85%'}}
+                       error={errorTheme.length > 0}
                        label="Theme"
                        type="text"
                        value={theme}
@@ -104,7 +105,8 @@ export default function InputForm(props: Props) {
                        onChange={handleChangeTheme}
                        helperText={errorTheme}
             />
-            <TextField error={errorDate.length > 0}
+            <TextField sx={{ml: 2, width: '85%'}}
+                       error={errorDate.length > 0}
                        label="Date"
                        type="date"
                        value={date}
@@ -113,7 +115,8 @@ export default function InputForm(props: Props) {
                        onChange={handleChangeDate}
                        helperText={errorDate}
             />
-            <TextField error={errorLocation.length > 0}
+            <TextField sx={{ml: 2, width: '85%'}}
+                       error={errorLocation.length > 0}
                        label="Location"
                        type="text"
                        value={location}
@@ -128,7 +131,6 @@ export default function InputForm(props: Props) {
                         variant="outlined" disableElevation
                         onClick={handleClickOpen}> Cancel</Button>
                 <Dialog
-
                     open={open}
                     keepMounted
                     onClose={handleClose}
@@ -137,12 +139,12 @@ export default function InputForm(props: Props) {
                     <DialogTitle>{"Go back without saving?"}</DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            Are you sure you want to go back, without saving?
+                            Are you sure you want to go back to the party, without saving?
                         </DialogContentText>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Disagree</Button>
-                        <Button onClick={() => navigate(props.backUrl)}>Agree</Button>
+                        <Button onClick={() => navigate(props.backUrl)} color="error" variant="outlined">Go back</Button>
                     </DialogActions>
                 </Dialog>
 

@@ -3,9 +3,10 @@ export type Party= {
     date: string,
     location: string,
     theme: string,
+    userId: string,
 }
 
-export type DTOParty= {
+export type PartyWithoutId = {
     date: string,
     location: string,
     theme: string,
