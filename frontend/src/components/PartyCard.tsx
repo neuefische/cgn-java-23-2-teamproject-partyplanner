@@ -74,7 +74,7 @@ export default function PartyCard(props: Props) {
                     id="filter-location"
                     sx={{
                         textTransform: 'uppercase',
-                        fontSize: '10px',
+                        fontSize: '12px',
                         color: 'text.secondary',
                         mt: 2,
                     }}
@@ -82,7 +82,7 @@ export default function PartyCard(props: Props) {
                     Find parties at your location
                 </Typography>
                 <Box role="group" aria-labelledby="filter-location">
-                    <input
+                    <input className="input"
                         type="text"
                         value={filterLocation}
                         onChange={handleFilterLocationChange}
@@ -94,7 +94,7 @@ export default function PartyCard(props: Props) {
                 <Card key={party.id} sx={{ maxWidth: 345, flexDirection: 'column' }}>
                     <Box sx={{ ml: 2, mr: 6, justifyContent: 'space-between' }}>
                         <Avatar aria-label="user">PP</Avatar>
-                        <Typography sx={{ mt: 2, color: 'rgb(44, 161, 173)', fontSize: '35px' }}>
+                        <Typography sx={{ mt: 2, color: 'rgb(44, 161, 173)', fontSize: '30px', fontFamily: 'Belanosima' }}>
                             {party.theme}
                         </Typography>
                     </Box>

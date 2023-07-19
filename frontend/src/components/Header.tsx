@@ -33,6 +33,7 @@ export default function Header(props: Props) {
                                onClick={() => navigate("/login")}>
                         Login
                     </Button>
+                        <p style={{color: "white"}}>or</p>
                         <Button sx={{m: "0.5rem", p: "0.5rem", fontSize: "10px"}} className="button-login" variant="contained"
                                 color="inherit"
                                 disableElevation
