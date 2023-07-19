@@ -32,12 +32,14 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 type Props = {
     parties: Party[];
-    userId?: string;
+    user?: string
+    userId?: string
 };
 
 export default function PartyCard(props: Props) {
     const [expanded, setExpanded] = useState(false);
     const navigate = useNavigate();
+    const isAuthenticated = props.user !== undefined && props.user !== "anonymousUser";
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -75,19 +77,14 @@ export default function PartyCard(props: Props) {
                     </CardContent>
 
                     <CardActions disableSpacing>
-                        {props.userId === party.userId && (
-                            <IconButton
-                                aria-label="add to favorites"
-                                color="error"
-                            >
-                                <FavoriteIcon />
-                            </IconButton>
-                        ) }
+                        {isAuthenticated && props.userId === party.userId && <>
                             <IconButton
                                 aria-label="add to favorites"
                             >
                                 <FavoriteIcon />
                             </IconButton>
+                            </>
+                        }
                         <IconButton aria-label="share party" onClick={handleShareClick}>
                             <ShareIcon />
                         </IconButton>
