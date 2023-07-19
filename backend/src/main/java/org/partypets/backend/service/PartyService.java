@@ -1,7 +1,8 @@
 package org.partypets.backend.service;
 
-import org.partypets.backend.model.PartyWithoutId;
+import org.partypets.backend.exception.NoSuchPartyException;
 import org.partypets.backend.model.Party;
+import org.partypets.backend.model.PartyWithoutId;
 import org.partypets.backend.model.UuIdService;
 import org.partypets.backend.repo.PartyRepo;
 import org.partypets.backend.security.MongoUser;
@@ -30,6 +31,7 @@ public class PartyService {
     public List<Party> list() {
         return this.partyRepo.findAll();
     }
+
     public Party add(PartyWithoutId newParty) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         MongoUser user = this.userService.getUserByUsername(username);
@@ -39,14 +41,14 @@ public class PartyService {
     }
 
     public Party getDetails(String id) {
-        return this.partyRepo.findById(id).orElseThrow();
+        return this.partyRepo.findById(id).orElseThrow(() -> new NoSuchPartyException("Party with id: " + id + " not found!"));
     }
 
     public Party edit(String id, PartyWithoutId newParty) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         MongoUser user = this.userService.getUserByUsername(username);
 
-        Party currentParty = this.partyRepo.findById(id).orElseThrow();
+        Party currentParty = this.partyRepo.findById(id).orElseThrow(() -> new NoSuchPartyException("Party with id: " + id + " not found!"));
         if (currentParty.getUserId().equals(user.id())) {
             Party editedParty = new Party(id, newParty.getDate(), newParty.getLocation(), newParty.getTheme(), user.id());
             return this.partyRepo.save(editedParty);
@@ -58,7 +60,7 @@ public class PartyService {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         MongoUser user = this.userService.getUserByUsername(username);
 
-        Party currentParty = this.partyRepo.findById(id).orElseThrow();
+        Party currentParty = this.partyRepo.findById(id).orElseThrow(() -> new NoSuchPartyException("Party with id: " + id + " not found!"));
         if (currentParty.getUserId().equals(user.id())) {
             this.partyRepo.deleteById(id);
         }
