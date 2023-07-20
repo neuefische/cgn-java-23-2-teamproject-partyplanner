@@ -3,6 +3,7 @@ package org.partypets.backend.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.partypets.backend.exception.NoSuchPartyException;
+import org.partypets.backend.exception.UsernameAlreadyExistsException;
 import org.partypets.backend.model.Party;
 import org.partypets.backend.model.PartyWithoutId;
 import org.partypets.backend.model.UuIdService;
@@ -143,5 +144,34 @@ class PartyServiceTest {
         assertThrows(RuntimeException.class, () -> partyService.getDetails(id));
         assertInstanceOf(RuntimeException.class, exception);
         assertEquals("Party not found: abc", exception.getMessage());
+    }
+
+    @Test
+    void testExceptionDefaultConstructor() {
+        //GIVEN
+        UsernameAlreadyExistsException exception = new UsernameAlreadyExistsException();
+        //THEN
+        assertNull(exception.getMessage());
+        assertNull(exception.getCause());
+    }
+
+    @Test
+    void testExceptionConstructorWithMessageAndCause() {
+        //GIVEN
+        String message = "Username already exists!";
+        Throwable cause = new RuntimeException("Some cause");
+        UsernameAlreadyExistsException exception = new UsernameAlreadyExistsException(message, cause);
+        //THEN
+        assertEquals(message, exception.getMessage());
+        assertEquals(cause, exception.getCause());
+    }
+
+    @Test
+    void testExceptionConstructorWithCause() {
+        //GIVEN
+        Throwable cause = new RuntimeException("Some cause");
+        UsernameAlreadyExistsException exception = new UsernameAlreadyExistsException(cause);
+        //THEN
+        assertEquals(cause, exception.getCause());
     }
 }
