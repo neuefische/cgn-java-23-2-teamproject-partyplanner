@@ -21,7 +21,6 @@ public class PartyService {
 
     private final MongoUserService userService;
 
-
     public PartyService(PartyRepo partyRepo, UuIdService uuIdService, MongoUserService userService) {
         this.partyRepo = partyRepo;
         this.uuIdService = uuIdService;
@@ -41,14 +40,14 @@ public class PartyService {
     }
 
     public Party getDetails(String id) {
-        return this.partyRepo.findById(id).orElseThrow(() -> new NoSuchPartyException("Party with id: " + id + " not found!"));
+        return this.partyRepo.findById(id).orElseThrow(() -> new NoSuchPartyException(id));
     }
 
     public Party edit(String id, PartyWithoutId newParty) {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         MongoUser user = this.userService.getUserByUsername(username);
 
-        Party currentParty = this.partyRepo.findById(id).orElseThrow(() -> new NoSuchPartyException("Party with id: " + id + " not found!"));
+        Party currentParty = this.partyRepo.findById(id).orElseThrow(() -> new NoSuchPartyException(id));
         if (currentParty.getUserId().equals(user.id())) {
             Party editedParty = new Party(id, newParty.getDate(), newParty.getLocation(), newParty.getTheme(), user.id());
             return this.partyRepo.save(editedParty);
@@ -60,7 +59,7 @@ public class PartyService {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         MongoUser user = this.userService.getUserByUsername(username);
 
-        Party currentParty = this.partyRepo.findById(id).orElseThrow(() -> new NoSuchPartyException("Party with id: " + id + " not found!"));
+        Party currentParty = this.partyRepo.findById(id).orElseThrow(() -> new NoSuchPartyException(id));
         if (currentParty.getUserId().equals(user.id())) {
             this.partyRepo.deleteById(id);
         }

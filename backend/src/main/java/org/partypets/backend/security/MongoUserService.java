@@ -1,6 +1,5 @@
 package org.partypets.backend.security;
 
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service

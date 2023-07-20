@@ -3,7 +3,6 @@ package org.partypets.backend.controller;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.partypets.backend.security.MongoUser;
-import org.partypets.backend.security.MongoUserDetailService;
 import org.partypets.backend.security.MongoUserRepository;
 import org.partypets.backend.service.PartyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +34,6 @@ class IntegrationTest {
 
     @Autowired
     private MongoUserRepository userRepository;
-
-
-    private final MongoUserDetailService mongoUserDetailService = new MongoUserDetailService(userRepository);
 
     @Test
     @DirtiesContext
@@ -208,6 +204,70 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
+    void expectOldParty_whenPuttingPartyOfDifferentUser() throws Exception {
+        //Given
+        String actual = """
+                  
+                        {
+                            "date": "2035-01-01",
+                            "location": "PawPalace",
+                            "theme": "Party"
+                         }
+                    
+                """;
+
+        String userHenry = """
+                               
+                        {
+                            "username": "Henry",
+                            "password": "Password"
+                         }
+                    
+                """;
+        String newParty = """
+                {
+                "date": "2035-01-01",
+                "location": "Home",
+                "theme": "Dog-Bday"
+                }
+                """;
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/register").content(userHenry).contentType(MediaType.APPLICATION_JSON).with(csrf())).andExpect(MockMvcResultMatchers.status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login").with(httpBasic("Henry", "Password")).with(csrf())).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content().string("Henry"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/parties").content(newParty).contentType(MediaType.APPLICATION_JSON).with(httpBasic("Henry", "Password")).with(csrf()));
+
+        String id = partyService.list().get(0).getId();
+
+        String expected = """
+                   
+                        {
+                            "id": "%s",
+                            "date": "2035-01-01",
+                            "location": "Home",
+                            "theme": "Dog-Bday"
+                         }
+                    
+                """.formatted(id);
+
+        String userFranky = """
+                               
+                        {
+                            "username": "Franky",
+                            "password": "Franky1"
+                         }
+                    
+                """;
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/register").content(userFranky).contentType(MediaType.APPLICATION_JSON).with(csrf())).andExpect(MockMvcResultMatchers.status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login").with(httpBasic("Franky", "Franky1")).with(csrf())).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content().string("Franky"));
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/parties/" + id).content(actual).contentType(MediaType.APPLICATION_JSON).with(httpBasic("Franky", "Franky1")).with(csrf()))
+
+                //Then
+                .andExpect(MockMvcResultMatchers.content().json(expected)).andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    @DirtiesContext
     void expectNoParty_whenDeletingParty() throws Exception {
         //Given
         String loginData = """
@@ -291,7 +351,7 @@ class IntegrationTest {
 
     @Test
     @DirtiesContext
-    void expectLogin_whenClickingSubmitAfterRegister() throws Exception {
+    void expectSuccessfulLogin_whenRegistered() throws Exception {
         String actual = """
                                
                         {
@@ -332,6 +392,84 @@ class IntegrationTest {
     void expectNull_whenNotLoggedIn() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/api/user")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content().string(""));
 
+    }
+
+    @Test
+    @DirtiesContext
+    void expect405_whenRegisteringWithExistingUsername() throws Exception {
+        String actual = """
+                               
+                        {
+                            "username": "Henry",
+                            "password": "Password"
+                         }
+                    
+                """;
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/register").content(actual).contentType(MediaType.APPLICATION_JSON).with(csrf())).andExpect(MockMvcResultMatchers.status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/register").content(actual).contentType(MediaType.APPLICATION_JSON).with(csrf())).andExpect(MockMvcResultMatchers.status().isForbidden());
+    }
+
+    @Test
+    @DirtiesContext
+    void expect404_whenGettingNonExistentParty() throws Exception {
+        //Given
+        String loginData = """
+                               
+                        {
+                            "username": "Henry",
+                            "password": "Password"
+                         }
+                    
+                """;
+        String newParty = """
+                {
+                "date": "2035-01-01",
+                "location": "Home",
+                "theme": "Dog-Bday"
+                }
+                """;
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/register").content(loginData).contentType(MediaType.APPLICATION_JSON).with(csrf())).andExpect(MockMvcResultMatchers.status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login").with(httpBasic("Henry", "Password")).with(csrf())).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content().string("Henry"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/parties").content(newParty).contentType(MediaType.APPLICATION_JSON).with(httpBasic("Henry", "Password")).with(csrf()));
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/logout").with(csrf()));
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/user/me")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content().string("anonymousUser"));
+
+
+        //When
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/parties/" + "abc"))
+
+                //Then
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(username = "Henry", password = "Henry1")
+    void expect400_whenPostingPartyWithPastDate() throws Exception {
+        String loginData = """
+                               
+                        {
+                            "username": "Henry",
+                            "password": "Password"
+                         }
+                    
+                """;
+
+        String newParty = """
+                {
+                "date": "1999-01-01",
+                "location": "Home",
+                "theme": "Dog-Bday"
+                }
+                """;
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/register").content(loginData).contentType(MediaType.APPLICATION_JSON).with(csrf())).andExpect(MockMvcResultMatchers.status().isOk());
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/user/login").with(httpBasic("Henry", "Password")).with(csrf())).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content().string("Henry"));
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/parties").content(newParty).contentType(MediaType.APPLICATION_JSON).with(httpBasic("Henry", "Password")).with(csrf()))
+
+                //Then
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
     @AfterEach

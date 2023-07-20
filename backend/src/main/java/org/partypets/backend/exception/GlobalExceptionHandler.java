@@ -11,19 +11,19 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({MethodArgumentNotValidException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
-        return exception.getAllErrors().get(0).getDefaultMessage();
+    public ErrorMessage handleMethodArgumentNotValidException(MethodArgumentNotValidException exception) {
+        return new ErrorMessage(exception.getAllErrors().get(0).getDefaultMessage());
     }
 
     @ExceptionHandler({NoSuchPartyException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleNoSuchPartyException(NoSuchPartyException exception) {
-        return exception.getMessage();
+    public ErrorMessage handleNoSuchPartyException(NoSuchPartyException exception) {
+        return new ErrorMessage(exception.getMessage());
     }
 
     @ExceptionHandler({UsernameAlreadyExistsException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public String handleUsernameAlreadyExistsException(UsernameAlreadyExistsException exception) {
-        return exception.getMessage();
+    public ErrorMessage handleUsernameAlreadyExistsException(UsernameAlreadyExistsException exception) {
+        return new ErrorMessage(exception.getMessage());
     }
 }

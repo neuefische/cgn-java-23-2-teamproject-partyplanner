@@ -8,12 +8,12 @@ public class NoSuchPartyException extends RuntimeException {
     public NoSuchPartyException() {
     }
 
-    public NoSuchPartyException(String message) {
-        super(message);
+    public NoSuchPartyException(String id) {
+        super("Party not found: " + id);
     }
 
-    public NoSuchPartyException(String message, Throwable cause) {
-        super(message, cause);
+    public NoSuchPartyException(String id, Throwable cause) {
+        super("Party not found: " + id, cause);
     }
 
     public NoSuchPartyException(Throwable cause) {
