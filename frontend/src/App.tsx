@@ -25,7 +25,6 @@ export default function App() {
     const [user, setUser] = useState<string>();
     const [userId, setUserId] = useState<string>();
     const [snackbarStatus, setSnackbarStatus] = useState<boolean>(false);
-    const [snackbarText, setSnackbarText] = useState<string>("");
     const [openWarningToast, setOpenWarningToast] = useState(false);
 
     const navigate = useNavigate();
@@ -150,10 +149,7 @@ export default function App() {
 
     function handleRegister(username: string, password: string) {
         axios.post("/api/user/register", {username: username, password: password})
-            .catch((error) => {
-                setSnackbarText(error.response.data)
-                setSnackbarStatus(true)
-            })
+            .catch(() => setSnackbarStatus(true))
     }
 
     return <main>
@@ -200,7 +196,7 @@ export default function App() {
         </Routes>
         <Snackbar open={snackbarStatus} autoHideDuration={6000} onClose={() => setSnackbarStatus(false)}>
             <Alert onClose={() => setSnackbarStatus(false)} severity="error" sx={{width: '100%'}}>
-                {snackbarText}
+                Username already in use!
             </Alert>
         </Snackbar>
     </main>

@@ -43,9 +43,9 @@ export default function RegisterForm(props: Props) {
     function changePassword(event: React.ChangeEvent<HTMLInputElement>) {
         setPassword(event.target.value)
         if (event.target.value.length < 3) {
-            setErrorPassword("Username must be at least 3 characters long!")
+            setErrorPassword("Password must be at least 3 characters long!")
         } else if (event.target.value.length > 25) {
-            setErrorPassword("Username must be under 25 characters long!")
+            setErrorPassword("Password must be under 25 characters long!")
         } else {
             setErrorPassword("")
         }
