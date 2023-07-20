@@ -1,6 +1,7 @@
 package org.partypets.backend.security;
 
 import org.junit.jupiter.api.Test;
+import org.partypets.backend.exception.UsernameAlreadyExistsException;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
@@ -37,5 +38,18 @@ class MongoUserDetailServiceTest {
         //THEN
         assertEquals(expected.id(), actual.id());
         verify(userRepository).findByUsername(username);
+    }
+
+    @Test
+    void expectUserUsernameAlreadyExistsException_whenRegisteringWithExistingUsername() {
+        //GIVEN
+        String username = "Henry";
+        UserWithoutId user = new UserWithoutId("Henry", "Password");
+        UsernameAlreadyExistsException exception = new UsernameAlreadyExistsException();
+        //WHEN
+        when(userRepository.findByUsername(username)).thenThrow(exception);
+        //THEN
+        assertThrows(RuntimeException.class, () -> userDetailService.registerNewUser(user));
+        assertInstanceOf(RuntimeException.class, exception);
     }
 }
