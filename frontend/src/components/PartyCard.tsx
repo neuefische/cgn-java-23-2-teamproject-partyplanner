@@ -9,8 +9,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Party } from "../models.ts";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState} from "react";
+import { useNavigate} from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
 import Box from '@mui/material/Box';
 import Typography from "@mui/material/Typography";
@@ -41,15 +41,15 @@ export default function PartyCard(props: Props) {
     const [expanded, setExpanded] = useState(false);
     const [filterLocation, setFilterLocation] = useState('');
 
-    const navigate = useNavigate();
     const isAuthenticated = props.user !== undefined && props.user !== "anonymousUser";
+    const navigate = useNavigate();
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
 
-    const handleShareClick = () => {
-        const url = window.location.href;
+    const handleShareClick = (id: string) => {
+        const url = window.location.href + id;
         const shareUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(url)}`;
         window.open(shareUrl, '_blank');
     };
@@ -73,13 +73,12 @@ export default function PartyCard(props: Props) {
                 <Typography
                     id="filter-location"
                     sx={{
-                        textTransform: 'uppercase',
-                        fontSize: '12px',
+                        fontSize: '14px',
                         color: 'text.secondary',
                         mt: 2,
                     }}
                 >
-                    Find parties at your location
+                    Parties at your location
                 </Typography>
                 <Box role="group" aria-labelledby="filter-location">
                     <input className="input"
@@ -92,9 +91,9 @@ export default function PartyCard(props: Props) {
             </Sheet>
             {filteredParties.map((party) => (
                 <Card key={party.id} sx={{ maxWidth: 345, flexDirection: 'column' }}>
-                    <Box sx={{ ml: 2, mr: 6, justifyContent: 'space-between' }}>
-                        <Avatar aria-label="user">PP</Avatar>
-                        <Typography sx={{ mt: 2, color: 'rgb(44, 161, 173)', fontSize: '30px', fontFamily: 'Belanosima' }}>
+                    <Box sx={{ ml: 2, justifyContent: 'flex-start'}}>
+                        <Avatar aria-label="emoji"><span>🥳</span></Avatar>
+                        <Typography sx={{ mt: 2, ml: 1, color: 'rgb(44, 161, 173)', fontSize: '30px', fontFamily: 'Belanosima'}}>
                             {party.theme}
                         </Typography>
                     </Box>
@@ -114,14 +113,8 @@ export default function PartyCard(props: Props) {
                     </CardContent>
 
                     <CardActions disableSpacing>
-                        {isAuthenticated && props.userId === party.userId && (
-                            <>
-                                <IconButton aria-label="add to favorites">
-                                    <FavoriteIcon />
-                                </IconButton>
-                            </>
-                        )}
-                        <IconButton aria-label="share party" onClick={handleShareClick}>
+                        {isAuthenticated && props.userId === party.userId && <FavoriteIcon />}
+                        <IconButton aria-label="share party" onClick={() => handleShareClick(party.id)}>
                             <ShareIcon />
                         </IconButton>
                         <IconButton aria-label="edit party" onClick={() => navigate(`/${party.id}`)}>
@@ -138,8 +131,7 @@ export default function PartyCard(props: Props) {
                     </CardActions>
                     <Collapse in={expanded} timeout="auto" unmountOnExit>
                         <CardContent>
-                            <Typography paragraph>Guestlist:</Typography>
-                            <Typography paragraph>... Guests</Typography>
+                            <Typography paragraph>Guestlist: coming soon</Typography>
                         </CardContent>
                     </Collapse>
                 </Card>

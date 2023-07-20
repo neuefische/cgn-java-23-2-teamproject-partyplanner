@@ -70,7 +70,7 @@ export default function RegisterForm(props: Props) {
     return (<>
             <form onSubmit={handleSubmit}>
                 <fieldset>
-                    <legend style={{ marginBottom: '20px', fontWeight: 'bold', fontSize: '28px' }}>Register</legend>
+                    <legend style={{ marginBottom: '20px', fontWeight: 'bold', fontSize: '28px' }}>Sign Up</legend>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <TextField error={errorUsername.length > 0}
                             label="Username"
@@ -110,7 +110,7 @@ export default function RegisterForm(props: Props) {
                                 onClick={() => navigate("/")}> Cancel</Button>
 
                         <Button sx={{ mt: 1, mr: 1, bgcolor: "rgb(44, 161, 173)" }} type="submit" variant="contained" className="button-right">
-                            Register
+                            Sign up
                         </Button>
                     </div>
                 </fieldset>

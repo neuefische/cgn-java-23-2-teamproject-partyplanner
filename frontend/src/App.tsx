@@ -40,6 +40,7 @@ export default function App() {
             .then(response => response.data)
             .catch(console.error)
             .then(data => {
+                console.log(data)
                 setQuiz(data)
             });
     }, []);
@@ -54,7 +55,6 @@ export default function App() {
             .then(response => response.data)
             .catch(console.error)
             .then(data => setUserId(data))
-
     }
 
     function fetchParties() {
@@ -158,6 +158,7 @@ export default function App() {
 
     return <main>
         <Header user={user} onLogout={handleLogout}/>
+
         <Stack sx={{width: '100%', m: 0, p: 0,}}>
             {isDeleteSuccess && (
                 <Alert severity="error">You just deleted your Party!</Alert>
@@ -192,7 +193,7 @@ export default function App() {
                             onClick={() => navigate("/add")}>
                         + Add Party
                     </Button>
-                    <PartyCard parties ={parties}/>
+                    <PartyCard parties ={parties} user={user} userId={userId}/>
                     {quiz ? <QuizCard quiz={quiz} onSolveQuiz={handleSolveQuiz}/> : <>Loading quiz...</>}
                 </Container>)
             }/>
