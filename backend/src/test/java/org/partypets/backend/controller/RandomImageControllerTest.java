@@ -5,7 +5,6 @@ import okhttp3.mockwebserver.MockWebServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.partypets.backend.service.RandomImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,10 +23,6 @@ class RandomImageControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private RandomImageService randomImageService;
-
 
     private static MockWebServer mockWebServer;
 
