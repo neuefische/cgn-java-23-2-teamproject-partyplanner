@@ -2,9 +2,9 @@ import './App.css'
 import Partylist from "./components/Partylist.tsx";
 import Header from "./components/Header.tsx";
 import {useEffect, useState} from "react";
-import {PartyWithoutId, Party, Quiz} from "./models.ts";
+import {Party, PartyWithoutId, Quiz} from "./models.ts";
 import axios from "axios";
-import {Alert, Container, Stack} from "@mui/material";
+import {Alert, Container, Snackbar, Stack} from "@mui/material";
 import {Route, Routes, useNavigate} from "react-router-dom";
 import Button from '@mui/material/Button';
 import PartyDetail from "./components/PartyDetail.tsx";
@@ -24,6 +24,8 @@ export default function App() {
     const [isAddSuccess, setIsAddSuccess] = useState<boolean>(false);
     const [user, setUser] = useState<string>();
     const [userId, setUserId] = useState<string>();
+    const [snackbarStatus, setSnackbarStatus] = useState<boolean>(false);
+    const [snackbarText, setSnackbarText] = useState<string>("");
 
     const navigate = useNavigate();
 
@@ -138,10 +140,10 @@ export default function App() {
 
     function handleRegister(username: string, password: string) {
         axios.post("/api/user/register", {username: username, password: password})
-            .then(() => {
-                handleLogin(username, password)
+            .catch((error) => {
+                setSnackbarText(error.response.data)
+                setSnackbarStatus(true)
             })
-            .catch(console.error)
     }
 
     return <main>
@@ -183,5 +185,10 @@ export default function App() {
                 </Container>)
             }/>
         </Routes>
+        <Snackbar open={snackbarStatus} autoHideDuration={6000} onClose={() => setSnackbarStatus(false)}>
+            <Alert onClose={() => setSnackbarStatus(false)} severity="error" sx={{width: '100%'}}>
+                {snackbarText}
+            </Alert>
+        </Snackbar>
     </main>
 }

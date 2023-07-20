@@ -2,15 +2,15 @@ import Button from "@mui/material/Button";
 import {FormEvent, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {
-    TextField,
+    FormControl,
+    FormHelperText,
     IconButton,
     InputAdornment,
-    FormControl,
-    OutlinedInput,
     InputLabel,
-    FormHelperText
+    OutlinedInput,
+    TextField
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
 
 
 type Props = {
@@ -31,7 +31,6 @@ export default function RegisterForm(props: Props) {
     function handleSubmit(event: FormEvent) {
         event.preventDefault()
         props.onRegister(username, password)
-        props.onLogin(username, password);
         navigate("/")
     }
 
