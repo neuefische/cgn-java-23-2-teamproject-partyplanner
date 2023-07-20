@@ -1,16 +1,16 @@
-import { styled } from '@mui/material/styles';
+import {styled} from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import IconButton, {IconButtonProps} from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Party } from "../models.ts";
-import { useState} from "react";
-import { useNavigate} from "react-router-dom";
+import {Party} from "../models.ts";
+import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 import EditIcon from '@mui/icons-material/Edit';
 import Box from '@mui/material/Box';
 import Typography from "@mui/material/Typography";
@@ -67,8 +67,7 @@ export default function PartyCard(props: Props) {
     return (
         <>
             <Sheet
-                variant="outlined"
-                sx={{ p: 2, borderRadius: 'sm', width: 345 }}
+                sx={{p: 2, borderRadius: 'sm', maxWidth: 345, ml: "10px"}}
             >
                 <Typography
                     id="filter-location"
