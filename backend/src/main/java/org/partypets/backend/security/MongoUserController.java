@@ -52,7 +52,7 @@ public class MongoUserController {
 
     @PostMapping("/register")
     public void register(@RequestBody UserWithoutId userWithoutId){
-       this.mongoUserDetailService.registerNewUser(userWithoutId);
+        this.mongoUserDetailService.registerNewUser(userWithoutId);
     }
 
 }

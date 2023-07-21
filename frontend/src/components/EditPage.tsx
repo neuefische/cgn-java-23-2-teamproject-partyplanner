@@ -33,5 +33,5 @@ export default function EditPage(props: Props) {
         : {theme: "", date: "", location: ""}
 
     return party &&
-        <InputForm onSubmitParty={handleSubmit} party={partyWithoutID} legend="Edit Party" backUrl={`/${id}`}/>
+        <InputForm onSubmitParty={handleSubmit} party={partyWithoutID} legend="Edit Party" backUrl={`/${id}`} placeholder=""/>
 }
