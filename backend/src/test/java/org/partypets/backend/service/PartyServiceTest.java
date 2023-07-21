@@ -2,6 +2,8 @@ package org.partypets.backend.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.partypets.backend.exception.NoSuchPartyException;
+import org.partypets.backend.exception.UsernameAlreadyExistsException;
 import org.partypets.backend.model.Party;
 import org.partypets.backend.model.PartyWithoutId;
 import org.partypets.backend.model.UuIdService;
@@ -17,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class PartyServiceTest {
@@ -110,12 +112,66 @@ class PartyServiceTest {
         Party expected = new Party("abc", LocalDate.now(), "Home", "Dog-Bday", "user123");
         MongoUser user = new MongoUser("user123", "Henry", "Henry1");
         //when
-        when(partyRepo.findById("abc")).thenReturn(Optional.of(expected));
+        when(partyRepo.findById(id)).thenReturn(Optional.of(expected));
         when(mongoUserService.getUserByUsername("Henry")).thenReturn(user);
         partyService.delete(id);
         //then
-        verify(partyRepo).findById("abc");
+        verify(partyRepo).findById(id);
         verify(partyRepo).deleteById(id);
         verify(mongoUserService).getUserByUsername(username);
+    }
+
+    @Test
+    void expectNoSuchPartyException_whenCalledWithNonExistent() {
+        //GIVEN
+        String id = "abc";
+        NoSuchPartyException exception = new NoSuchPartyException();
+        //WHEN
+        when(partyRepo.findById(id)).thenThrow(exception);
+        //THEN
+        assertThrows(RuntimeException.class, () -> partyService.getDetails(id));
+        assertInstanceOf(RuntimeException.class, exception);
+    }
+
+    @Test
+    void expectNoSuchPartyExceptionWithId_whenCalledWithNonExistent() {
+        //GIVEN
+        String id = "abc";
+        NoSuchPartyException exception = new NoSuchPartyException(id);
+        //WHEN
+        when(partyRepo.findById(id)).thenThrow(exception);
+        //THEN
+        assertThrows(RuntimeException.class, () -> partyService.getDetails(id));
+        assertInstanceOf(RuntimeException.class, exception);
+        assertEquals("Party not found: abc", exception.getMessage());
+    }
+
+    @Test
+    void testExceptionDefaultConstructor() {
+        //GIVEN
+        UsernameAlreadyExistsException exception = new UsernameAlreadyExistsException();
+        //THEN
+        assertNull(exception.getMessage());
+        assertNull(exception.getCause());
+    }
+
+    @Test
+    void testExceptionConstructorWithMessageAndCause() {
+        //GIVEN
+        String message = "Username already exists!";
+        Throwable cause = new RuntimeException("Some cause");
+        UsernameAlreadyExistsException exception = new UsernameAlreadyExistsException(message, cause);
+        //THEN
+        assertEquals(message, exception.getMessage());
+        assertEquals(cause, exception.getCause());
+    }
+
+    @Test
+    void testExceptionConstructorWithCause() {
+        //GIVEN
+        Throwable cause = new RuntimeException("Some cause");
+        UsernameAlreadyExistsException exception = new UsernameAlreadyExistsException(cause);
+        //THEN
+        assertEquals(cause, exception.getCause());
     }
 }

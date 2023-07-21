@@ -1,5 +1,6 @@
 package org.partypets.backend.security;
 
+import org.partypets.backend.exception.UsernameAlreadyExistsException;
 import org.partypets.backend.model.UuIdService;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,10 +29,12 @@ public class MongoUserDetailService implements UserDetailsService {
         return new User(mongoUser.username(), mongoUser.password(), Collections.emptyList());
     }
 
-    public void registerNewUser(UserWithoutId userWithoutId){
+    public void registerNewUser(UserWithoutId userWithoutId) throws UsernameAlreadyExistsException {
         UuIdService uuIdService = new UuIdService();
         PasswordEncoder encoder = Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
         String encodedPassword = encoder.encode(userWithoutId.password());
+        if (this.mongoUserRepository.findByUsername(userWithoutId.username()).isPresent())
+            throw new UsernameAlreadyExistsException("User " + userWithoutId.username() + " already exists!");
         MongoUser newUser = new MongoUser(uuIdService.getRandomId(), userWithoutId.username(), encodedPassword);
         this.mongoUserRepository.save(newUser);
     }
