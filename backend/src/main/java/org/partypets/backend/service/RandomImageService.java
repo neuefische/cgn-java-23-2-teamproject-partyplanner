@@ -37,4 +37,3 @@ public class RandomImageService {
         return Objects.requireNonNull(responseEntity).getBody();
     }
 }
-

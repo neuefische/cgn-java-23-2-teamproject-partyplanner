@@ -1,8 +1,8 @@
 import Button from "@mui/material/Button";
 import {FormEvent, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {TextField, IconButton, InputAdornment, FormControl, OutlinedInput, InputLabel} from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput} from "@mui/material";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
 
 
 type Props = {
@@ -36,17 +36,20 @@ export default function LoginForm(props: Props) {
     return (<>
             <form onSubmit={handleSubmit}>
                 <fieldset>
-                    <legend style={{ marginBottom: '20px', fontWeight: 'bold', fontSize: '28px' }}>Login</legend>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <TextField
-                            label="Username"
-                            type="text"
-                            value={username}
-                            id="username"
-                            onChange={(event) => setUsername(event.target.value)}
-                            sx={{ width: '100%', marginBottom: '10px' }}
-                        />
-                        <FormControl sx={{ width: '100%' }} variant="outlined">
+                    <legend style={{marginBottom: '20px', fontWeight: 'bold', fontSize: '28px'}}>Login</legend>
+                    <div style={{display: 'flex', flexDirection: 'column', margin: 0,}}>
+                        <FormControl sx={{width: '100%', margin: "0px",}} variant="outlined">
+                            <InputLabel htmlFor="username">Username</InputLabel>
+                            <OutlinedInput
+                                id="username"
+                                type="text"
+                                value={username}
+                                onChange={(event) => setUsername(event.target.value)}
+                                label="Username"
+                                sx={{width: '100%', margin: "auto"}}
+                            />
+                        </FormControl>
+                        <FormControl sx={{width: '100%', marginTop: "30px",}} variant="outlined">
                             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-password"
@@ -61,19 +64,22 @@ export default function LoginForm(props: Props) {
                                             onMouseDown={handleMouseDownPassword}
                                             edge="end"
                                         >
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            {showPassword ? <VisibilityOff/> : <Visibility/>}
                                         </IconButton>
                                     </InputAdornment>
                                 }
                                 label="Password"
+                                sx={{width: '100%', margin: "auto"}}
                             />
                         </FormControl>
                     </div>
-                    <div>
-                        <Button sx={{ mt: 1, mr: 1, color: "rgb(44, 161, 173)", borderColor: "rgb(44, 161, 173)" }} variant="outlined" disableElevation
+                    <div style={{margin: 0,}}>
+                        <Button sx={{mt: 3, color: "rgb(44, 161, 173)", borderColor: "rgb(44, 161, 173)"}}
+                                variant="outlined" disableElevation
                                 onClick={() => navigate("/")}> Cancel</Button>
 
-                        <Button sx={{ mt: 1, mr: 1, bgcolor: "rgb(44, 161, 173)" }} type="submit" variant="contained" className="button-right">
+                        <Button sx={{mt: 3, bgcolor: "rgb(44, 161, 173)"}} type="submit" variant="contained"
+                                className="button-right">
                             Login
                         </Button>
                     </div>

@@ -18,4 +18,5 @@ public class Party {
     private LocalDate date;
     private String location;
     private String theme;
+    private String userId;
 }

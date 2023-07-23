@@ -1,7 +1,8 @@
 package org.partypets.backend.controller;
+
 import jakarta.validation.Valid;
-import org.partypets.backend.model.PartyWithoutId;
 import org.partypets.backend.model.Party;
+import org.partypets.backend.model.PartyWithoutId;
 import org.partypets.backend.service.PartyService;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +44,4 @@ public class PartyController {
     public void delete(@PathVariable String id) {
         partyService.delete(id);
     }
-
 }

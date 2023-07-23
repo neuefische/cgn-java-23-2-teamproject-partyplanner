@@ -1,16 +1,8 @@
 import Button from "@mui/material/Button";
 import {FormEvent, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {
-    TextField,
-    IconButton,
-    InputAdornment,
-    FormControl,
-    OutlinedInput,
-    InputLabel,
-    FormHelperText
-} from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {FormControl, FormHelperText, IconButton, InputAdornment, InputLabel, OutlinedInput,} from "@mui/material";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
 
 
 type Props = {
@@ -31,7 +23,6 @@ export default function RegisterForm(props: Props) {
     function handleSubmit(event: FormEvent) {
         event.preventDefault()
         props.onRegister(username, password)
-        props.onLogin(username, password);
         navigate("/")
     }
 
@@ -52,9 +43,9 @@ export default function RegisterForm(props: Props) {
     function changePassword(event: React.ChangeEvent<HTMLInputElement>) {
         setPassword(event.target.value)
         if (event.target.value.length < 3) {
-            setErrorPassword("Username must be at least 3 characters long!")
+            setErrorPassword("Password must be at least 3 characters long!")
         } else if (event.target.value.length > 25) {
-            setErrorPassword("Username must be under 25 characters long!")
+            setErrorPassword("Password must be under 25 characters long!")
         } else {
             setErrorPassword("")
         }
@@ -71,18 +62,24 @@ export default function RegisterForm(props: Props) {
     return (<>
             <form onSubmit={handleSubmit}>
                 <fieldset>
-                    <legend style={{ marginBottom: '20px', fontWeight: 'bold', fontSize: '28px' }}>Register</legend>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <TextField error={errorUsername.length > 0}
-                            label="Username"
-                            type="text"
-                            value={username}
-                            id="username"
-                            onChange={changeUsername}
-                            helperText={errorUsername}
-                            sx={{ width: '100%', marginBottom: '10px' }}
-                        />
-                        <FormControl sx={{ width: '100%' }} variant="outlined" error={errorPassword.length > 0}>
+                    <legend style={{marginBottom: '20px', fontWeight: 'bold', fontSize: '28px'}}>Register</legend>
+                    <div style={{display: 'flex', flexDirection: 'column', margin: 0,}}>
+
+                        <FormControl sx={{width: '100%', margin: "0px",}} variant="outlined"
+                                     error={errorUsername.length > 0}>
+                            <InputLabel htmlFor="username">Username</InputLabel>
+                            <OutlinedInput
+                                type="text"
+                                value={username}
+                                id="username"
+                                onChange={changeUsername}
+                                label="Username"
+                                sx={{width: '100%', margin: "auto"}}
+                            />
+                            {errorUsername && <FormHelperText error>{errorUsername}</FormHelperText>}
+                        </FormControl>
+                        <FormControl sx={{width: '100%', marginTop: "30px",}} variant="outlined"
+                                     error={errorPassword.length > 0}>
                             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                             <OutlinedInput
                                 id="outlined-adornment-password"
@@ -97,21 +94,24 @@ export default function RegisterForm(props: Props) {
                                             onMouseDown={handleMouseDownPassword}
                                             edge="end"
                                         >
-                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                            {showPassword ? <VisibilityOff/> : <Visibility/>}
                                         </IconButton>
                                     </InputAdornment>
                                 }
                                 label="Password"
+                                sx={{width: '100%', margin: "auto"}}
                             />
                             {errorPassword && <FormHelperText error>{errorPassword}</FormHelperText>}
                         </FormControl>
                     </div>
-                    <div>
-                        <Button sx={{ mt: 1, mr: 1, color: "rgb(44, 161, 173)", borderColor: "rgb(44, 161, 173)" }} variant="outlined" disableElevation
+                    <div style={{margin: 0,}}>
+                        <Button sx={{mt: 3, color: "rgb(44, 161, 173)", borderColor: "rgb(44, 161, 173)"}}
+                                variant="outlined" disableElevation
                                 onClick={() => navigate("/")}> Cancel</Button>
 
-                        <Button sx={{ mt: 1, mr: 1, bgcolor: "rgb(44, 161, 173)" }} type="submit" variant="contained" className="button-right">
-                            Register
+                        <Button sx={{mt: 3, bgcolor: "rgb(44, 161, 173)"}} type="submit" variant="contained"
+                                className="button-right">
+                            Sign up
                         </Button>
                     </div>
                 </fieldset>
